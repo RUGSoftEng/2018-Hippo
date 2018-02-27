@@ -1,0 +1,3 @@
+Wrote introduction
+Wrote first meeting minutes
+Updated requirements document after first client meeting
