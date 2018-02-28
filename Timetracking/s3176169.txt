@@ -1,0 +1,26 @@
+Research related to the Twitter API.
+Research related to the Twitter API.
+
+Layout requirements document.
+Layout requirements document.
+Layout requirements document.
+Contact the customer by email.
+
+Create Trello board and organisational matters.
+Planning an meeting with the client.
+Planning an meeting with the client.
+Preparing the client meeting.
+Preparing the client meeting.
+
+Composing a list of tasks in Trello for this sprint.
+Composing a list of tasks in Trello for this sprint.
+
+Layout meeting log, change log.
+List functional requirements.
+List functional requirements.
+
+Preparing requirements document for first release.
+Describing the non-functional requirements, preparing everything for the end of the sprint.
+Describing the non-functional requirements, preparing everything for the end of the sprint.
+Describing the non-functional requirements, preparing everything for the end of the sprint.
+Describing the non-functional requirements, preparing everything for the end of the sprint.
