@@ -1,3 +1,15 @@
 Wrote introduction
 Wrote first meeting minutes
 Updated requirements document after first client meeting
+Research front end
+Research front end
+Wrote meeting minutes for 2nd meeting
+Research back end
+Research back end
+Research back end
+Research back end
+Research back end
+Update requirements document
+Update architecture document
+Review and modify architecture document
+Review and modify architecture document
