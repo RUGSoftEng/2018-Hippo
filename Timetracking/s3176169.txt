@@ -24,3 +24,48 @@ Describing the non-functional requirements, preparing everything for the end of 
 Describing the non-functional requirements, preparing everything for the end of the sprint.
 Describing the non-functional requirements, preparing everything for the end of the sprint.
 Describing the non-functional requirements, preparing everything for the end of the sprint.
+
+Client meeting, team meeting to brainstorm about the design and tech stack.
+Client meeting, team meeting to brainstorm about the design and tech stack.
+Client meeting, team meeting to brainstorm about the design and tech stack.
+Client meeting, team meeting to brainstorm about the design and tech stack.
+Client meeting, team meeting to brainstorm about the design and tech stack.
+Client meeting, team meeting to brainstorm about the design and tech stack.
+Client meeting, team meeting to brainstorm about the design and tech stack.
+Client meeting, team meeting to brainstorm about the design and tech stack.
+
+Elabarate tech stack.
+Elabarate tech stack.
+Elabarate tech stack.
+Elabarate tech stack.
+
+Work on Twitter data streamer and processor.
+Work on Twitter data streamer and processor.
+Work on Twitter data streamer and processor.
+Organisational matters.
+
+Team and TA meeting.
+Team and TA meeting.
+Team and TA meeting.
+
+Organisational matters.
+Research natural language processing.
+Write user stories.
+Work on architecture document.
+
+Learn Flask.
+Learn Flask.
+Discussed the design of the back-end.
+Discussed the design of the back-end.
+Discussed the design of the back-end.
+Discussed the design of the back-end.
+Discussed the design of the back-end.
+Learn Flask.
+Composed a diagram of the architecture and did some research to resolve some last issues.
+Composed a diagram of the architecture and did some research to resolve some last issues.
+Added the architecture overview section and extended the data analysis tech stack.
+Added the architecture overview section and extended the data analysis tech stack.
+Added the architecture overview section and extended the data analysis tech stack.
+Prepared everything for the end of the second iteration.
+Prepared everything for the end of the second iteration.
+
