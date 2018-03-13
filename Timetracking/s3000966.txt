@@ -1,5 +1,41 @@
+--Sprint1--
+
 Elaborate the critical functional requirements from the list of identified functional requirements.
 Elaborate the critical functional requirements from the list of identified functional requirements.
 Elaborate the critical functional requirements from the list of identified functional requirements.
 Elaborate the critical functional requirements from the list of identified functional requirements.
 Elaborate the critical functional requirements from the list of identified functional requirements.
+
+--Sprint2--
+
+General reseach (version control - GIT)
+General reseach (version control - GIT)
+General reseach (version control - GIT)
+General reseach (version control - GIT)
+Front-end technology research (HTML) (Pluralsight Course)
+Front-end technology research (HTML) (Pluralsight Course)
+Front-end technology research (HTML) (Pluralsight Course)
+Front-end technology research (HTML) (Pluralsight Course)
+Front-end technology research (HTML) (Pluralsight Course)
+Front-end technology research (HTML) (Pluralsight Course)
+Front-end technology research (CSS) (Pluralsight Course)
+Front-end technology research (CSS) (Pluralsight Course)
+Front-end technology research (CSS) (Pluralsight Course)
+Front-end technology research (CSS) (Pluralsight Course)
+Front-end technology research (CSS) (Pluralsight Course)
+Front-end technology research (Javascript) (Pluralsight Course)
+Front-end technology research (Javascript) (Pluralsight Course)
+Front-end technology research (Javascript) (Pluralsight Course)
+Front-end technology research (Javascript) (Pluralsight Course)
+Front-end technology research (Javascript) (Pluralsight Course)
+Front-end technology research (HTML5) (Pluralsight Course)
+Front-end technology research (HTML5) (Pluralsight Course)
+Front-end technology research (HTML5) (Pluralsight Course)
+Front-end technology research (HTML5) (Pluralsight Course)
+Front-end technology research (Foundation 6) (Pluralsight Course)
+Front-end technology research (Foundation 6) (Pluralsight Course)
+Front-end technology research (Foundation 6) (Pluralsight Course)
+Front-end technology research (Vue.js) (Pluralsight Course)
+Front-end technology research (Vue.js) (Pluralsight Course)
+Write descriptions for the front-end technology stack
+Write descriptions for the front-end technology stack
