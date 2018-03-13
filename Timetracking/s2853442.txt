@@ -1,0 +1,5 @@
+Work on important functional requirements
+Research data analysis
+Research natural language processing
+Research python nltk 
+Work on descriptions for the data analysis technology stack
