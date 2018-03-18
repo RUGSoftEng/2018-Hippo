@@ -1,28 +1,77 @@
 from __future__ import division
 
 import nltk
-from nltk.book import *
 
+from nltk.book import *
 from collections import Counter
 from matplotlib.pyplot import *
 from numpy import logspace, log10
 
 from nltk.corpus import brown
+from nltk.tree import Tree
+from nltk import ne_chunk, pos_tag, word_tokenize
+
+#this function is taken and slightly modified from
+#https://stackoverflow.com/questions/24398536/named-entity-recognition-with-regular-expression-nltk
+def get_continuous_chunks(text):
+    chunked = ne_chunk(pos_tag(word_tokenize(text)))
+
+    prev = None
+    continuous_chunk = []
+    current_chunk = []
+
+    for i in chunked:
+        if type(i) == Tree:
+            current_chunk.append(" ".join([token for token, pos in i.leaves()]))
+        elif current_chunk:
+            named_entity = " ".join(current_chunk)
+            if named_entity not in continuous_chunk and named_entity != "":
+                continuous_chunk.append(named_entity)
+                current_chunk = []
+        else:
+            continue
+
+    if continuous_chunk:
+        named_entity = " ".join(current_chunk)
+        if named_entity not in continuous_chunk and named_entity != "":
+            continuous_chunk.append(named_entity)
+
+    return continuous_chunk
+
+
 
 #ignore punctuation
 f = open("tweet.txt", "r")
 inputfile = f.read()
 tokens = nltk.tokenize.word_tokenize(inputfile)
-text = [w.lower() for w in tokens if w.isalpha()]
+aplha_tokens = [w.lower() for w in tokens if w.isalpha()]
 
-#sort out unnecessary stuff. I sort out to and prepositions(?), however, articles (a/an/the) must be sorted out too
-intermid = nltk.pos_tag(text)
-tag_pairs = nltk.bigrams(intermid)
-text = [a[0] for (a, b) in tag_pairs if b[1] != 'PRP' and b[1] != 'TO']
+#sort out unnecessary stuff
+pos_tagged = nltk.pos_tag(aplha_tokens)
 
-#find frequency distibution
-fdist = FreqDist(text)
-print(fdist)
+# NP chunking
+#chunk nouns
+grammar = r"""
+           KEYWORD:
+                {<NN.*>}              #nouns
+                {<V.*>}             #all types of verbs
+                {<JJ.*>}              #adjectives
+            """
 
-#plot 10 most frequent words
-fdist.plot(10, cumulative=False)
+cp = nltk.RegexpParser(grammar)
+chunks = cp.parse(pos_tagged)
+print(chunks)
+sorted_keys = []
+
+#extract keywords
+for subtree in chunks.subtrees():
+        if subtree.label() == "KEYWORD":
+            sorted_keys += subtree.leaves()
+
+#find frequency dist of kwywords and show 3 most common
+fdistKeys = FreqDist(sorted_keys)
+fdistKeys.plot(3, cumulative=False)
+
+#named entity recognition
+fdistNames = FreqDist(get_continuous_chunks(inputfile))
+fdistNames.plot(3, cumulative=False)
