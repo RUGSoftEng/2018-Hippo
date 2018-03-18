@@ -3,3 +3,10 @@ Research data analysis
 Research natural language processing
 Research python nltk 
 Work on descriptions for the data analysis technology stack
+start codding layout for data analysis (tokenization)
+start codding layout for data analysis (cleaning punctuation)
+start codding layout for data analysis (pos-tagging)
+start codding layout for data analysis (fix pos tagging + freq dist)
+start codding layout for data analysis (chunking)
+start codding layout for data analysis (keyword extruction with grammar)
+start codding layout for data analysis (named entity recognition)
