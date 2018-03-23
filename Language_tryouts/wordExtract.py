@@ -3,13 +3,11 @@ from __future__ import division
 import nltk
 
 from nltk.book import *
-from collections import Counter
 from matplotlib.pyplot import *
-from numpy import logspace, log10
 
-from nltk.corpus import brown
 from nltk.tree import Tree
 from nltk import ne_chunk, pos_tag, word_tokenize
+from nltk.corpus import wordnet, brown
 
 #this function is taken and slightly modified from
 #https://stackoverflow.com/questions/24398536/named-entity-recognition-with-regular-expression-nltk
@@ -75,3 +73,22 @@ fdistKeys.plot(3, cumulative=False)
 #named entity recognition
 fdistNames = FreqDist(get_continuous_chunks(inputfile))
 fdistNames.plot(3, cumulative=False)
+
+#getting synonumous of sorted_keys
+synonyms = []
+for (key, type) in sorted_keys:
+    for syn in wordnet.synsets(key):
+        for l in syn.lemmas():
+            if l.name() not in synonyms:
+                synonyms.append(l.name())
+
+print(synonyms)
+
+#sort synonyms based on frequency of usage in Brown corpra
+freqs = FreqDist([w.lower() for w in brown.words()])
+wordlist_sorted = sorted(synonyms, key=lambda x: freqs[x.lower()], reverse=True)
+for w in wordlist_sorted:
+    print(w)
+
+
+
