@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+  ignite:
+    image: apacheignite/ignite
+    environment:
+       CONFIG_URI: https://raw.githubusercontent.com/apache/ignite/master/examples/config/example-cache.xml
+    volumes:
+     - ./MySQL/db-dump:/var/lib/mysql:rw
+    network_mode: "host"
+  
+  ignite-web-console:
+    image: apacheignite/web-console-standalone
+    volumes:
+     - ./ignite-web-console:/var/lib/mongodb 
+    ports:
+     - "8080:80"
+     - "3001:3001"
