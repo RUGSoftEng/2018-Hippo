@@ -1,5 +1,6 @@
-.bg-color-nav {
+.navbar {
   background-color: rgb(255, 230, 230);
+  border-radius: 0.5rem
 }
 
 .btn {
