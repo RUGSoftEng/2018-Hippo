@@ -26,6 +26,37 @@
           </form>
         </nav
     </div>
+    <center>
+      <blockquote class=twitter-tweet>
+            <p id="demo"></p>
+            <a href="">-By some random guy with 0 followers</a>
+      </blockquote>
+      <br>
+      <blockquote class=twitter-tweet>
+            <p id="demo1"></p>
+            <a href="">-By some random guy with 0 followers</a>
+      </blockquote>
+      <br>
+      <blockquote class=twitter-tweet>
+            <p id="demo2"></p>
+            <a href="">-By some random guy with 0 followers</a>
+      </blockquote>
+    </center>
+    <!-- Tweet Display -->
+    <script id = "tweet" src="tweet.json" type="text/javascript"></script>
+    <script src=tweet.js type=text/javascript> </script>
+    <script>
+    //Every tweet goes here, possibly in a for loop
+    //Need to find a way to generate an indefinite amount of blockquotes
+      readTextFile("tweet.json", function(text){
+      var data = JSON.parse(text);
+      document.getElementById("demo").innerHTML = data.content
+      document.getElementById("demo1").innerHTML = data.content
+      document.getElementById("demo2").innerHTML = data.content
+    });
+    </script>
+
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
