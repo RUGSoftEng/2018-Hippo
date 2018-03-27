@@ -33,9 +33,6 @@ Vue.component('nav-bar', {
       </div>
     </nav>
 
-
-
-
   <!--
     <div class="container">
       <nav class="navbar navbar-light">
@@ -69,14 +66,37 @@ Vue.component('logo-poster', {
 })
 
 Vue.component('search-bar', {
+  data() {
+    return {
+      searchText: '',
+      tweetList: []
+    };
+  },
   template: `
     <div class="container center">
-      <form class="form-inline">
-        <input class="form-control mr-sm-3" type="search" placeholder="Search for tweets..." aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
+      <div class="form-inline">
+        <input class="form-control mr-sm-3" type="text" v-model="searchText" placeholder="Search for tweets..." aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" v-on:click="search(searchText)">Search</button>
+      </div>
+      <tweet-list :tweetList="tweetList"></tweet-list>
     </div>
-  `
+  `,
+  methods:{
+    search: function(term) {
+      this.$data.tweetList = [{'tweet-id': "ABC", 'content': "Hello world!", 'keywords': ["hello","world"]},
+             {'tweet-id': "BBC", 'content': "Hello earth!", 'keywords': ["hello","earth"]},
+             {'tweet-id': "CBC", 'content': "These tweets are placeholders because there is no backend yet as of this pull request!", 'keywords': ["hello","universe"]}];
+      // let componentContext = this;
+      // axios.get('http://localhost:5000/search/' + term)
+      //   .then(function (response) {
+      //     componentContext.$data.tweetList = response.data;
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
+    }
+  }
+
 })
 
 Vue.component('tweet-list', {
@@ -84,7 +104,7 @@ Vue.component('tweet-list', {
   template:`
     <section class="py-5">
       <div class="container text-center">
-        <tweet v-for="t in tweetList" :tweetData=t></tweet>
+        <tweet v-for="t in tweetList" :tweetData=t.content></tweet>
       </div>
     </section>
   `
@@ -102,14 +122,7 @@ Vue.component('tweet', {
   `
 })
 
-
 Vue.component('layout', {
-  data() {
-    return {
-      tweetList: ["Some random business idea nobody cares about", "Some random business idea nobody cares about", "Some random business idea nobody cares about"]
-    };
-  },
-
   template:`
     <div>
       <!-- <nav-bar></nav-bar> -->
@@ -118,7 +131,6 @@ Vue.component('layout', {
         <h1 id="tweetTitle">Tweets</h1>
         <search-bar></search-bar>
       </center>
-      <tweet-list :tweetList="$data.tweetList"></tweet-list>
     </div>
   `
 })
