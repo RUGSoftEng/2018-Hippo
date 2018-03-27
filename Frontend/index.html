@@ -14,56 +14,16 @@
     <title>Hippo</title>
   </head>
   <body>
-    <div class="container">
-        <nav class="navbar navbar-light">
-          <a class="navbar-brand" href="#">
-            <img src="/assets/Hippo_logo_2.png" width="50" height="60" alt="">
-            Hippo
-          </a>
-          <form class="form-inline">
-            <input class="form-control mr-sm-3" type="search" placeholder="Search for tweets..." aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </nav>
+    <div id="root">
+      <layout></layout>
     </div>
-    <div class="container">
-      <center>
-        <blockquote class=twitter-tweet>
-              <p id="demo"></p>
-              <a href="">-By some random guy with 0 followers</a>
-        </blockquote>
-        <br>
-        <blockquote class=twitter-tweet>
-              <p id="demo1"></p>
-              <a href="">-By some random guy with 0 followers</a>
-        </blockquote>
-        <br>
-        <blockquote class=twitter-tweet>
-              <p id="demo2"></p>
-              <a href="">-By some random guy with 0 followers</a>
-        </blockquote>
-      </center>
-    </div>
-    <!-- Tweet Display -->
-    <script id = "tweet" src="tweet.json" type="text/javascript"></script>
-    <script src=tweet.js type=text/javascript> </script>
-    <script>
-    //Every tweet goes here, possibly in a for loop
-    //Need to find a way to generate an indefinite amount of blockquotes
-      readTextFile("tweet.json", function(text){
-      var data = JSON.parse(text);
-      document.getElementById("demo").innerHTML = data.content
-      document.getElementById("demo1").innerHTML = data.content
-      document.getElementById("demo2").innerHTML = data.content
-    });
-    </script>
-
-
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src=main.js type=text/javascript></script>
   </body>
 </html>
