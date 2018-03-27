@@ -30,3 +30,56 @@ Learning and practicing JavaScript
 
 Research on the tech stack
 Writing the description for front-end tech stack
+
+Researching Vue.js
+Researching Vue.js
+Researching Vue.js
+Researching Vue.js
+Researching Vue.js
+Researching Vue.js
+
+//The manual triangulation of the hippo alone took at least 4 hours
+Designing the logo/poster
+Designing the logo/poster
+Designing the logo/poster
+Designing the logo/poster
+Designing the logo/poster
+Designing the logo/poster
+Designing the logo/poster
+Designing the logo/poster
+Designing the logo/poster
+Designing the logo/poster
+Designing the logo/poster
+
+Building the skeleton of the site
+Building the skeleton of the site
+Applying basic design
+Applying basic design
+
+Working with Said in a meeting (Navbar and tweet display)
+Working with Said in a meeting (Navbar and tweet display)
+Working with Said in a meeting (Navbar and tweet display)
+Working with Said in a meeting (Navbar and tweet display)
+Working with Said in a meeting (Navbar and tweet display)
+Working with Said in a meeting (Navbar and tweet display)
+
+Researching Bootstrap
+Researching Bootstrap
+Researching Bootstrap
+Researching Bootstrap
+Researching Bootstrap
+Researching Bootstrap
+
+Styling the website
+Styling the website
+Styling the website
+Styling the website
+
+Working with Said in a meeting (Vue components and styling)
+Working with Said in a meeting (Vue components and styling)
+Working with Said in a meeting (Vue components and styling)
+Working with Said in a meeting (Vue components and styling)
+Working with Said in a meeting (Vue components and styling)
+Working with Said in a meeting (Vue components and styling)
+Working with Said in a meeting (Vue components and styling)
+Working with Said in a meeting (Vue components and styling)
