@@ -1,14 +1,6 @@
 version: '3'
 
 services:
-
-  ignite:
-    image: apacheignite/ignite
-    environment:
-       CONFIG_URI: https://raw.githubusercontent.com/apache/ignite/master/examples/config/example-cache.xml
-    volumes:
-     - ./ignite:/var/lib/ignite:rw
-    network_mode: "host"
   
   elasticsearch:
     image: elasticsearch
