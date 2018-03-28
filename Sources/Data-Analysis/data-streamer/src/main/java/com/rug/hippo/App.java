@@ -1,34 +1,32 @@
 package com.rug.hippo;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.apache.ignite.*;
-import org.apache.ignite.stream.twitter.*;
-
-import java.util.*;
+import org.apache.ignite.configuration.DataStorageConfiguration;
+import org.apache.ignite.configuration.IgniteConfiguration;
 
 public class App 
 {
     public static void main(String[] args)
     {
-        Ignite ignite = null;
+        IgniteConfiguration configuration = GetConfiguration();
+        Ignite ignite = Ignition.start(configuration);
         
-        IgniteDataStreamer<Integer, String> dataStreamer = ignite.dataStreamer("myCache");
-        dataStreamer.allowOverwrite(true);
-        dataStreamer.autoFlushFrequency(10);
+        TwitterConnection twitterConnection = new TwitterConnection(ignite, "Tweets");
+        
+        twitterConnection.SetConfiguration(null, null, null);
+        twitterConnection.Start();
+    }
+    
+    private static IgniteConfiguration GetConfiguration()
+    {
+        IgniteConfiguration cfg = new IgniteConfiguration();
+        DataStorageConfiguration storageCfg = new DataStorageConfiguration();
 
-        OAuthSettings oAuthSettings = new OAuthSettings("<>", "<>", "<>", "<>");
+        storageCfg.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
 
-        TwitterStreamer<Integer, String> streamer = new TwitterStreamer<>(oAuthSettings);
-        streamer.setIgnite(ignite);
-        streamer.setStreamer(dataStreamer);
+        cfg.setDataStorageConfiguration(storageCfg);
 
-        Map<String, String> params = new HashMap<>();
-        params.put("track", "apache, twitter");
-        params.put("follow", "3004445758");
-
-        streamer.setApiParams(params);// Twitter Streaming API params.
-        streamer.setEndpointUrl(endpointUrl);// Twitter streaming API endpoint.
-        streamer.setThreadsCount(8);
-
-        streamer.start();
+        return cfg;
     }
 }
