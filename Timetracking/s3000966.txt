@@ -12,30 +12,80 @@ General reseach (version control - GIT)
 General reseach (version control - GIT)
 General reseach (version control - GIT)
 General reseach (version control - GIT)
+
 Front-end technology research (HTML) (Pluralsight Course)
 Front-end technology research (HTML) (Pluralsight Course)
 Front-end technology research (HTML) (Pluralsight Course)
 Front-end technology research (HTML) (Pluralsight Course)
 Front-end technology research (HTML) (Pluralsight Course)
 Front-end technology research (HTML) (Pluralsight Course)
+
 Front-end technology research (CSS) (Pluralsight Course)
 Front-end technology research (CSS) (Pluralsight Course)
 Front-end technology research (CSS) (Pluralsight Course)
 Front-end technology research (CSS) (Pluralsight Course)
 Front-end technology research (CSS) (Pluralsight Course)
+
 Front-end technology research (Javascript) (Pluralsight Course)
 Front-end technology research (Javascript) (Pluralsight Course)
 Front-end technology research (Javascript) (Pluralsight Course)
 Front-end technology research (Javascript) (Pluralsight Course)
 Front-end technology research (Javascript) (Pluralsight Course)
+
 Front-end technology research (HTML5) (Pluralsight Course)
 Front-end technology research (HTML5) (Pluralsight Course)
 Front-end technology research (HTML5) (Pluralsight Course)
 Front-end technology research (HTML5) (Pluralsight Course)
+
 Front-end technology research (Foundation 6) (Pluralsight Course)
 Front-end technology research (Foundation 6) (Pluralsight Course)
 Front-end technology research (Foundation 6) (Pluralsight Course)
+
 Front-end technology research (Vue.js) (Pluralsight Course)
 Front-end technology research (Vue.js) (Pluralsight Course)
+
 Write descriptions for the front-end technology stack
 Write descriptions for the front-end technology stack
+
+--Sprint3--
+Front-end technology research (Bootstrap) (Pluralsight Course)
+Front-end technology research (Bootstrap) (Pluralsight Course)
+Front-end technology research (Bootstrap) (Pluralsight Course)
+Front-end technology research (Bootstrap) (Pluralsight Course)
+
+Front-end technology research and practice (Vue.js)
+Front-end technology research and practice (Vue.js)
+Front-end technology research and practice (Vue.js)
+Front-end technology research and practice (Vue.js)
+Front-end technology research and practice (Vue.js)
+Front-end technology research and practice (Vue.js)
+Front-end technology research and practice (Vue.js)
+Front-end technology research and practice (Vue.js)
+
+Designing a Search Bar
+Designing a Search Bar
+Designing a Search Bar
+Designing a Search Bar
+Designing a Search Bar
+Designing a Search Bar
+
+Integrating existing website components into Vue.js
+Integrating existing website components into Vue.js
+Integrating existing website components into Vue.js
+Integrating existing website components into Vue.js
+Integrating existing website components into Vue.js
+Integrating existing website components into Vue.js
+
+Working with Sardor in a meeting (Vue components and Styling)
+Working with Sardor in a meeting (Vue components and Styling)
+Working with Sardor in a meeting (Vue components and Styling)
+Working with Sardor in a meeting (Vue components and Styling)
+Working with Sardor in a meeting (Vue components and Styling)
+Working with Sardor in a meeting (Vue components and Styling)
+Working with Sardor in a meeting (Vue components and Styling)
+Working with Sardor in a meeting (Vue components and Styling)
+
+Wrote an http response handler for the backend
+Wrote an http response handler for the backend
+Wrote an http response handler for the backend
+Wrote an http response handler for the backend
