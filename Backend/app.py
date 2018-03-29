@@ -17,15 +17,15 @@ def search(term):
     return jsonify(res)
 
 def setup_placeholder():
-	tweets_file = open('tweets.txt', 'r')
+    tweets_file = open('tweets.txt', 'r')
 	
-	for line in tweets_file:
-		arr = line.split('\t')
-		tweet_id = str(int(Decimal(arr[0].replace('\"', ''))))
-		tweet_contents = arr[2].replace('\"', '')
-		tweet_keywords = tweet_contents.split(' ')
-		placeholder.append({'tweet-id':tweet_id, 'content':tweet_contents, 'keywords':tweet_keywords})
+    for line in tweets_file:
+        arr = line.split('\t')
+        tweet_id = str(int(Decimal(arr[0].replace('\"', ''))))
+        tweet_contents = arr[2].replace('\"', '')
+        tweet_keywords = tweet_contents.split(' ')
+        placeholder.append({'tweet-id':tweet_id, 'content':tweet_contents, 'keywords':tweet_keywords})
 	
 if __name__ == '__main__':
-	setup_placeholder()
+    setup_placeholder()
     app.run(debug=True)
