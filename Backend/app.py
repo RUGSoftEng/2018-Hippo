@@ -32,7 +32,7 @@ def search(term): #todo replace w searchES once ES is set up
     for t in terms:
         r = [r for r in placeholder if r['keywords'].count(t)>=1]
         if r not in res:
-            res.append(r)
+            res.extend(r)
     return jsonify(res)
 
 def setup_placeholder():
