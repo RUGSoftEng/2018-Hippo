@@ -1,19 +1,38 @@
 from flask import *
 import json
+from elasticsearch import Elasticsearch
 import sys
 from decimal import Decimal
+
+def searchES(term):
+    terms=term.split()
+    res=[]
+    for t in terms:
+        results = es.search(index="", body={"query": {"match": {"keywords": t}}}) #assuming field is called keywords
+        for h in results['hits']['hits']:
+            r=h['_source']
+            r['id']=h['_id']
+            if r not in res:
+                res.append(r)
+    return res
 
 placeholder=[]
 
 app = Flask(__name__)
+es = Elasticsearch()
 
 @app.route('/')
 def start():
     return "Hippo start page"
 
 @app.route('/search/<term>', methods=['GET'])
-def search(term):
-    res = [res for res in placeholder if res['keywords'].count(term)>=1]
+def search(term): #todo replace w searchES once ES is set up
+    terms=term.split()
+    res=[]
+    for t in terms:
+        r = [r for r in placeholder if r['keywords'].count(t)>=1]
+        if r not in res:
+            res.extend(r)
     return jsonify(res)
 
 def setup_placeholder():

@@ -83,17 +83,17 @@ Vue.component('search-bar', {
   `,
   methods:{
     search: function(term) {
-      this.$data.tweetList = [{'tweet-id': "ABC", 'content': "Hello world!", 'keywords': ["hello","world"]},
-             {'tweet-id': "BBC", 'content': "Hello earth!", 'keywords': ["hello","earth"]},
-             {'tweet-id': "CBC", 'content': "These tweets are placeholders because there is no backend yet as of this pull request!", 'keywords': ["hello","universe"]}];
-      // let componentContext = this;
-      // axios.get('http://localhost:5000/search/' + term)
-      //   .then(function (response) {
-      //     componentContext.$data.tweetList = response.data;
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
+      // this.$data.tweetList = [{'tweet-id': "ABC", 'content': "Hello world!", 'keywords': ["hello","world"]},
+      //        {'tweet-id': "BBC", 'content': "Hello earth!", 'keywords': ["hello","earth"]},
+      //        {'tweet-id': "CBC", 'content': "These tweets are placeholders because there is no backend yet as of this pull request!", 'keywords': ["hello","universe"]}];
+      let componentContext = this;
+      axios.get('http://localhost:5000/search/' + term)
+        .then(function (response) {
+          componentContext.$data.tweetList = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+       });
     }
   }
 
