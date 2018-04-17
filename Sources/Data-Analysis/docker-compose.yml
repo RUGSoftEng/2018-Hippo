@@ -2,12 +2,19 @@ version: '3'
 
 services:
 
+  streamer:
+    build: .
+    dockerfile: Dockerfile
+    network_mode: "host"
+    links:
+     - ignite
+
   ignite:
     image: apacheignite/ignite
     environment:
        CONFIG_URI: https://raw.githubusercontent.com/apache/ignite/master/examples/config/example-cache.xml
     volumes:
-     - ./MySQL/db-dump:/var/lib/mysql:rw
+     - ./ignite:/var/lib/ignite:rw
     network_mode: "host"
   
   ignite-web-console:
