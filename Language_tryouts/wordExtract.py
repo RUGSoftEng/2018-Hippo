@@ -5,6 +5,7 @@ import json
 
 from nltk.book import *
 from matplotlib.pyplot import *
+from elasticsearch import Elasticsearch
 
 from nltk.tree import Tree
 from nltk import ne_chunk, pos_tag, word_tokenize
@@ -37,7 +38,9 @@ def get_continuous_chunks(text):
 
     return continuous_chunk
 
-
+#param: tweet json with info described before, can be extended for array of tweets
+def sendToES(tweet):
+    es.index(index='hippo', doc_type='tweet', id=tweet['tweetID'], body=tweet)
 
 #ignore punctuation
 f = open("tweet.txt", "r")
@@ -98,4 +101,8 @@ data['keywords'] = synonyms
 data['id'] = 5 #get it from Jean or whoever does this part
 json_data = json.dumps(data)
 print (json_data)
+
+#send to elasticsearch
+es=Elasticsearch([{'host': 'localhost', 'port': 8080}]) #host to be changed when ES is set up
+sendToES(json_data)
 
