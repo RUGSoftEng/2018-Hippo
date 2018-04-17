@@ -1,6 +1,7 @@
 from __future__ import division
 
 import nltk
+import json
 
 from nltk.book import *
 from matplotlib.pyplot import *
@@ -90,7 +91,11 @@ wordlist_sorted = sorted(synonyms, key=lambda x: freqs[x.lower()], reverse=True)
 for w in wordlist_sorted:
     print(w)
 
-
-
-
+#create json
+data = {}
+data['tweet'] = inputfile
+data['keywords'] = synonyms
+data['id'] = 5 #get it from Jean or whoever does this part
+json_data = json.dumps(data)
+print (json_data)
 
