@@ -2,6 +2,13 @@ version: '3'
 
 services:
 
+  streamer:
+    build: .
+    dockerfile: Dockerfile
+    network_mode: "host"
+    links:
+     - ignite
+
   ignite:
     image: apacheignite/ignite
     environment:
