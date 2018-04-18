@@ -8,12 +8,12 @@ def searchES(term):
     terms=term.split()
     res=[]
     for t in terms:
-        results = es.search(index="", body={"query": {"match": {"keywords": t}}}) #assuming field is called keywords
+        results = es.search(index="hippo", body={"query": {"match": {"keywords": t}}}) #assuming field is called keywords
         for h in results['hits']['hits']:
             r=h['_source']
             r['id']=h['_id']
             if r not in res:
-                res.append(r)
+                res.extend(r)
     return res
 
 placeholder=[]
