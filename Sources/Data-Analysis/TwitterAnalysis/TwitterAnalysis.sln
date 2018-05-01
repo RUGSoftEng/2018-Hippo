@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterRealtimeAPI", "TwitterRealtimeAPI\TwitterRealtimeAPI.csproj", "{C523BCE9-41D6-4C22-91E5-4921A5F39E5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterAnalysisManagement", "TwitterAnalysisManagement\TwitterAnalysisManagement.csproj", "{4227ADA6-B475-494F-B964-6C792BCCA7A8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C523BCE9-41D6-4C22-91E5-4921A5F39E5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C523BCE9-41D6-4C22-91E5-4921A5F39E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C523BCE9-41D6-4C22-91E5-4921A5F39E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C523BCE9-41D6-4C22-91E5-4921A5F39E5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4227ADA6-B475-494F-B964-6C792BCCA7A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4227ADA6-B475-494F-B964-6C792BCCA7A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4227ADA6-B475-494F-B964-6C792BCCA7A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4227ADA6-B475-494F-B964-6C792BCCA7A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
