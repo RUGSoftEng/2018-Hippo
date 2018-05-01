@@ -10,6 +10,7 @@
 
 <script>
 import axios from 'axios';
+import TweetList from './TweetList.vue';
 export default {
   data() {
     return {
@@ -31,6 +32,9 @@ export default {
           console.log(error);
        });
     }
+  },
+  components: {
+    'tweet-list': TweetList
   }
 }
 </script>
