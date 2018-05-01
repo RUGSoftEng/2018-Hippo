@@ -89,3 +89,18 @@ Wrote an http response handler for the backend
 Wrote an http response handler for the backend
 Wrote an http response handler for the backend
 Wrote an http response handler for the backend
+
+--Sprint 4--
+
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
+VueJS and webpack practice (Still needed to do more learning, slight learning curve)
