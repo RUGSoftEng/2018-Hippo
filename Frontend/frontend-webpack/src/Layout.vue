@@ -1,5 +1,6 @@
-<template>
-  <div id="app">
+<template lang="html">
+  <div>
+    <!-- <nav-bar></nav-bar> -->
     <logo-poster></logo-poster>
     <center>
       <h1 id="tweetTitle">Tweets</h1>
@@ -10,10 +11,8 @@
 
 <script>
 export default {
-
 }
 </script>
 
-<style>
-
+<style lang="css">
 </style>
