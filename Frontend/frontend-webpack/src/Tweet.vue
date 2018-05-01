@@ -2,7 +2,6 @@
   <div>
     <blockquote class=twitter-tweet>
       <div class="padding-bottom">{{tweetData}}</div>
-      <a href="">-By some random guy with 0 followers</a>
     </blockquote>
   </div>
 </template>
@@ -18,7 +17,8 @@ export default {
 blockquote.twitter-tweet {
   display: inline-block;
   font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
-  font-size: 12px;
+  color: black;
+  font-size: 16px;
   font-weight: bold;
   line-height: 16px;
   border-color: #00BFFF;
@@ -27,9 +27,9 @@ blockquote.twitter-tweet {
   border-width: 5px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   margin: 10px 5px;
-  padding: 0 16px 16px 16px;
+  padding: 16px 16px 16px 16px;
   max-width: 468px;
-  background-color: white; 
+  background-color: white;
 }
 
 blockquote.twitter-tweet p {
