@@ -5,10 +5,13 @@ RUN apt-get install -y maven
 
 WORKDIR /code
 
-ADD pom.xml /code/pom.xml
+ADD data-streamer/pom.xml /code/pom.xml
 RUN ["mvn", "dependency:resolve"]
 RUN ["mvn", "verify"]
 
-ADD . /usr/src
+ADD data-streamer /usr/src
 RUN ["mvn", "package"]
-CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/sparkexample-jar-with-dependencies.jar"]
+
+ADD data-streamer /code
+
+CMD tail -f /dev/null

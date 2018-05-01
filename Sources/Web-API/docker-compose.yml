@@ -4,7 +4,6 @@ services:
 
   web:
     build: .
-    dockerfile: Dockerfile
     ports:
      - "5000"
     links:
