@@ -1,4 +1,4 @@
-# frontend-webpack
+# hippo
 
 > A Vue.js project
 
