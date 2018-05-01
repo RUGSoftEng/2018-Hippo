@@ -9,11 +9,19 @@
 </template>
 
 <script>
+import LogoPoster from './LogoPoster.vue';
 export default {
-
+  components: {
+    'logo-poster': LogoPoster
+  }
 }
 </script>
 
 <style>
-
+  body {
+    background-color: black;
+  }
+  #tweetTitle {
+    color: white;
+  }
 </style>
