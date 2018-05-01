@@ -10,9 +10,11 @@
 
 <script>
 import LogoPoster from './LogoPoster.vue';
+import SearchBar from './SearchBar.vue';
 export default {
   components: {
-    'logo-poster': LogoPoster
+    'logo-poster': LogoPoster,
+    'search-bar': SearchBar
   }
 }
 </script>
