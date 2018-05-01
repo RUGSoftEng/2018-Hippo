@@ -2,10 +2,11 @@ from __future__ import division
 
 import nltk
 import json
+import re
 
 from nltk.book import *
 from matplotlib.pyplot import *
-from elasticsearch import Elasticsearch
+#from elasticsearch import Elasticsearch
 
 from nltk.tree import Tree
 from nltk import ne_chunk, pos_tag, word_tokenize
@@ -42,7 +43,19 @@ def get_continuous_chunks(text):
 def sendToES(tweet):
     es.index(index='hippo', doc_type='tweet', id=tweet['tweetID'], body=tweet)
 
+#wish is an array of strings wish may have
+#this function search though tweets and decides whether it is a wish or not
+#if it is a wish, it returns cutted, meaningful part. otherwise, empty string	
+def checkWish(c):
+	wish = ['I wish there was ']
+	for i in wish:
+		if re.search(i, c):
+			result = re.sub(i, "", c)
+			return result
+	return ""
+
 #ignore punctuation
+print(checkWish("I wish there was an app"))
 f = open("tweet.txt", "r")
 inputfile = f.read()
 tokens = nltk.tokenize.word_tokenize(inputfile)
