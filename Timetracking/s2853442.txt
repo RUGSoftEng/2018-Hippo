@@ -10,3 +10,13 @@ start codding layout for data analysis (fix pos tagging + freq dist)
 start codding layout for data analysis (chunking)
 start codding layout for data analysis (keyword extruction with grammar)
 start codding layout for data analysis (named entity recognition)
+start codding layout for data analysis (chunking)
+start codding layout for data analysis (chunking)
+start codding layout for data analysis (chunking)
+start codding layout for data analysis (json)
+start codding layout for data analysis (elastisearch)
+start codding layout for data analysis (regular expressions)
+start codding layout for data analysis (regular expressions)
+start codding layout for data analysis (regular expressions)
+learn about docker
+learn about docker
