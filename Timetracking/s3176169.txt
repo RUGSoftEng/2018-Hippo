@@ -69,3 +69,79 @@ Added the architecture overview section and extended the data analysis tech stac
 Prepared everything for the end of the second iteration.
 Prepared everything for the end of the second iteration.
 
+Client and team meeting.
+Client and team meeting.
+Client and team meeting.
+Client and team meeting.
+
+Write tasks.
+
+Write overview of server architecture.
+Write overview of server architecture.
+Write overview of server architecture.
+Write atomic tasks with checklists and required information.
+Write atomic tasks with checklists and required information.
+Write atomic tasks with checklists and required information.
+Write atomic tasks with checklists and required information.
+Write overview of server architecture.
+
+Config Docker containers deployment.
+Config Docker containers deployment.
+Config Docker containers deployment.
+
+Work on Ignite data streamer.
+Work on Ignite data streamer.
+Work on data streamer, work related to GitHub repository, organisation.
+Work on data streamer, work related to GitHub repository, organisation.
+
+Setup Docker for Flask and Maven.
+Work on presentation.
+Prepare presentation.
+Prepare presentation.
+Prepare presentation.
+
+Prepare presentation.
+Prepare presentation.
+
+New workflow.
+Team meeting.
+Team meeting.
+
+Work on data streamer.
+Work on data streamer.
+Work on data streamer.
+Work on data streamer.
+Work on data streamer.
+Work on data streamer.
+
+Work on Twitter Streamer API.
+Work on Twitter Streamer API.
+Team meeting.
+Work on Ignite data streamer integration with Twitter.
+Work on Ignite data streamer integration with Twitter.
+Work on Ignite data streamer integration with Twitter.
+Work on Ignite data streamer integration with Twitter.
+Work on Ignite data streamer integration with Twitter.
+Work on Ignite data streamer integration with Twitter.
+Work on Ignite data streamer integration with Twitter.
+Work on Ignite data streamer integration with Twitter.
+Work on Ignite data streamer integration with Twitter.
+Work on Ignite data streamer integration with Twitter.
+Work on Ignite data streamer integration with Twitter.
+
+Work on Ignite data streamer controls.
+Work on Ignite data streamer controls.
+
+Work on Ignite data streamer controls.
+Work on Ignite data streamer controls.
+
+Work on Ignite data streamer controls.
+Work on Ignite data streamer controls.
+Work on Ignite data streamer controls.
+Work on Ignite data streamer controls.
+Work on Ignite data streamer controls.
+Work on Ignite data streamer controls.
+
+Prepare everything for end sprint.
+Prepare everything for end sprint.
+Prepare everything for end sprint.
