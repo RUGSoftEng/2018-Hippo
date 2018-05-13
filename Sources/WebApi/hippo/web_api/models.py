@@ -1,7 +1,7 @@
 from itsdangerous import Serializer, SignatureExpired, BadSignature
 from passlib.hash import pbkdf2_sha256
 
-from hippo.api import db, app
+from hippo.web_api.api import db, app
 
 
 # SQLAlchemy model.
@@ -12,7 +12,8 @@ class User(db.Model):
     email = db.Column(db.String(128), index=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
-    password_hash = db.Column(db.String(128))
+    # TODO: Check which format this should be and what size.
+    password_hash = db.Column(db.Binary(256))
 
     def hash_password(self, password: str):
         self.password_hash = pbkdf2_sha256.hash(password)

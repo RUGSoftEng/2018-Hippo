@@ -6,14 +6,15 @@ from flask_httpauth import HTTPBasicAuth
 
 from elasticsearch import Elasticsearch
 
-from hippo.models import User
+from hippo.web_api.models import User
+from hippo.web_api.config import INFRASTRUCTURE
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
 app = Flask(__name__)
-app.secret_key = ""
+app.secret_key = INFRASTRUCTURE["API_SECRET_KEY"]
 auth = HTTPBasicAuth()
 
 es = Elasticsearch()
@@ -36,7 +37,7 @@ def verify_password(email_or_token, password):
 
 
 @app.route('/api/tweet/<int:tweet_id>', methods=['GET'])
-def tweet(tweet_id: int):
+def get_tweet(tweet_id: int):
     pass
 
 
@@ -56,6 +57,16 @@ def search(terms):
                 results.extend(result)
 
     return jsonify(results)
+
+
+@app.route('/api/collection/<terms>', methods=['GET'])
+def get_collection(terms):
+    pass
+
+
+@app.route('/api/suggestions/<terms>', methods=['GET'])
+def suggestions(terms):
+    pass
 
 
 # '{"email":"idiot@murica.usa", "password":"trump2016", "first_name":"Thierry", "last_name":"Baudet"}'
@@ -97,20 +108,20 @@ def get_auth_token():
     return jsonify({'token': token.decode('ascii')})
 
 
-@app.route('/user/profile')
+@app.route('/api/user/profile')
 @auth.login_required
 def user():
     return jsonify({ 'data': 'Hello, %s!' % g.user.email })
 
 
 # TODO: Is redundant now due to basic/token authentication?
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def login():
     pass
 
 
 # TODO: Is redundant now due to basic/token authentication?
-@app.route('/logout', methods=['GET'])
+@app.route('/api/logout', methods=['GET'])
 def logout():
     pass
 
