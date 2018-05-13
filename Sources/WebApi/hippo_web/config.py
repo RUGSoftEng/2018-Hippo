@@ -1,6 +1,6 @@
 from typing import Dict
 
-INFRASTRUCTURE: Dict[str, str] = {
+infrastructure: Dict[str, str] = {
     "ELASTICSEARCH_SERVER": "localhost",
     "ELASTICSEARCH_USERNAME": "",
     "ELASTICSEARCH_PASSWORD": "",

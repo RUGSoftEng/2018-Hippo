@@ -1,7 +1,7 @@
 from itsdangerous import Serializer, SignatureExpired, BadSignature
 from passlib.hash import pbkdf2_sha256
 
-from hippo.web_api.api import db, app
+from hippo_web import db, app
 
 
 # SQLAlchemy model.

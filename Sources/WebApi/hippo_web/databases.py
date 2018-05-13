@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine
 
-
 def connect_elasticsearch():
     pass
 

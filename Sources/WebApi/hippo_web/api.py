@@ -1,23 +1,9 @@
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 
 from flask import *
-from flask_sqlalchemy import SQLAlchemy
-from flask_httpauth import HTTPBasicAuth
 
-from elasticsearch import Elasticsearch
-
-from hippo.web_api.models import User
-from hippo.web_api.config import INFRASTRUCTURE
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-db = SQLAlchemy(app)
-
-app = Flask(__name__)
-app.secret_key = INFRASTRUCTURE["API_SECRET_KEY"]
-auth = HTTPBasicAuth()
-
-es = Elasticsearch()
+from hippo_web.models import User
+from hippo_web import app, auth, db, es
 
 
 @auth.verify_password
@@ -124,7 +110,3 @@ def login():
 @app.route('/api/logout', methods=['GET'])
 def logout():
     pass
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
