@@ -1,5 +1,7 @@
 from typing import Dict
 
+from hippo_web import app
+
 infrastructure: Dict[str, str] = {
     "ELASTICSEARCH_SERVER": "localhost",
     "ELASTICSEARCH_USERNAME": "",
@@ -10,5 +12,7 @@ infrastructure: Dict[str, str] = {
     "POSTGRESQL_PASSWORD": "",
 
     "API_SERVER": "localhost",
-    "API_SECRET_KEY": "localhost",
+    "API_SECRET_KEY": "",
 }
+
+app.secret_key = infrastructure["API_SECRET_KEY"]
