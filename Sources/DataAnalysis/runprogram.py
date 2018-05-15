@@ -4,7 +4,7 @@ import sys
 
 from data_analysis.streamer import TwitterStreaming
 
-content = ["Trump"]
+content = []
 
 if len(sys.argv) > 1:
     with open(sys.argv[1]) as f:
