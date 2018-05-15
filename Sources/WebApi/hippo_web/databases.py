@@ -1,7 +1,9 @@
+from elasticsearch import Elasticsearch
 from sqlalchemy import create_engine
 
+
 def connect_elasticsearch():
-    pass
+    es = Elasticsearch()
 
 
 def connect_postgresql():
