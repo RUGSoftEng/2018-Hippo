@@ -36,7 +36,7 @@ def search(terms):
     for term in terms:
         print('searched for:', term)
         
-        results = es.search(index="tweet", body={"query": {"match": {"content": term}}})
+        results = es.search(index="tweet", body={"query": {"match": {"content": term}}}, size = 100)
         
         for hit in results['hits']['hits']:
             result_tweets.append(hit['_source'])

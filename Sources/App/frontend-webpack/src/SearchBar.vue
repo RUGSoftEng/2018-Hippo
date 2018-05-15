@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="container center">
     <div class="form-inline">
-      <input class="form-control mr-sm-3" type="text" v-model="searchText" v-on:keyup.  enter="search(searchText)" placeholder="Search for tweets..." aria-label="Search">
+      <input class="form-control mr-sm-3" type="text" v-model="searchText" v-on:keyup.enter="search(searchText)" placeholder="Search for tweets..." aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" v-on:click="search(searchText)">Search</button>
     </div>
     <tweet-list :tweetList="tweetList"></tweet-list>
@@ -19,12 +19,16 @@ export default {
       startIndex: 0,
       endIndex: 9,
       newTweetFactor: 10,
+      newSearch:false
     };
   },
   methods:{
     search: function(term) {
-      let cmp = this
-      axios.get('http://localhost:5000/search/' + term)
+      let cmp = this;
+      this.tweetList =   [];
+      cmp.startIndex = 0;
+      cmp.endIndex = 9;
+      axios.get('http://localhost:5000/api/search/' + term)
         .then(function (response) {
           cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
           cmp.startIndex += cmp.newTweetFactor;
@@ -32,7 +36,6 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
-          cmp.tweetList = [];
        });
     },
     scroll(tweetList){
@@ -41,7 +44,7 @@ export default {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
 
         if (bottomOfWindow) {
-          axios.get('http://localhost:5000/search/' + cmp.searchText)
+          axios.get('http://localhost:5000/api/search/' + cmp.searchText)
             .then(function (response) {
               cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
               cmp.startIndex += cmp.newTweetFactor;
@@ -57,13 +60,6 @@ export default {
   },
   components: {
     'tweet-list': TweetList
-  },
-  watch: {
-    searchText: function () {
-      this.tweetList = [];
-      this.startIndex = 0;
-      this.endIndex = 9;
-    }
   },
   mounted() {
     this.scroll(this.tweetList);
