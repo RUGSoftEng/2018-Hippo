@@ -1,0 +1,7 @@
+passlib
+itsdangerous
+flask
+flask_httpauth
+sqlalchemy
+flask_sqlalchemy
+elasticsearch>=6.0.0,<7.0.0
