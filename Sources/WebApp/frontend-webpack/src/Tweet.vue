@@ -18,16 +18,17 @@ blockquote.twitter-tweet {
   display: inline-block;
   font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
   color: black;
-  font-size: 20px;
-  line-height: 24px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 16px;
   border-color: #00BFFF;
-  border-radius: 10px;
+  border-radius: 5px;
   border-style: solid;
   border-width: 5px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   margin: 10px 5px;
   padding: 16px 16px 16px 16px;
-  width: 468px;
+  max-width: 468px;
   background-color: white;
 }
 

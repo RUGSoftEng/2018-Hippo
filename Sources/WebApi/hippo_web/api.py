@@ -31,19 +31,17 @@ def get_tweet(tweet_id: int):
 @app.route('/api/search/<terms>', methods=['GET'])
 def search(terms):
     terms = terms.split()
-
-    results = [str]
-
+    result_tweets = []
+    
     for term in terms:
-        results = es.search(index="hippo", body={"query": {"match": {"keywords": term}}})
+        print('searched for:', term)
+        
+        results = es.search(index="tweet", body={"query": {"match": {"content": term}}}, size = 100)
+        
         for hit in results['hits']['hits']:
-            result = hit['_source']
-            result['id'] = hit['_id']
-            if result not in results:
-                results.extend(result)
-
-    return jsonify(results)
-
+            result_tweets.append(hit['_source'])
+            
+    return jsonify(result_tweets)
 
 
 @app.route('/api/collection/<terms>', methods=['GET'])

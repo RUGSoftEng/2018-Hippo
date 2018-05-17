@@ -32,6 +32,9 @@ class _TwitterStreamListener(StreamListener):
 
         json_tweet = json.loads(data)
 
+        if ('text' not in json_tweet or json_tweet['lang'] != 'en'):
+            return True
+        
         print(json_tweet["text"])
         tweet = Tweet()
 
@@ -57,4 +60,8 @@ class TwitterStreaming:
         auth.set_access_token(access_token, access_token_secret)
 
         stream = Stream(auth, self.stream_listener)
-        stream.filter(track=keyword_filter)
+        
+        if (not keyword_filter):
+            stream.sample()
+        else:
+            stream.filter(track=keyword_filter)
