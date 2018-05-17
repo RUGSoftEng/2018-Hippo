@@ -27,7 +27,7 @@ export default {
       let cmp = this;
       this.tweetList =   [];
       cmp.startIndex = 0;
-      cmp.endIndex = 9;
+      cmp.endIndex = 9
       axios.get('http://localhost:5000/api/search/' + term)
         .then(function (response) {
           cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
