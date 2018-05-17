@@ -30,17 +30,18 @@ def get_tweet(tweet_id: int):
 # TODO: Finish function.
 @app.route('/api/search/<terms>', methods=['GET'])
 def search(terms):
+    print("GET FUCK THIS")
     terms = terms.split()
     result_tweets = []
-    
+
     for term in terms:
         print('searched for:', term)
-        
+
         results = es.search(index="tweet", body={"query": {"match": {"content": term}}}, size = 100)
-        
+
         for hit in results['hits']['hits']:
             result_tweets.append(hit['_source'])
-            
+
     return jsonify(result_tweets)
 
 
