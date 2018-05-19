@@ -1,7 +1,8 @@
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 
 from flask import *
-
+import elasticsearch_dsl
+import collections
 from hippo_web.models import User
 from hippo_web import app, auth, db, es
 
@@ -27,21 +28,25 @@ def get_tweet(tweet_id: int):
     pass
 
 
-# TODO: Finish function.
 @app.route('/api/search/<terms>', methods=['GET'])
 def search(terms):
-    print("GET FUCK THIS")
-    terms = terms.split()
+    #terms = terms.split()
     result_tweets = []
+    terms_list=terms.split()
+    should = []
+    for term in terms_list:
+        #content->keyw
+        query=elasticsearch_dsl.Q("match", content=term)
+        should.append(query)
 
-    for term in terms:
-        print('searched for:', term)
+    q=elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
+    s=elasticsearch_dsl.Search(using=es, index="tweet").query(q)
 
-        results = es.search(index="tweet", body={"query": {"match": {"content": term}}}, size = 100)
+    results=s.execute()
 
-        for hit in results['hits']['hits']:
-            result_tweets.append(hit['_source'])
-
+    for hit in results:
+        result_tweets.append(hit.content)
+        
     return jsonify(result_tweets)
 
 
@@ -78,10 +83,28 @@ def get_collection(terms):
     for tag in response['aggregations']['per_tag']['buckets']:
         print(tag['key'], tag['max_lines']['value'])
 
-
+#essentially a es search returning the list of keywords
 @app.route('/api/suggestions/<terms>', methods=['GET'])
 def suggestions(terms):
-    pass
+    suggestions=[]
+    terms_list=terms.split()
+    should = []
+    for term in terms_list:
+        query=elasticsearch_dsl.Q("match", keywords=term)
+        should.append(query)
+
+    q=elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
+    s=elasticsearch_dsl.Search(using=es, index="tweet").query(q)
+
+    results=s.execute()
+
+    for hit in results:
+        hit_keywords=hit.keywords
+        for keyword in hit_keywords:
+            if keyword not in terms_list and keyword not in suggestions:
+                suggestions.append(keyword)
+        
+    return jsonify(suggestions)
 
 
 # '{"email":"idiot@murica.usa", "password":"trump2016", "first_name":"Thierry", "last_name":"Baudet"}'
