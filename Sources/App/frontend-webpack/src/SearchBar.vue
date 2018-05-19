@@ -19,16 +19,17 @@ export default {
       startIndex: 0,
       endIndex: 9,
       newTweetFactor: 10,
-      newSearch:false
+      currentlySearchingFor: ''
     };
   },
   methods:{
-    search: function(term) {
+    search: function() {
       let cmp = this;
+      cmp.currentlySearchingFor = cmp.searchText;
       this.tweetList =   [];
       cmp.startIndex = 0;
       cmp.endIndex = 9
-      axios.get('http://localhost:5000/api/search/' + term)
+      axios.get('http://localhost:5000/api/search/' + cmp.searchText)
         .then(function (response) {
           cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
           cmp.startIndex += cmp.newTweetFactor;
@@ -44,7 +45,7 @@ export default {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
 
         if (bottomOfWindow) {
-          axios.get('http://localhost:5000/api/search/' + cmp.searchText)
+          axios.get('http://localhost:5000/api/search/' + cmp.currentlySearchingFor)
             .then(function (response) {
               cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
               cmp.startIndex += cmp.newTweetFactor;
