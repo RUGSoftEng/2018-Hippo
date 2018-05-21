@@ -19,8 +19,15 @@ For detailed explanation on how things work, consult the [docs for vue-loader](h
 
 # Main dependency descriptions and other
 
-The main dependencies used in this project are Vue.js 2 for the javascript framework and
-Bootstrap for the CSS framework. When running the project and opening the website, make sure you have 
+The main dependencies used in this project are: 
+
+npm
+
+Vue.js 2 for the javascript framework
+
+Bootstrap for the CSS framework
+
+When running the project and opening the website, make sure you have 
 cross-origin-resource-sharing enabled. You can get it for chrome here:
 [CORS for chrome](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en)
 
