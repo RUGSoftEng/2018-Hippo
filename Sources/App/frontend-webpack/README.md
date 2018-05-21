@@ -23,6 +23,7 @@ The main dependencies used in this project are Vue.js 2 for the javascript frame
 Bootstrap for the CSS framework. When running the project and opening the website, make sure you have 
 cross-origin-resource-sharing enabled. You can get it for chrome here:
 [CORS for chrome](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en)
+
 And for firefox here:
 [CORS for firefox](https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/)
 
