@@ -29,7 +29,7 @@ def get_tweet(tweet_id: int):
 
 # TODO: Finish function.
 @app.route('/api/search/<terms>', methods=['GET'])
-def search(terms):
+def search(terms: str):
     terms = terms.split()
 
     results = [str]
@@ -48,7 +48,7 @@ def search(terms):
 
 @app.route('/api/collection/<terms>', methods=['GET'])
 def get_collection(terms):
-    response = client.search(
+    response = es.search(
         index="my-index",
         body={
             "query": {
@@ -88,10 +88,10 @@ def suggestions(terms):
 # '{"email":"idiot@murica.usa", "password":"trump2016", "first_name":"Thierry", "last_name":"Baudet"}'
 @app.route('/api/users', methods=['POST'])
 def register():
-    email = request.json.get('email')
-    password = request.json.get('password')
-    first_name = request.json.get('first_name')
-    last_name = request.json.get('last_name')
+    email: str = request.json.get('email')
+    password: str = request.json.get('password')
+    first_name: str = request.json.get('first_name')
+    last_name: str = request.json.get('last_name')
 
     if email is None or password is None or first_name is None or last_name is None:
         abort(400, description="Not enough valid information to finish the registration has been given.")

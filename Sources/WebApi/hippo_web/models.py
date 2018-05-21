@@ -28,7 +28,7 @@ class User(db.Model):
         return serializer.dumps({'id': self.id})
 
     @staticmethod
-    def verify_auth_token(token: str):
+    def verify_auth_token(token: str) -> object:
         serializer = Serializer(app.config['SECRET_KEY'])
 
         try:
