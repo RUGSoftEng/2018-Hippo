@@ -4,7 +4,6 @@ from passlib.hash import pbkdf2_sha256
 from hippo_web import db, app
 
 
-# SQLAlchemy model.
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -12,8 +11,16 @@ class User(db.Model):
     email = db.Column(db.String(128), index=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
+
     # TODO: Check which format this should be and what size.
     password_hash = db.Column(db.Binary(256))
+
+    # If null: opt-out for data collection, record datetime for opt-in.
+    data_collection_consent = db.Column(db.DateTime())
+    marketing_consent = db.Column(db.DateTime())
+
+    birthday = db.Column(db.Date())
+    location_country = db.Column(db.String(3))
 
     def hash_password(self, password: str):
         self.password_hash = pbkdf2_sha256.hash(password)

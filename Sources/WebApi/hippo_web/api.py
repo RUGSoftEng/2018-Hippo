@@ -45,7 +45,6 @@ def search(terms: str):
     return jsonify(results)
 
 
-
 @app.route('/api/collection/<terms>', methods=['GET'])
 def get_collection(terms):
     response = es.search(
@@ -139,4 +138,18 @@ def login():
 # TODO: Is redundant now due to basic/token authentication?
 @app.route('/api/logout', methods=['GET'])
 def logout():
+    pass
+
+
+# TODO: Implement functions for GDPR compliance for production.
+@app.route('/api/user/delete', methods=['POST'])
+@auth.login_required
+def delete_user():
+    db.session.delete(g.user)
+    db.session.commit()
+
+
+# TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)
+@app.route('/api/user/data', methods=['GET'])
+def get_personal_data():
     pass
