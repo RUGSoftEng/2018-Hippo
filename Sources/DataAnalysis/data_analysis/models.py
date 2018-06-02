@@ -1,6 +1,6 @@
 from elasticsearch_dsl import *
 
-import hippo_data_analysis.databases
+import data_analysis.databases
 
 
 class Tweet(DocType):

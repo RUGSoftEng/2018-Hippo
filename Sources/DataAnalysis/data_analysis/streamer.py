@@ -1,8 +1,9 @@
 import json
 
-from elasticsearch_dsl import *
-from elasticsearch_dsl import connections
 from tweepy import *
+
+from data_analysis.models import Tweet
+from data_analysis.nlp import analyse_tweet, match_keywords_filter
 
 consumer_key = "19zbXP0QH2etpYqk1oHwVFRrA"
 consumer_secret = "P4i0N3umEfmxCoseeL10X8EgxWLlc5v59pZRms1EYj5tKJk8Gi"
@@ -10,39 +11,25 @@ consumer_secret = "P4i0N3umEfmxCoseeL10X8EgxWLlc5v59pZRms1EYj5tKJk8Gi"
 access_token = "2813757815-DLqLnonqdGiFM8M6AMLE2fp5fgL7t9VCZlC23z1"
 access_token_secret = "3yBbtW8CICUyS6wjY9ZQPzRTs0yuwynTguvsA2R35ZknW"
 
-connections.create_connection(hosts=['localhost'])
-
-class Tweet(DocType):
-    keywords = Text(analyzer='snowball', fields={'raw': Keyword()})
-    date = Date()
-    content = Text(analyzer='snowball')
-    raw = Text()
-
-    class Meta:
-        index = 'tweet'
-
-    def save(self, ** kwargs):
-        return super(Tweet, self).save(** kwargs)
-
 
 class _TwitterStreamListener(StreamListener):
 
     def on_data(self, data):
-        print(type(data))
-
         json_tweet = json.loads(data)
 
-        if ('text' not in json_tweet or json_tweet['lang'] != 'en'):
-            return True
-        
+        # TODO: Remove in production.
         print(json_tweet["text"])
-        tweet = Tweet()
 
-        tweet.content = json_tweet["text"]
-        tweet.date = json_tweet["created_at"]
-        tweet.raw = data
+        if match_keywords_filter(json_tweet["text"]):
+            tweet = Tweet()
 
-        tweet.save()
+            tweet.content = json_tweet["text"]
+            tweet.date = json_tweet["created_at"]
+            tweet.raw = data
+
+            analyse_tweet(json_tweet["text"])
+
+            tweet.save()
 
         return True
 
@@ -56,12 +43,8 @@ class TwitterStreaming:
         self.stream_listener = _TwitterStreamListener()
 
     def start(self, keyword_filter: [str]):
-        auth = OAuthHandler(consumer_key, consumer_secret)
-        auth.set_access_token(access_token, access_token_secret)
+        authenticator = OAuthHandler(consumer_key, consumer_secret)
+        authenticator.set_access_token(access_token, access_token_secret)
 
-        stream = Stream(auth, self.stream_listener)
-        
-        if (not keyword_filter):
-            stream.sample()
-        else:
-            stream.filter(track=keyword_filter)
+        stream = Stream(authenticator, self.stream_listener)
+        stream.filter(track=keyword_filter)

@@ -1,4 +1,5 @@
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
+from datetime import datetime
 
 from flask import *
 
@@ -113,6 +114,9 @@ def register():
     password: str = request.json.get('password')
     first_name: str = request.json.get('first_name')
     last_name: str = request.json.get('last_name')
+    birthday: str = request.json.get('birthday')
+    data_collection_consent: bool = request.json.get('birthday')
+    marketing_consent: bool = request.json.get('birthday')
 
     if email is None or password is None or first_name is None or last_name is None:
         abort(400, description="Not enough valid information to finish the registration has been given.")
@@ -131,6 +135,12 @@ def register():
 
     user.first_name = first_name
     user.last_name = last_name
+
+    if data_collection_consent is True:
+        user.data_collection_consent = datetime.utcnow()
+
+    if marketing_consent is True:
+        user.marketing_consent = datetime.utcnow()
 
     db.session.add(user)
     db.session.commit()

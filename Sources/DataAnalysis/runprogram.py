@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sys
 
-from hippo_data_analysis.streamer import TwitterStreaming
+from data_analysis.streamer import TwitterStreaming
 
 content = []
 
