@@ -5,7 +5,6 @@ from flask import *
 from hippo_web.models import User
 from hippo_web import app, auth, db, es
 
-
 @auth.verify_password
 def verify_password(email_or_token, password):
     # First try to authenticate by token, otherwise try with username/password.
@@ -43,10 +42,13 @@ def search(terms: str):
                 results.extend(result)
 
     return jsonify(results)
-
+    
+@app.route('/api/view', methods=['POST'])
 def view():
     pass
+    
 
+@app.route('', methods=['POST'])
 def like():
     pass
 

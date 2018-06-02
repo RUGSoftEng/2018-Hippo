@@ -46,8 +46,9 @@ class User(db.Model):
     birthday = db.Column(db.Date())
     location_country = db.Column(db.String(3))
 
+    # TODO: calculate the age of the user
     def get_age(self):
-        pass
+        return 0
     
     def hash_password(self, password: str):
         self.password_hash = pbkdf2_sha256.hash(password)
