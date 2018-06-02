@@ -1,8 +1,7 @@
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 
 from flask import *
-import elasticsearch_dsl
-import collections
+
 from hippo_web.models import User
 from hippo_web import app, auth, db, es
 
@@ -46,13 +45,13 @@ def search(terms):
 
     for hit in results:
         result_tweets.append(hit.content)
-        
+
     return jsonify(result_tweets)
 
 
 @app.route('/api/collection/<terms>', methods=['GET'])
 def get_collection(terms):
-    response = client.search(
+    response = es.search(
         index="my-index",
         body={
             "query": {
@@ -83,7 +82,7 @@ def get_collection(terms):
     for tag in response['aggregations']['per_tag']['buckets']:
         print(tag['key'], tag['max_lines']['value'])
 
-#essentially a es search returning the list of keywords
+
 @app.route('/api/suggestions/<terms>', methods=['GET'])
 def suggestions(terms):
     suggestions=[]
@@ -103,17 +102,17 @@ def suggestions(terms):
         for keyword in hit_keywords:
             if keyword not in terms_list and keyword not in suggestions:
                 suggestions.append(keyword)
-        
+
     return jsonify(suggestions)
 
 
 # '{"email":"idiot@murica.usa", "password":"trump2016", "first_name":"Thierry", "last_name":"Baudet"}'
 @app.route('/api/users', methods=['POST'])
 def register():
-    email = request.json.get('email')
-    password = request.json.get('password')
-    first_name = request.json.get('first_name')
-    last_name = request.json.get('last_name')
+    email: str = request.json.get('email')
+    password: str = request.json.get('password')
+    first_name: str = request.json.get('first_name')
+    last_name: str = request.json.get('last_name')
 
     if email is None or password is None or first_name is None or last_name is None:
         abort(400, description="Not enough valid information to finish the registration has been given.")
@@ -161,4 +160,18 @@ def login():
 # TODO: Is redundant now due to basic/token authentication?
 @app.route('/api/logout', methods=['GET'])
 def logout():
+    pass
+
+
+# TODO: Implement functions for GDPR compliance for production.
+@app.route('/api/user/delete', methods=['POST'])
+@auth.login_required
+def delete_user():
+    db.session.delete(g.user)
+    db.session.commit()
+
+
+# TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)
+@app.route('/api/user/data', methods=['GET'])
+def get_personal_data():
     pass
