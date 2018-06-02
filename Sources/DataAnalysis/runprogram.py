@@ -1,8 +1,7 @@
 #!/usr/bin/python
-
 import sys
 
-from data_analysis.streamer import TwitterStreaming
+from hippo_data_analysis.streamer import TwitterStreaming
 
 content = []
 
@@ -14,5 +13,5 @@ if len(sys.argv) > 1:
         content = [x.strip() for x in content]
 
 # Run
-i = TwitterStreaming()
-i.start(keyword_filter=content)
+streamer = TwitterStreaming()
+streamer.start(keyword_filter=content)

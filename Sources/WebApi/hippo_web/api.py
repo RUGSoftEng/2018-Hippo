@@ -27,27 +27,31 @@ def get_tweet(tweet_id: int):
     pass
 
 
-# TODO: Finish function.
 @app.route('/api/search/<terms>', methods=['GET'])
 def search(terms):
-    print("GET FUCK THIS")
-    terms = terms.split()
+    #terms = terms.split()
     result_tweets = []
+    terms_list=terms.split()
+    should = []
+    for term in terms_list:
+        #content->keyw
+        query=elasticsearch_dsl.Q("match", content=term)
+        should.append(query)
 
-    for term in terms:
-        print('searched for:', term)
+    q=elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
+    s=elasticsearch_dsl.Search(using=es, index="tweet").query(q)
 
-        results = es.search(index="tweet", body={"query": {"match": {"content": term}}}, size = 100)
+    results=s.execute()
 
-        for hit in results['hits']['hits']:
-            result_tweets.append(hit['_source'])
+    for hit in results:
+        result_tweets.append(hit.content)
 
     return jsonify(result_tweets)
 
 
 @app.route('/api/collection/<terms>', methods=['GET'])
 def get_collection(terms):
-    response = client.search(
+    response = es.search(
         index="my-index",
         body={
             "query": {
@@ -81,16 +85,34 @@ def get_collection(terms):
 
 @app.route('/api/suggestions/<terms>', methods=['GET'])
 def suggestions(terms):
-    pass
+    suggestions=[]
+    terms_list=terms.split()
+    should = []
+    for term in terms_list:
+        query=elasticsearch_dsl.Q("match", keywords=term)
+        should.append(query)
+
+    q=elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
+    s=elasticsearch_dsl.Search(using=es, index="tweet").query(q)
+
+    results=s.execute()
+
+    for hit in results:
+        hit_keywords=hit.keywords
+        for keyword in hit_keywords:
+            if keyword not in terms_list and keyword not in suggestions:
+                suggestions.append(keyword)
+
+    return jsonify(suggestions)
 
 
 # '{"email":"idiot@murica.usa", "password":"trump2016", "first_name":"Thierry", "last_name":"Baudet"}'
 @app.route('/api/users', methods=['POST'])
 def register():
-    email = request.json.get('email')
-    password = request.json.get('password')
-    first_name = request.json.get('first_name')
-    last_name = request.json.get('last_name')
+    email: str = request.json.get('email')
+    password: str = request.json.get('password')
+    first_name: str = request.json.get('first_name')
+    last_name: str = request.json.get('last_name')
 
     if email is None or password is None or first_name is None or last_name is None:
         abort(400, description="Not enough valid information to finish the registration has been given.")
@@ -138,4 +160,18 @@ def login():
 # TODO: Is redundant now due to basic/token authentication?
 @app.route('/api/logout', methods=['GET'])
 def logout():
+    pass
+
+
+# TODO: Implement functions for GDPR compliance for production.
+@app.route('/api/user/delete', methods=['POST'])
+@auth.login_required
+def delete_user():
+    db.session.delete(g.user)
+    db.session.commit()
+
+
+# TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)
+@app.route('/api/user/data', methods=['GET'])
+def get_personal_data():
     pass
