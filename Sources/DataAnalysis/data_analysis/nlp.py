@@ -5,6 +5,8 @@ from nltk import ne_chunk, pos_tag, word_tokenize, wordnet
 
 from vocabulary.vocabulary import Vocabulary
 
+from acora import AcoraBuilder
+
 nltk.download("punkt")
 nltk.download("averaged_perceptron_tagger")
 nltk.download("wordnet")
@@ -41,8 +43,31 @@ def get_continuous_chunks(text: str):
 def analyse_tweet(tweet: str) -> ([str], [str]):
     keywords = get_keywords(tweet)
     synonyms = get_synonyms(keywords)
-    
+
     return keywords, synonyms
+
+
+def create_string_match_engine(keywords: [str]):
+    builder = AcoraBuilder()
+    builder.update(keywords)
+    builder.ignore_case = True
+
+    return builder.build()
+
+
+#
+idea_filter = create_string_match_engine(["", ""]) # want
+product_filter = create_string_match_engine(["", ""]) # app startup
+
+
+def match_keywords_filter(text: str) -> bool:
+    a = idea_filter.findall(text)
+    b = product_filter.findall(text)
+
+    if a.count() < 1 or b.count() < 1:
+        return False
+
+    return True
 
 
 def get_keywords(text: str) -> [str]:
@@ -73,7 +98,7 @@ def get_keywords(text: str) -> [str]:
 
 def get_synonyms(keywords: [str]) -> [str]:
     synonyms = []
-    
+
     for keyword in keywords:
         synonym = Vocabulary.synonym(keyword, format="list")
         if synonym is not False:
@@ -90,5 +115,5 @@ def get_synonyms_wordnet(keywords: [str]) -> [str]:
         for synonym in wordnet.synsets(keyword):
             if synonym.name() not in synonyms:
                 synonyms.append(synonym.name())
-    
+
     return synonyms

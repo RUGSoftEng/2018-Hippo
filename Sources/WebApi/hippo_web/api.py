@@ -28,22 +28,26 @@ def get_tweet(tweet_id: int):
     pass
 
 
-# TODO: Finish function.
 @app.route('/api/search/<terms>', methods=['GET'])
-def search(terms: str):
-    terms = terms.split()
+def search(terms):
+    #terms = terms.split()
+    result_tweets = []
+    terms_list=terms.split()
+    should = []
+    for term in terms_list:
+        #content->keyw
+        query=elasticsearch_dsl.Q("match", content=term)
+        should.append(query)
 
-    results = [str]
+    q=elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
+    s=elasticsearch_dsl.Search(using=es, index="tweet").query(q)
 
-    for term in terms:
-        results = es.search(index="hippo", body={"query": {"match": {"keywords": term}}})
-        for hit in results['hits']['hits']:
-            result = hit['_source']
-            result['id'] = hit['_id']
-            if result not in results:
-                results.extend(result)
+    results=s.execute()
 
-    return jsonify(results)
+    for hit in results:
+        result_tweets.append(hit.content)
+
+    return jsonify(result_tweets)
 
 
 @app.route('/api/collection/<terms>', methods=['GET'])
@@ -82,7 +86,25 @@ def get_collection(terms):
 
 @app.route('/api/suggestions/<terms>', methods=['GET'])
 def suggestions(terms):
-    pass
+    suggestions=[]
+    terms_list=terms.split()
+    should = []
+    for term in terms_list:
+        query=elasticsearch_dsl.Q("match", keywords=term)
+        should.append(query)
+
+    q=elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
+    s=elasticsearch_dsl.Search(using=es, index="tweet").query(q)
+
+    results=s.execute()
+
+    for hit in results:
+        hit_keywords=hit.keywords
+        for keyword in hit_keywords:
+            if keyword not in terms_list and keyword not in suggestions:
+                suggestions.append(keyword)
+
+    return jsonify(suggestions)
 
 
 # '{"email":"idiot@murica.usa", "password":"trump2016", "first_name":"Thierry", "last_name":"Baudet"}'

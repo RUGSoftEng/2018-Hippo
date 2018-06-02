@@ -2,8 +2,8 @@ import json
 
 from tweepy import *
 
-from hippo_data_analysis.models import Tweet
-from hippo_data_analysis.nlp import analyse_tweet
+from data_analysis.models import Tweet
+from data_analysis.nlp import analyse_tweet, match_keywords_filter
 
 consumer_key = "19zbXP0QH2etpYqk1oHwVFRrA"
 consumer_secret = "P4i0N3umEfmxCoseeL10X8EgxWLlc5v59pZRms1EYj5tKJk8Gi"
@@ -20,15 +20,16 @@ class _TwitterStreamListener(StreamListener):
         # TODO: Remove in production.
         print(json_tweet["text"])
 
-        tweet = Tweet()
+        if match_keywords_filter(json_tweet["text"]):
+            tweet = Tweet()
 
-        tweet.content = json_tweet["text"]
-        tweet.date = json_tweet["created_at"]
-        tweet.raw = data
+            tweet.content = json_tweet["text"]
+            tweet.date = json_tweet["created_at"]
+            tweet.raw = data
 
-        analyse_tweet(json_tweet["text"])
+            analyse_tweet(json_tweet["text"])
 
-        tweet.save()
+            tweet.save()
 
         return True
 
