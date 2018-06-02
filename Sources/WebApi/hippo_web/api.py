@@ -44,6 +44,11 @@ def search(terms: str):
 
     return jsonify(results)
 
+def view():
+    pass
+
+def like():
+    pass
 
 @app.route('/api/collection/<terms>', methods=['GET'])
 def get_collection(terms):

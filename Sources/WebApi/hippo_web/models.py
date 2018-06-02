@@ -3,6 +3,7 @@ from passlib.hash import pbkdf2_sha256
 
 from hippo_web import db, app
 
+from elasticsearch_dsl import *
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -59,3 +60,17 @@ class Tweet(object):
     def __init__(self):
         self.sender: str = None
         self.content: str = None
+
+# Demographics model.
+
+class Demographic(DocType):
+    count = Integer()
+    age_group = Text()
+    country = Text()
+        
+class Demographics(DocType):
+    keywords = Text()
+    data = Nested(Demographic)
+
+    class Meta:
+        index = 'demographics'
