@@ -6,6 +6,8 @@ from flask import *
 from hippo_web.models import User
 from hippo_web import app, auth, db, es
 
+import elasticsearch_dsl
+
 
 @auth.verify_password
 def verify_password(email_or_token, password):
