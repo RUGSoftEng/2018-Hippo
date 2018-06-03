@@ -47,7 +47,7 @@ def search(terms):
     results=s.execute()
 
     for hit in results:
-        result_tweets.append(hit.content)
+        result_tweets.append(hit)
 
     return jsonify(result_tweets)
 
