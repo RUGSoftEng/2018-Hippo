@@ -45,14 +45,17 @@ def search(terms):
 
     results=s.execute()
 
+    #alternative: for field in hit ...
     for hit in results:
-        result_tweets.append(hit.content)
+        result_tweets.extend(hit._d_)
         
     return jsonify(result_tweets)
 
 #generate (most general) synonym from terms/keyw
 @app.route('/api/category/<terms>', methods=['GET'])
 def pick_category(terms):
+    #placeholder - compiled (manual) categories from tweets on ES
+    options=["app","music", "pets","school","food","flowers","car","art","fashion","bar","hotel","friends","business"]
     categories = {}
     categ=terms.split()
 
@@ -65,13 +68,15 @@ def pick_category(terms):
     res=json.loads(res)
     categ.extend(res)
 
-    #calculate score - TODO
+    #TODO - scoring
     for category in categ:
-        score=category.meta.score
-        if category not in categories:
-            categories[category]=score
-        else:
-            categories[category]+=score
+        for option in options:
+            if category==option: 
+                score=1
+                if category not in categories:
+                    categories[category]=score
+                else:
+                    categories[category]+=score
 
     #sort
     if len(categories) > 0:
