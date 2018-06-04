@@ -4,9 +4,12 @@ from datetime import datetime
 from flask import *
 import elasticsearch_dsl
 import collections
+from collections import defaultdict
 from operator import itemgetter
 from hippo_web.models import User
 from hippo_web import app, auth, db, es
+
+excluded_keywords = { "https", "i" }
 
 @auth.verify_password
 def verify_password(email_or_token, password):
@@ -28,10 +31,7 @@ def verify_password(email_or_token, password):
 def get_tweet(tweet_id: int):
     pass
 
-
-@app.route('/api/search/<terms>', methods=['GET'])
-def search(terms):
-    #terms = terms.split()
+def search_by_keywords(terms):
     result_tweets = []
     terms_list=terms.split()
     should = []
@@ -43,14 +43,47 @@ def search(terms):
     q = elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
     s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
 
-    results = s[:100]
-    
-    #alternative: for field in hit ...
-    for hit in results:
-        result_tweets.append(hit._d_)
+    results = s[:250]
         
-    return jsonify(result_tweets)
+    return [hit._d_ for hit in results]
 
+@app.route('/api/search/<terms>', methods=['GET'])
+def search(terms):
+    return jsonify(search_by_keywords())
+
+@app.route('/api/search_category/<terms>')
+def search_category(terms):
+    results = []
+
+    # query and add the terms themselfs
+    query_results = search_by_keywords(terms)
+    results.append({'keywords': terms.split(), 'tweets': query_results})
+    
+    # make a keyword frequency dictionary
+    keyword_frequencies = defaultdict(int)
+    for hit in query_results:
+        keywords = hit["keywords"]
+        
+        for keyword in keywords:
+            if keyword not in excluded_keywords and keyword not in terms:
+                keyword_frequencies[keyword] += 1
+            
+    
+    keyword_frequencies = dict(keyword_frequencies)
+    keyword_frequencies = sorted(keyword_frequencies.items(), key=itemgetter(1))
+    
+    # add the 4 most common keywords
+    for i in range(0,5):
+        keyword = keyword_frequencies[-(i + 1)][0]
+        new_terms = terms + " " + keyword
+        new_results = search_by_keywords(terms + " " + keyword)
+        results.append({'keywords': new_terms.split(), 'tweets': new_results})
+        
+    
+    return jsonify(results)
+
+
+#generate (most general) synonym from terms/keyw
 #generate (most general) synonym from terms/keyw
 @app.route('/api/category/<terms>', methods=['GET'])
 def pick_category(terms):
@@ -63,11 +96,11 @@ def pick_category(terms):
     #analyzer=elasticsearch_dsl.analyzer('analyzer', tokenizer=elasticsearch_dsl.tokenizer('tokenizer', 'tweet'), filter=['lowercase'])
     #res=analyzer.execute()
     
-    #synonyms/suggestions
-    res=suggestions(terms)
+    #keywords
+    res=search(terms)
     res=json.loads(res)
-    categ.extend(res)
-
+    for tweet in res:
+        categ.extend(tweet.keywords)
     #TODO - scoring
     for category in categ:
         for option in options:
@@ -77,7 +110,6 @@ def pick_category(terms):
                     categories[category]=score
                 else:
                     categories[category]+=score
-
     #sort
     if len(categories) > 0:
         sortedCategories = sorted(categories.items(), key=itemgetter(1), reverse=True)
@@ -88,36 +120,40 @@ def pick_category(terms):
 #add individual tweet to a category idx
 def add_to_category(tweet):
     #pick general categ
-    category=pick_category(tweet)
+    category=pick_category(tweet.keywords)
 
     #create idx for categ if non existent
-    if not(elasticsearch_dsl.Index.exists(category)):
+    if not(elasticsearch_dsl.Index(category).exists()):
         index=elasticsearch_dsl.Index(category)
         index.create()
     
     #add results to categ idx
-    elasticsearch_dsl.DocType(tweet).init(index=category, using=es)
+    elasticsearch_dsl.DocType('Tweet').update(using=es, index=category, content=tweet)
+    es.update(index=category, id=tweet.id, doc_type="my_type",body={tweet})
     return 0
 
 #returns tweets in a category index
 @app.route('/api/collection/<terms>', methods=['GET'])
-def get_collection(category):
+def get_collection(terms):
     result_tweets=[]
     
+    category=pick_category(terms)
+
     #if term doesn't match existing try synonym of categ
-    if not(elasticsearch_dsl.Index.exists(category)):
-        category=pick_category(category)
+    if elasticsearch_dsl.Index(category).exists():
+        #get + return idx content
+        s=elasticsearch_dsl.Search(using=es, index=category)
+        results=s.execute()
 
-    #get + return idx content
-    s=elasticsearch_dsl.Search(using=es, index=category)
-    results=s.execute()
-
-    for hit in results:
-        result_tweets.append(hit.content)
+        for hit in results:
+            result_tweets.append(hit._d_)
         
-    return jsonify(result_tweets)
+        return jsonify(result_tweets)
 
-
+    else: 
+        return 0
+    
+    
 @app.route('/api/suggestions/<terms>', methods=['GET'])
 def suggestions(terms):
     suggestions=[]
