@@ -1,6 +1,7 @@
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 from datetime import datetime
 
+import elasticsearch_dsl
 from flask import *
 
 from hippo_web.models import User
