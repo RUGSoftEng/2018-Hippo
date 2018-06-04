@@ -17,6 +17,12 @@ class _TwitterStreamListener(StreamListener):
     def on_data(self, data):
         json_tweet = json.loads(data)
 
+        if ("text" not in json_tweet):
+            return True
+        
+        if ("retweeted_status" in json_tweet):
+            return True
+        
         # TODO: Remove in production.
         print(json_tweet["text"])
 
@@ -27,8 +33,10 @@ class _TwitterStreamListener(StreamListener):
             tweet.date = json_tweet["created_at"]
             tweet.raw = data
 
-            analyse_tweet(json_tweet["text"])
+            keywords, synonyms = analyse_tweet(json_tweet["text"])
 
+            tweet.keywords = keywords;
+            
             tweet.save()
 
         return True

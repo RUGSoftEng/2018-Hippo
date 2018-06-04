@@ -5,6 +5,7 @@ import data_analysis.databases
 
 class Tweet(DocType):
     keywords = Text(analyzer='snowball', fields={'raw': Keyword()})
+    synonyms = Text()
     date = Date()
     content = Text(analyzer='snowball')
     raw = Text()

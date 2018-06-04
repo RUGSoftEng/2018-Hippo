@@ -42,9 +42,9 @@ def get_continuous_chunks(text: str):
 
 def analyse_tweet(tweet: str) -> ([str], [str]):
     keywords = get_keywords(tweet)
-    synonyms = get_synonyms(keywords)
+    # synonyms = get_synonyms(keywords)
 
-    return keywords, synonyms
+    return keywords, []
 
 
 def create_string_match_engine(keywords: [str]):
@@ -56,16 +56,16 @@ def create_string_match_engine(keywords: [str]):
 
 
 #
-idea_filter = create_string_match_engine(["", ""]) # want
-product_filter = create_string_match_engine(["", ""]) # app startup
+# idea_filter = create_string_match_engine(["", ""]) # want
+# product_filter = create_string_match_engine(["", ""]) # app startup
 
 
 def match_keywords_filter(text: str) -> bool:
-    a = idea_filter.findall(text)
-    b = product_filter.findall(text)
+    # a = idea_filter.findall(text)
+    # b = product_filter.findall(text)
 
-    if a.count() < 1 or b.count() < 1:
-        return False
+    # if a.count() < 1 or b.count() < 1:
+    #    return False
 
     return True
 
