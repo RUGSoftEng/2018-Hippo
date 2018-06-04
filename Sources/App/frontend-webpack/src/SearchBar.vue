@@ -77,7 +77,6 @@ export default {
 <style scoped lang="css">
   .search-box
   {
-    border: #D1D1D1 solid 0.1em;
     padding-left: 2.75em;
     width: 30em !important;
     background-image: url("../src/assets/icons8-search.svg");
@@ -93,8 +92,6 @@ export default {
   }
 
 .btn {
-  border-color: #00BFFF /*rgb(255, 125, 125)*/ !important;
-  background-color: inherit !important;
   border-radius: 0.5rem
 }
 

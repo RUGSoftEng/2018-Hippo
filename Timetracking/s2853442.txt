@@ -2,7 +2,10 @@ Work on important functional requirements
 Research data analysis
 Research natural language processing
 Research python nltk 
+<<<<<<< HEAD
 weekly group meeting
+=======
+>>>>>>> master
 Work on descriptions for the data analysis technology stack
 start codding layout for data analysis (tokenization)
 start codding layout for data analysis (cleaning punctuation)
@@ -21,11 +24,15 @@ start codding layout for data analysis (regular expressions)
 start codding layout for data analysis (regular expressions)
 learn about docker
 learn about docker
+<<<<<<< HEAD
 weekly group meeting
+=======
+>>>>>>> master
 prepare for the presentation
 prepare for the presentation
 prepare for the presentation
 prepare for the presentation
+<<<<<<< HEAD
 presentation itself
 weekly group meeting
 cleaning up
@@ -51,3 +58,6 @@ group work
 group work
 group work
 group work
+=======
+presentation itself
+>>>>>>> master
