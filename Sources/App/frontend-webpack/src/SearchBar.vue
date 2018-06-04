@@ -4,33 +4,35 @@
       <input class="form-control mr-sm-3" type="text" v-model="searchText" v-on:keyup.enter="search(searchText)" placeholder="Search for tweets..." aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" v-on:click="search(searchText)">Search</button>
     </div>
-    <tweet-list :tweetList="tweetList"></tweet-list>
+    <router-view :tweetList="tweetList"></router-view>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import TweetList from './TweetList.vue';
+import TweetCollectionsList from './TweetCollectionsList.vue';
 export default {
   data() {
     return {
       searchText: '',
       tweetList: [],
       startIndex: 0,
-      endIndex: 9,
+      endIndex: 10,
       newTweetFactor: 10,
       currentlySearchingFor: ''
     };
   },
   methods:{
     search: function() {
+      this.$router.push('/');
       let cmp = this;
       cmp.currentlySearchingFor = cmp.searchText;
       this.tweetList =   [];
       cmp.startIndex = 0;
-      cmp.endIndex = 9
-      axios.get('http://localhost:5000/api/search/' + cmp.searchText)
+      cmp.endIndex = 10;
+      axios.get('http://localhost:5000/api/search/' + cmp.searchText, {'timeout': 5000})
         .then(function (response) {
+          console.log(response.data.length)
           cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
           cmp.startIndex += cmp.newTweetFactor;
           cmp.endIndex += cmp.newTweetFactor;
@@ -42,11 +44,13 @@ export default {
     scroll(tweetList){
       let cmp = this
       window.onscroll = ()  => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-
+        let bottomOfWindow = (document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 0.6 &&
+                              document.documentElement.scrollTop + window.innerHeight < document.documentElement.offsetHeight + 0.6);
+        console.log(document.documentElement.scrollTop + window.innerHeight, document.documentElement.offsetHeight);
         if (bottomOfWindow) {
-          axios.get('http://localhost:5000/api/search/' + cmp.currentlySearchingFor)
+          axios.get('http://localhost:5000/api/search/' + cmp.currentlySearchingFor, {'timeout': 5000})
             .then(function (response) {
+              console.log("Trying to scroll");
               cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
               cmp.startIndex += cmp.newTweetFactor;
               cmp.endIndex += cmp.newTweetFactor;
@@ -60,7 +64,7 @@ export default {
     }
   },
   components: {
-    'tweet-list': TweetList
+    'tweet-collections-list': TweetCollectionsList
   },
   mounted() {
     this.scroll(this.tweetList);
@@ -97,7 +101,7 @@ export default {
 
 .form-inline {
   margin: 0 auto;
-  width:293px;
+  width:295px;
 }
 
 .form-control {
