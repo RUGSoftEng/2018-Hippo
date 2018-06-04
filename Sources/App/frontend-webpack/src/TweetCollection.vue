@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
    <blockquote class=twitter-tweet>
-     <h1 class="category">Sports, football, app</h1>
+     <h1 class="category">{{searchTerms.split(/[ ,]+/).join(', ')}}</h1>
      <div class="line"></div>
      <div class="padding-bottom">{{tweetData}}</div>
      <div>
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  props: ['tweetData'],
+  props: ['tweetData', 'searchTerms'],
   methods: {
     switchToTweets: function() {
       console.log("Switching to tweets...")

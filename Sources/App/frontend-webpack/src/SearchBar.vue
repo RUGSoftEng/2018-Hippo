@@ -4,13 +4,15 @@
       <input class="form-control mr-sm-3" type="text" v-model="searchText" v-on:keyup.enter="search(searchText)" placeholder="Search for tweets..." aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" v-on:click="search(searchText)">Search</button>
     </div>
-    <router-view :tweetList="tweetList"></router-view>
+    <tweet-collections-list v-if="$route.name == 'TCL'" :tweetList="tweetList" :searchTerms="currentlySearchingFor"></tweet-collections-list>
+    <tweet-list v-if="$route.name == 'TL'" :tweetList="tweetList"></tweet-list>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import TweetCollectionsList from './TweetCollectionsList.vue';
+import TweetList from './TweetList.vue';
 export default {
   data() {
     return {
@@ -64,7 +66,8 @@ export default {
     }
   },
   components: {
-    'tweet-collections-list': TweetCollectionsList
+    'tweet-collections-list': TweetCollectionsList,
+    'tweet-list': TweetList
   },
   mounted() {
     this.scroll(this.tweetList);

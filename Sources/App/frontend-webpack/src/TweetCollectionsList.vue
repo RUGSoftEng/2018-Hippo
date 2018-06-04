@@ -1,7 +1,7 @@
 <template lang="html">
   <section class="py-5">
     <div class="container text-center">
-      <tweetCollection v-for="t in tweetList" :tweetData="t.content"></tweetCollection>
+      <tweetCollection v-if="tweetList.length > 0" :tweetData="tweetList[0].content" :searchTerms="searchTerms"></tweetCollection>
     </div>
   </section>
 </template>
@@ -9,10 +9,7 @@
 <script>
 import TweetCollection from './TweetCollection.vue';
 export default {
-  props: ['tweetList'],
-  data: {
-    tweet: "yes"
-  },
+  props: ['tweetList', "searchTerms"],
   components: {
     'tweetCollection': TweetCollection
   }
