@@ -22,12 +22,18 @@ Researching Flask
 Meeting, working on architecture document
 Meeting, working on architecture document
 Meeting, working on architecture document
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 Backend group meeting
 Backend group meeting
 Backend group meeting
 Backend group meeting
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 Backend group meeting with front end
 Backend group meeting with front end
 Backend group meeting with front end
@@ -35,6 +41,7 @@ Backend group meeting with front end
 Backend group meeting with front end
 Backend group meeting with front end
 Backend group meeting with front end
+<<<<<<< HEAD
 
 Reflection Meeting
 Reflection Meeting
@@ -134,3 +141,5 @@ Group meeting / working on backend, streaming, keywords, etc
 Group meeting / working on backend, streaming, keywords, etc
 
 --- UP TO DATE: june 4nd, 2018 --- 
+=======
+>>>>>>> master

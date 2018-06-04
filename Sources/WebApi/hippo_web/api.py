@@ -1,4 +1,5 @@
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
+<<<<<<< HEAD
 from datetime import datetime
 
 from flask import *
@@ -10,6 +11,14 @@ from hippo_web.models import User
 from hippo_web import app, auth, db, es
 
 excluded_keywords = { "https", "i" }
+=======
+
+from flask import *
+
+from hippo_web.models import User
+from hippo_web import app, auth, db, es
+
+>>>>>>> master
 
 @auth.verify_password
 def verify_password(email_or_token, password):
@@ -31,6 +40,7 @@ def verify_password(email_or_token, password):
 def get_tweet(tweet_id: int):
     pass
 
+<<<<<<< HEAD
 def search_by_keywords(terms):
     result_tweets = []
     terms_list=terms.split()
@@ -176,11 +186,70 @@ def suggestions(terms):
                 suggestions.append(keyword)
 
     return jsonify(suggestions)
+=======
+
+# TODO: Finish function.
+@app.route('/api/search/<terms>', methods=['GET'])
+def search(terms):
+    print("GET FUCK THIS")
+    terms = terms.split()
+    result_tweets = []
+
+    for term in terms:
+        print('searched for:', term)
+
+        results = es.search(index="tweet", body={"query": {"match": {"content": term}}}, size = 100)
+
+        for hit in results['hits']['hits']:
+            result_tweets.append(hit['_source'])
+
+    return jsonify(result_tweets)
+
+
+@app.route('/api/collection/<terms>', methods=['GET'])
+def get_collection(terms):
+    response = client.search(
+        index="my-index",
+        body={
+            "query": {
+                "filtered": {
+                    "query": {
+                        "bool": {
+                            "must": [{"match": {"title": "python"}}],
+                            "must_not": [{"match": {"description": "beta"}}]
+                        }
+                    },
+                    "filter": {"term": {"category": "search"}}
+                }
+            },
+            "aggs": {
+                "per_tag": {
+                    "terms": {"field": "tags"},
+                    "aggs": {
+                        "max_lines": {"max": {"field": "lines"}}
+                    }
+                }
+            }
+        }
+    )
+
+    for hit in response['hits']['hits']:
+        print(hit['_score'], hit['_source']['title'])
+
+    for tag in response['aggregations']['per_tag']['buckets']:
+        print(tag['key'], tag['max_lines']['value'])
+
+
+@app.route('/api/suggestions/<terms>', methods=['GET'])
+def suggestions(terms):
+    pass
+>>>>>>> master
 
 
 # '{"email":"idiot@murica.usa", "password":"trump2016", "first_name":"Thierry", "last_name":"Baudet"}'
 @app.route('/api/users', methods=['POST'])
 def register():
+<<<<<<< HEAD
     email: str = request.json.get('email')
     password: str = request.json.get('password')
     first_name: str = request.json.get('first_name')
@@ -188,6 +257,12 @@ def register():
     birthday: str = request.json.get('birthday')
     data_collection_consent: bool = request.json.get('birthday')
     marketing_consent: bool = request.json.get('birthday')
+=======
+    email = request.json.get('email')
+    password = request.json.get('password')
+    first_name = request.json.get('first_name')
+    last_name = request.json.get('last_name')
+>>>>>>> master
 
     if email is None or password is None or first_name is None or last_name is None:
         abort(400, description="Not enough valid information to finish the registration has been given.")
@@ -207,12 +282,15 @@ def register():
     user.first_name = first_name
     user.last_name = last_name
 
+<<<<<<< HEAD
     if data_collection_consent is True:
         user.data_collection_consent = datetime.utcnow()
 
     if marketing_consent is True:
         user.marketing_consent = datetime.utcnow()
 
+=======
+>>>>>>> master
     db.session.add(user)
     db.session.commit()
 
@@ -242,6 +320,7 @@ def login():
 @app.route('/api/logout', methods=['GET'])
 def logout():
     pass
+<<<<<<< HEAD
 
 
 # TODO: Implement functions for GDPR compliance for production.
@@ -256,3 +335,5 @@ def delete_user():
 @app.route('/api/user/data', methods=['GET'])
 def get_personal_data():
     pass
+=======
+>>>>>>> master
