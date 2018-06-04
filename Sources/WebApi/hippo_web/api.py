@@ -50,7 +50,7 @@ def search_by_keywords(terms):
 
 @app.route('/api/search/<terms>', methods=['GET'])
 def search(terms):
-    return jsonify(search_by_keywords())
+    return jsonify(search_by_keywords(terms))
 
 @app.route('/api/search_category/<terms>')
 def search_category(terms):
@@ -63,7 +63,10 @@ def search_category(terms):
     # make a keyword frequency dictionary
     keyword_frequencies = defaultdict(int)
     for hit in query_results:
-        keywords = hit["keywords"]
+        if "keywords" in hit:
+            keywords = hit["keywords"]
+        else:
+            keywords = hit["content"].split()
         
         for keyword in keywords:
             if keyword not in excluded_keywords and keyword not in terms:
