@@ -4,7 +4,10 @@ from passlib.hash import pbkdf2_sha256
 from hippo_web import db, app
 
 
+<<<<<<< HEAD
+=======
 # SQLAlchemy model.
+>>>>>>> master
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -12,9 +15,23 @@ class User(db.Model):
     email = db.Column(db.String(128), index=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
+<<<<<<< HEAD
+
     # TODO: Check which format this should be and what size.
     password_hash = db.Column(db.Binary(256))
 
+    # If null: opt-out for data collection, record datetime for opt-in.
+    data_collection_consent = db.Column(db.DateTime())
+    marketing_consent = db.Column(db.DateTime())
+
+    birthday = db.Column(db.Date())
+    location_country = db.Column(db.String(3))
+
+=======
+    # TODO: Check which format this should be and what size.
+    password_hash = db.Column(db.Binary(256))
+
+>>>>>>> master
     def hash_password(self, password: str):
         self.password_hash = pbkdf2_sha256.hash(password)
 
@@ -28,7 +45,11 @@ class User(db.Model):
         return serializer.dumps({'id': self.id})
 
     @staticmethod
+<<<<<<< HEAD
+    def verify_auth_token(token: str) -> object:
+=======
     def verify_auth_token(token: str):
+>>>>>>> master
         serializer = Serializer(app.config['SECRET_KEY'])
 
         try:

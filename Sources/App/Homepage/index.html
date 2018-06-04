@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Hippo</title>
+
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts -->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
+
+
+    <!-- Custom styles -->
+    <link href="css/new-age.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Hippo</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+          <!--  <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#download">Download</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#features">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#signup">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="../Login/index.html">Log in</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header class="masthead">
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-lg-7 my-auto">
+            <div class="header-content mx-auto">
+              <h1 class="mb-5">Hippo is an app that will help you develop and validate startup ideas!</h1>
+              <a href="#signup" class="btn btn-outline btn-xl js-scroll-trigger">Start Now for Free!</a>
+            </div>
+          </div>
+          <div class="col-lg-5 my-auto">
+                <div class="device">
+                    <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
+                    <!-- <img src="img/Hippo_Logo_2.png" class="img-fluid" alt=""> -->
+                    <img src="img/Hippo_Logo_1.png" class="img-fluid" alt="">
+                </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-heading text-center">
+          <h2>Check out what you can do with Hippo!</h2>
+          <hr>
+        </div>
+        <div class="row" >
+          <div class="col-lg-8 my-auto" style="width:800px; margin:0 auto;">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="feature-item">
+                    <i class="icon-social-twitter text-primary"></i>
+                    <h3>Tweets</h3>
+                    <p class="text-muted">Look at startup ideas from Twitter!</p>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="feature-item">
+                    <i class="icon-like text-primary"></i>
+                    <h3>React</h3>
+                    <p class="text-muted">React to ideas you like or dislike!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="feature-item">
+                    <i class="icon-present text-primary"></i>
+                    <h3>Free to Use</h3>
+                    <p class="text-muted">No payment required for membership!</p>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="feature-item">
+                    <i class="icon-screen-smartphone text-primary"></i>
+                    <h3>Cross-platform</h3>
+                    <p class="text-muted">Use Hippo on any device!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="download bg-primary text-center" id="signup">
+      <div class="container">
+        <div class="section-heading text-center">
+          <h2>Sign up now!</h2>
+          <!-- <p class="text-muted">Check out what you can do with Hippo!</p> -->
+          <hr>
+        </div>
+        <div id="login-box">
+          <div class="left">
+            <div class = "trow">
+              <div class = "cell">
+                <label for="firstname">First Name</label>
+                <input type="text" name="firstname" placeholder = "First Name" required/>
+              </div>
+              <div class = "cell">
+                <label for="lastname">Last Name</label>
+                <input type="text" name="lastname" placeholder = "Last Name" required/>
+              </div>
+            </div>
+            <div class = "trow">
+              <div class = "cell">
+                <label for="country">Country</label>
+                <select class="custom-select d-block w-100" id="country" required>
+                  <option value="">Choose...</option>
+                  <option>United States</option>
+                  <option>Netherlands</option>
+                </select>
+              </div>
+              <div class = "cell">
+                <label for="zip">ZIP</label>
+                <input type="text" name="zip" placeholder="ZIP code" />
+              </div>
+            </div>
+            <div class = "trow">
+              <div class = "cell">
+                <label for="username">Username</label>
+                <input type="text" name="username" placeholder="Username" />
+              </div>
+              <div class = "cell">
+                <label for="email">E-mail address</label>
+                <input type="text" name="email" placeholder="E-mail" />
+              </div>
+            </div>
+            <div class = "trow">
+              <div class = "cell">
+                <label for="email">Password</label>
+                <input type="password" name="password" placeholder="Password" />
+              </div>
+              <div class = "cell">
+                <label for="email">Confirm Password</label>
+                <input type="password" name="password2" placeholder="Confirm password" />
+              </div>
+            </div>
+            <div class = "signupbutton">
+                <input type="submit" name="signup_submit" value="Sign me up"/>
+            </div>
+
+          </div>
+
+          <!-- <div class="right">
+            <span class="loginwith">Sign in with<br />social network</span>
+
+            <button class="social-signin facebook">Log in with facebook</button>
+            <button class="social-signin twitter">Log in with Twitter</button>
+            <button class="social-signin google">Log in with Google+</button>
+          </div>
+          <div class="or">OR</div> -->
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>&copy; Hippo 2018. All Rights Reserved.</p>
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <a href="#">Privacy</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">Terms</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">FAQ</a>
+          </li>
+        </ul>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/new-age.min.js"></script>
+
+  </body>
+
+</html>

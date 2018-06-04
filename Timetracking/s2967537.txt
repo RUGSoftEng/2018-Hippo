@@ -1,24 +1,39 @@
 Meeting with TA
 Meeting with client
 Meeting with client
+
 Working on requirements document
+
 Meeting with Client
 Meeting
+
 Researching apache ignite
+
 Meeting
 Meeting
+
 Meeting with TA
+
 Researching Python
 Researching Flask
 Researching Flask
 Researching Flask
+
 Meeting, working on architecture document
 Meeting, working on architecture document
 Meeting, working on architecture document
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
 Backend group meeting
 Backend group meeting
 Backend group meeting
 Backend group meeting
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
 Backend group meeting with front end
 Backend group meeting with front end
 Backend group meeting with front end
@@ -26,3 +41,105 @@ Backend group meeting with front end
 Backend group meeting with front end
 Backend group meeting with front end
 Backend group meeting with front end
+<<<<<<< HEAD
+
+Reflection Meeting
+Reflection Meeting
+Reflection Meeting
+
+Revival Meeting
+Revival Meeting
+Revival Meeting
+
+Working on Backend and Datastreamer with group
+Working on Backend and Datastreamer with group
+Working on Backend and Datastreamer with group
+Working on Backend and Datastreamer with group
+Working on Backend and Datastreamer with group
+Working on Backend and Datastreamer with group
+Working on Backend and Datastreamer with group
+Working on Backend and Datastreamer with group
+Working on Backend and Datastreamer with group
+
+Working on Datastreamer / Researching Twitter Streaming API
+Working on Datastreamer / Researching Twitter Streaming API
+Working on Datastreamer / Researching Twitter Streaming API
+Working on Datastreamer / Researching Twitter Streaming API
+
+Trying to install Docker
+Trying to install Docker
+Trying to install Docker
+Trying to install Docker
+
+Group meeting
+Group meeting
+Group meeting
+
+Group meeting
+Group meeting
+Group meeting
+Group meeting
+
+Group meeting
+Group meeting
+Merging front-end and Back-end
+Merging front-end and Back-end
+Merging front-end and Back-end
+Merging front-end and Back-end
+
+Working on back-end
+Working on back-end
+Working on back-end
+
+Giving Demos
+Giving Demos
+
+Working on back-end
+Working on back-end
+
+Customer meeting
+Group meeting
+Group meeting
+Group meeting
+
+Trying Unit Testing
+Trying Unit Testing
+Trying Unit Testing
+Trying Unit Testing
+Trying Unit Testing
+
+Group meeting
+Group meeting
+
+Working on back-end and twitter keywords
+Working on back-end and twitter keywords
+Working on back-end and twitter keywords
+Working on back-end and twitter keywords
+
+Group meeting
+Group meeting
+
+Working on demographics
+Working on demographics
+Working on demographics
+Working on demographics
+Working on demographics
+Working on demographics
+Working on demographics
+
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+Group meeting / working on backend, streaming, keywords, etc
+
+--- UP TO DATE: june 4nd, 2018 --- 
+=======
+>>>>>>> master

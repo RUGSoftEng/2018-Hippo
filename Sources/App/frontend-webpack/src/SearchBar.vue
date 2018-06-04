@@ -1,15 +1,16 @@
 <template lang="html">
   <div class="container center">
-    <div class="form-inline">
-      <input class="form-control mr-sm-3" type="text" v-model="searchText" v-on:keyup.enter="search(searchText)" placeholder="Search for tweets..." aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" v-on:click="search(searchText)">Search</button>
+    <div class="search-view form-inline">
+      <input class="form-control mr-sm-3 search-box" type="text" v-model="searchText" v-on:keyup.enter="search(searchText)" placeholder="Search for tweets..." aria-label="Search">
     </div>
-    <tweet-list :tweetList="tweetList"></tweet-list>
+    <tweet-collections-list v-if="$route.name == 'TCL'" :tweetList="tweetList" :searchTerms="currentlySearchingFor"></tweet-collections-list>
+    <tweet-list v-if="$route.name == 'TL'" :tweetList="tweetList"></tweet-list>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import TweetCollectionsList from './TweetCollectionsList.vue';
 import TweetList from './TweetList.vue';
 export default {
   data() {
@@ -24,13 +25,15 @@ export default {
   },
   methods:{
     search: function() {
+      this.$router.push('/');
       let cmp = this;
       cmp.currentlySearchingFor = cmp.searchText;
       this.tweetList =   [];
       cmp.startIndex = 0;
-      cmp.endIndex = 9
-      axios.get('http://localhost:5000/api/search/' + cmp.searchText)
+      cmp.endIndex = 10;
+      axios.get('http://localhost:5000/api/search/' + cmp.searchText, {'timeout': 5000})
         .then(function (response) {
+          console.log(response.data)
           cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
           cmp.startIndex += cmp.newTweetFactor;
           cmp.endIndex += cmp.newTweetFactor;
@@ -42,11 +45,13 @@ export default {
     scroll(tweetList){
       let cmp = this
       window.onscroll = ()  => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-
+        let bottomOfWindow = (document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 0.6 &&
+                              document.documentElement.scrollTop + window.innerHeight < document.documentElement.offsetHeight + 0.6);
+        console.log(document.documentElement.scrollTop + window.innerHeight, document.documentElement.offsetHeight);
         if (bottomOfWindow) {
-          axios.get('http://localhost:5000/api/search/' + cmp.currentlySearchingFor)
+          axios.get('http://localhost:5000/api/search/' + cmp.currentlySearchingFor, {'timeout': 5000})
             .then(function (response) {
+              console.log("Trying to scroll");
               cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
               cmp.startIndex += cmp.newTweetFactor;
               cmp.endIndex += cmp.newTweetFactor;
@@ -60,6 +65,7 @@ export default {
     }
   },
   components: {
+    'tweet-collections-list': TweetCollectionsList,
     'tweet-list': TweetList
   },
   mounted() {
@@ -69,9 +75,23 @@ export default {
 </script>
 
 <style scoped lang="css">
+  .search-box
+  {
+    padding-left: 2.75em;
+    width: 30em !important;
+    background-image: url("../src/assets/icons8-search.svg");
+    background-repeat: no-repeat;
+    background-position: 0.8em 0.35em;
+    background-size: 1.5em;
+  }
+
+  .search-view
+  {
+      padding-top: 100px;
+      padding-bottom: 100px;
+  }
+
 .btn {
-  border-color: #00BFFF /*rgb(255, 125, 125)*/ !important;
-  background-color: inherit !important;
   border-radius: 0.5rem
 }
 
@@ -97,7 +117,7 @@ export default {
 
 .form-inline {
   margin: 0 auto;
-  width:293px;
+  width: 30em;
 }
 
 .form-control {
@@ -105,6 +125,6 @@ export default {
 }
 
 .form-control:focus {
-  box-shadow: 0 0 0 0.5rem rgba(0, 191, 255, 0.25);
+    box-shadow: 0 0 5px rgb(209, 209, 209);
 }
 </style>

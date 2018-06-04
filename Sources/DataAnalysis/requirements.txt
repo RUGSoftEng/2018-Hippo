@@ -1,4 +1,12 @@
+<<<<<<< HEAD
+vocabulary
+=======
+>>>>>>> master
 nltk
 tweepy
 elasticsearch
 elasticsearch_dsl
+<<<<<<< HEAD
+acora
+=======
+>>>>>>> master
