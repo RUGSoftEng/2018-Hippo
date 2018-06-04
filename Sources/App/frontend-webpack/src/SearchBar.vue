@@ -1,8 +1,7 @@
 <template lang="html">
   <div class="container center">
-    <div class="form-inline">
-      <input class="form-control mr-sm-3" type="text" v-model="searchText" v-on:keyup.enter="search(searchText)" placeholder="Search for tweets..." aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" v-on:click="search(searchText)">Search</button>
+    <div class="search-view form-inline">
+      <input class="form-control mr-sm-3 search-box" type="text" v-model="searchText" v-on:keyup.enter="search(searchText)" placeholder="Search for tweets..." aria-label="Search">
     </div>
     <tweet-collections-list v-if="$route.name == 'TCL'" :tweetList="tweetList" :searchTerms="currentlySearchingFor"></tweet-collections-list>
     <tweet-list v-if="$route.name == 'TL'" :tweetList="tweetList"></tweet-list>
@@ -19,7 +18,7 @@ export default {
       searchText: '',
       tweetList: [],
       startIndex: 0,
-      endIndex: 10,
+      endIndex: 9,
       newTweetFactor: 10,
       currentlySearchingFor: ''
     };
@@ -76,6 +75,23 @@ export default {
 </script>
 
 <style scoped lang="css">
+  .search-box
+  {
+    border: #D1D1D1 solid 0.1em;
+    padding-left: 2.75em;
+    width: 30em !important;
+    background-image: url("../src/assets/icons8-search.svg");
+    background-repeat: no-repeat;
+    background-position: 0.8em 0.35em;
+    background-size: 1.5em;
+  }
+
+  .search-view
+  {
+      padding-top: 100px;
+      padding-bottom: 100px;
+  }
+
 .btn {
   border-color: #00BFFF /*rgb(255, 125, 125)*/ !important;
   background-color: inherit !important;
@@ -104,7 +120,7 @@ export default {
 
 .form-inline {
   margin: 0 auto;
-  width:295px;
+  width: 30em;
 }
 
 .form-control {
@@ -112,6 +128,6 @@ export default {
 }
 
 .form-control:focus {
-  box-shadow: 0 0 0 0.5rem rgba(0, 191, 255, 0.25);
+    box-shadow: 0 0 5px rgb(209, 209, 209);
 }
 </style>
