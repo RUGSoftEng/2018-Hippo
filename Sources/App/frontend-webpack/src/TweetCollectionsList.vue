@@ -1,7 +1,7 @@
 <template lang="html">
   <section class="py-5">
     <div class="container text-center">
-      <tweetCollection v-for="t in tweetList" :tweetData="t"></tweetCollection>
+      <tweetCollection v-for="t in tweetList" :tweetData="t.content"></tweetCollection>
     </div>
   </section>
 </template>

@@ -32,7 +32,7 @@ export default {
       cmp.endIndex = 10;
       axios.get('http://localhost:5000/api/search/' + cmp.searchText, {'timeout': 5000})
         .then(function (response) {
-          console.log(response.data.length)
+          console.log(response.data)
           cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
           cmp.startIndex += cmp.newTweetFactor;
           cmp.endIndex += cmp.newTweetFactor;
