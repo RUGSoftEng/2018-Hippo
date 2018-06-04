@@ -40,6 +40,7 @@ def search_by_keywords(terms):
         query=elasticsearch_dsl.Q("match", content=term)
         should.append(query)
 
+
     q = elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
     s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
 

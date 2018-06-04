@@ -2,10 +2,9 @@
   <div id="app">
     <nav-bar></nav-bar>
     <!-- <logo-poster></logo-poster> -->
-    <center>
-      <h1 id="tweetTitle">Tweets</h1>
+    <div>
       <search-bar></search-bar>
-    </center>
+    </div>
   </div>
 </template>
 
@@ -24,14 +23,11 @@ export default {
 
 <style>
   body {
+    font-family: 'Lato', 'Helvetica Neue', 'Arial', sans-serif !important;
     position: relative;
     width: 100%;
-    padding-top: 150px;
-    padding-bottom: 100px;
     color: white;
-    background: url("../src/assets/bg-pattern.png"), #7b4397;
-    background: url("../src/assets/bg-pattern.png"), -webkit-linear-gradient(to left, #7b4397, #dc2430);
-    background: url("../src/assets/bg-pattern.png"), linear-gradient(to left, #7b4397, #dc2430);
+    background: url("../src/assets/bg-pattern.png"), linear-gradient(to left, #F0F8FF, #C3E4FF);
   }
   #tweetTitle {
     color: white;
