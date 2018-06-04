@@ -40,14 +40,14 @@ def search(terms):
         query=elasticsearch_dsl.Q("match", content=term)
         should.append(query)
 
-    q=elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
-    s=elasticsearch_dsl.Search(using=es, index="tweet").query(q)
+    q = elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
+    s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
 
-    results=s.execute()
-
+    results = s[:100]
+    
     #alternative: for field in hit ...
     for hit in results:
-        result_tweets.extend(hit._d_)
+        result_tweets.append(hit._d_)
         
     return jsonify(result_tweets)
 
