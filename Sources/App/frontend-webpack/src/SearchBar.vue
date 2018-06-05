@@ -29,7 +29,7 @@ export default {
   methods:{
     search: function() {
       this.categories = [];
-      this.$router.push('/');
+      this.$router.push('/app');
       let cmp = this;
       cmp.currentlySearchingFor = cmp.searchText;
       this.tweetList =   [];
