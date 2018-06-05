@@ -143,11 +143,11 @@
               </div>
               <div class = "cell">
                 <label for="email">Confirm Password</label>
-                <input type="password" name="password2" placeholder="Confirm password" />
+                <input type="password" name="password2" v-model="confirmedPassword" placeholder="Confirm password" />
               </div>
             </div>
             <div class = "signupbutton">
-                <input type="submit" name="signup_submit" value="Sign me up"/>
+                <input type="submit" name="signup_submit" @click="register()" value="Sign me up"/>
             </div>
 
           </div>
@@ -184,21 +184,32 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
-      username: ""
-      password: ""
+      username: "",
+      password: "",
+      confirmedPassword: ""
     }
-  }
+  },
 
-  register() {
-
-  }
   methods:{
     goToLogin() {
       this.$router.push('/login');
-    }
+    },
+
+    register() {
+        let cmp = this;
+        console.log(cmp.username, cmp.password)
+        axios.get("http://localhost:5000/api/quick/register?username=" + cmp.username + "&password=" + cmp.password).then(function (response){
+          console.log(response.data);
+          if(response.data.ok === "true"){
+            cmp.$router.push("/login");
+          }
+        });
+
+    },
   }
 }
 </script>
