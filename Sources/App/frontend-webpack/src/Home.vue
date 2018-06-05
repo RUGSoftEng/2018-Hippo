@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse text-center" id="navbarsExample11">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link hippo-nav-link" href="#login">Search</a>
+              <a class="nav-link hippo-nav-link" @click="goToLogin()">Search</a>
             </li>
             <li class="nav-item">
               <a class="nav-link hippo-nav-link" href="http://www.juicystory.nl/blog/">Blog</a>
@@ -18,7 +18,7 @@
               <a class="nav-link hippo-nav-link" href="mailto:hippo@juicystory.nl">Support</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" @click="goToLogin()">Log in</a>
+              <a class="nav-link hippo-nav-link" @click="goToLogin()">Log in</a>
             </li>
           </ul>
         </div>
@@ -199,6 +199,7 @@ export default {
     color: white !important;
     margin-left: 30px;
     margin-right: 30px;
+      cursor: pointer;
   }
 
 .signup-form {

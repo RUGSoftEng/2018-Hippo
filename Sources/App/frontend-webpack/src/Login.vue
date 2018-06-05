@@ -12,9 +12,7 @@
             <input type="checkbox" value="remember-me"> Remember me
           </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" href="../MainApp/Sources/App/frontend-webpack/index.html">Sign in</button>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" @click="login()" href="../MainApp/Sources/App/frontend-webpack/index.html">Sign in</button>
-        <p class="mt-5 mb-3">&copy; 2017-2018</p>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" @click="login()">Sign in</button>
       </form>
   </div>
 </template>
