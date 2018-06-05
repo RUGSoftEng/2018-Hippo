@@ -114,17 +114,17 @@
             <div class="row" style="margin-bottom: 15px;">
               <div class = "col-12">
                 <label class="signup-form-label" for="email">E-mail address</label>
-                <input class="signup-form-field" type="text" name="email" placeholder="E-mail" />
+                <input class="signup-form-field" v-model="username" type="text" name="email" placeholder="E-mail" />
               </div>
             </div>
             <div class = "row" style="margin-bottom: 15px;">
               <div class = "col-6">
                 <label class="signup-form-label" for="email">Password</label>
-                <input class="signup-form-field" type="password" name="password" placeholder="Password" />
+                <input class="signup-form-field" v-model="password" type="password" name="password" placeholder="Password" />
               </div>
               <div class = "col-6">
                 <label class="signup-form-label" for="email">Confirm Password</label>
-                <input class="signup-form-field" type="password" name="password2" placeholder="Confirm password" />
+                <input class="signup-form-field" v-model="confirmedPassword" type="password" name="password2" placeholder="Confirm password" />
               </div>
             </div>
             <div>
