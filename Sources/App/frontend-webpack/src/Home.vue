@@ -20,7 +20,7 @@
               <a class="nav-link js-scroll-trigger" href="#signup">Sign Up</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="../Login/index.html">Log in</a>
+              <a class="nav-link js-scroll-trigger" @click="goToLogin()">Log in</a>
             </li>
           </ul>
         </div>
@@ -185,6 +185,11 @@
 
 <script>
 export default {
+  methods:{
+    goToLogin() {
+      this.$router.push('/login');
+    }
+  }
 }
 </script>
 
