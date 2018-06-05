@@ -10,7 +10,7 @@
       <div class="collapse navbar-collapse text-center" id="navbarsExample11">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link hippo-nav-link" @click="goToLogin()">Search</a>
+            <a class="nav-link hippo-nav-link" @click="backToHome()">Search</a>
           </li>
           <li class="nav-item">
             <a class="nav-link hippo-nav-link" href="http://www.juicystory.nl/blog/">Blog</a>
@@ -36,7 +36,7 @@ export default {
       this.$router.push("/");
     },
     backToHome() {
-      this.$router.push({name: 'TCLclear', params: {id: 'true'}});
+      this.$router.push('/app');
     }
 
   }

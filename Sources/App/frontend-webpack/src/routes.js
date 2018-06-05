@@ -9,6 +9,5 @@ export const routes = [
   { path: '/', name: 'H', component: Home},
   { path: '/login', name: 'L', component: Login},
   { path: '/app/tweetlist:id', name: 'TL', component: TweetList },
-  { path: '/app/:bool', name:'TCLclear', component: TweetCollectionList }
 
 ];
