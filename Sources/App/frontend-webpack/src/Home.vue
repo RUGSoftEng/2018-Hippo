@@ -30,8 +30,8 @@
         <div class="row h-100">
           <div class="col-lg-7 my-auto">
             <div class="header-content mx-auto">
-              <h1 class="mb-5 home-header">Welcome to Hippo</h1>
-              <h3 class="home-header" style="margin-bottom: 75px;">Develop and validate startup ideas.</h3>
+              <h1 class="mb-5 home-header" style="color: white !important;">Welcome to Hippo</h1>
+              <h3 class="home-header" style="margin-bottom: 75px; color: white !important;">Develop and validate startup ideas.</h3>
               <a href="#signup" class="btn btn-outline btn-xl js-scroll-trigger signup-link">Sign up now</a>
             </div>
           </div>
@@ -49,7 +49,7 @@
     <section class="features" id="features">
       <div class="container">
         <div class="section-heading text-center">
-          <h2>Check out what you can do with Hippo!</h2>
+          <h2 style="color: black !important;">Check out what you can do with Hippo!</h2>
           <hr>
         </div>
         <div class="row" >
@@ -59,14 +59,14 @@
                 <div class="col-lg-6">
                   <div class="feature-item">
                     <i class="icon-present text-primary"></i>
-                    <h3>Explore ideas</h3>
+                    <h3 style="color: black !important;">Explore ideas</h3>
                     <p class="text-muted quote-feature" style="line-height: 1.6; margin-top: 25px;">Hippo allows you to explore ideas that are based on data from Twitter.</p>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="feature-item">
                     <i class="icon-screen-smartphone text-primary"></i>
-                    <h3>Search in our data</h3>
+                    <h3 style="color: black !important;">Search in our data</h3>
                     <p class="text-muted quote-feature" style="line-height: 1.6; margin-top: 25px;">You can not only search for ideas, but also access the actual tweets behind them.</p>
                   </div>
                 </div>
@@ -75,14 +75,14 @@
                 <div class="col-lg-6">
                   <div class="feature-item">
                     <i class="icon-social-twitter text-primary"></i>
-                    <h3>Data from Twitter</h3>
+                    <h3 style="color: black !important;">Data from Twitter</h3>
                     <p class="text-muted quote-feature" style="line-height: 1.6; margin-top: 25px;">Giving you access to the minds of more than 300 million active users.</p>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="feature-item">
                     <i class="icon-like text-primary"></i>
-                    <h3>Interact with ideas</h3>
+                    <h3 style="color: black !important;">Interact with ideas</h3>
                     <p class="text-muted quote-feature" style="line-height: 1.6; margin-top: 25px;">You can like and save ideas, or talk to other users about them.</p>
                   </div>
                 </div>
@@ -95,7 +95,7 @@
     <section class="download bg-primary text-center" id="signup">
       <div class="container">
         <div class="section-heading text-center">
-          <h2 class="home-header">Sign up now!</h2>
+          <h2 class="home-header" style="color: black !important;">Sign up now!</h2>
           <!-- <p class="text-muted">Check out what you can do with Hippo!</p> -->
           <hr>
         </div>
@@ -103,27 +103,27 @@
           <div class="container-fluid">
             <div class="row" style="margin-bottom: 15px;">
               <div class="col-6">
-                <label class="signup-form-label" for="firstname">First Name</label>
+                <label class="signup-form-label" style="color: black !important;" for="firstname">First Name</label>
                 <input class="signup-form-field" type="text" name="firstname" placeholder = "First Name" required/>
               </div>
               <div class = "col-6">
-                <label class="signup-form-label" for="lastname">Last Name</label>
+                <label class="signup-form-label" style="color: black !important;" for="lastname">Last Name</label>
                 <input class="signup-form-field" type="text" name="lastname" placeholder = "Last Name" required/>
               </div>
             </div>
             <div class="row" style="margin-bottom: 15px;">
               <div class = "col-12">
-                <label class="signup-form-label" for="email">E-mail address</label>
+                <label class="signup-form-label" style="color: black !important;" for="email">E-mail address</label>
                 <input class="signup-form-field" v-model="username" type="text" name="email" placeholder="E-mail" />
               </div>
             </div>
             <div class = "row" style="margin-bottom: 15px;">
               <div class = "col-6">
-                <label class="signup-form-label" for="email">Password</label>
+                <label class="signup-form-label"  style="color: black !important;" for="email">Password</label>
                 <input class="signup-form-field" v-model="password" type="password" name="password" placeholder="Password" />
               </div>
               <div class = "col-6">
-                <label class="signup-form-label" for="email">Confirm Password</label>
+                <label class="signup-form-label" style="color: black !important;" for="email">Confirm Password</label>
                 <input class="signup-form-field" v-model="confirmedPassword" type="password" name="password2" placeholder="Confirm password" />
               </div>
             </div>
@@ -189,6 +189,14 @@ export default {
 
 <style lang="css">
 
+  body {
+    font-family: 'Lato', 'Helvetica Neue', 'Arial', sans-serif !important;
+    position: relative;
+    width: 100%;
+    color: white !important;
+    background: url("../src/assets/bg-pattern.png"), linear-gradient(to left, #F0F8FF, #C3E4FF);
+  }
+  
   .hippo-navbar
   {
     background-color: rgba(0, 0, 0, 0.75) !important;
