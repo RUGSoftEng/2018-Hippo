@@ -27,7 +27,7 @@ export default {
       this.$router.push("/");
     },
     backToHome() {
-      this.$router.push("/app");
+      this.$router.push({name: 'TCLclear', params: {id: 'true'}});
     }
 
   }

@@ -85,8 +85,13 @@ export default {
       console.log(to, from);
       console.log(to.params.id);
       if(to.params.id != undefined){
-        this.tweetList = this.categories[to.params.id].tweets;
-        this.displayTweets();
+        if(to.params.id == 6){
+          this.categories = [];
+          this.$router.push('/app');
+        } else {
+          this.tweetList = this.categories[to.params.id].tweets;
+          this.displayTweets();
+        }
       } else {
         this.tweetList = [];
         this.currentTweetsDisplayed = [];
