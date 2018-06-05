@@ -109,6 +109,7 @@ export default {
     padding-left: 2.75em;
     width: 30em !important;
     background: url("../src/assets/icons8-search.svg") no-repeat 0.8em 0.35em;
+    background-color: white;
     background-size: 1.5em;
   }
 

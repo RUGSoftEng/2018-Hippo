@@ -32,7 +32,6 @@ export default {
 <style scoped lang="css">
     .collection-button {
         border-color: #00BFFF /*rgb(255, 125, 125)*/ !important;
-        background-color: inherit !important;
         border-radius: 0.5rem
     }
 

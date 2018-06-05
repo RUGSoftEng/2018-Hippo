@@ -128,7 +128,7 @@
               </div>
             </div>
             <div>
-                <input class="btn btn-lg btn-primary" style="width: 300px; margin-top: 25px;" type="submit" name="signup_submit" value="Sign up"/>
+                <input class="btn btn-lg btn-primary" style="width: 300px; margin-top: 25px;" @click="register()" v-on:keyup.enter="register()" type="submit" name="signup_submit" value="Sign up"/>
             </div>
           </div>
         </div>
@@ -234,6 +234,7 @@ hr {
   font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
   font-weight: 200;
   letter-spacing: 1px;
+  color:black !important;
 }
 
 .quote-feature {
