@@ -74,10 +74,17 @@ export default {
   border-bottom-left-radius: 0;
 }
 
+.h3 {
+  color: black;
+}
+
 .form-signin input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
+.checkbox {
+  color: black;
+}
 </style>

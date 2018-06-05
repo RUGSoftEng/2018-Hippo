@@ -177,6 +177,8 @@ export default {
           console.log(response.data);
           if(response.data.ok === "true"){
             cmp.$router.push("/login");
+          } else {
+            alert("Something went wrong. User may already exist with these details.")
           }
         });
 
