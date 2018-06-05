@@ -196,7 +196,7 @@ export default {
     color: white !important;
     background: url("../src/assets/bg-pattern.png"), linear-gradient(to left, #F0F8FF, #C3E4FF);
   }
-  
+
   .hippo-navbar
   {
     background-color: rgba(0, 0, 0, 0.75) !important;
