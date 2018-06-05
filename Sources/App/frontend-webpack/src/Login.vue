@@ -2,14 +2,14 @@
   <div class="text-center">
     <form class="form-signin">
         <img style="height: 100px; margin-bottom: 20px;" src="../src/assets/Logo-black.svg">
-        <h1 class="h3 mb-3 font-weight-normal" style="font-family: Catamaran,Helvetica,Arial,sans-serif;">Sign in</h1>
+        <h1 class="h3 mb-3 font-weight-normal" style="color: black !important; font-family: Catamaran,Helvetica,Arial,sans-serif;">Sign in</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" v-model="username" class="form-control" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" v-model="password" class="form-control" placeholder="Password" required>
         <div class="checkbox mb-3">
           <label>
-            <input type="checkbox" value="remember-me"> Remember me
+            <input type="checkbox" style="color: black !important;" value="remember-me"> Remember me
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit" @click="login()" v-on:keyup.enter="login()">Sign in</button>
@@ -28,23 +28,21 @@ export default {
   },
   methods: {
     login() {
-        let cmp = this;
-        console.log(cmp.username, cmp.password)
-        axios.get("http://localhost:5000/api/quick/login?username=" + cmp.username + "&password=" + cmp.password).then(function (response){
-          console.log(response.data);
-          if(response.data.ok === "true"){
-            cmp.$router.push("/app");
-          } else {
-            alert("Username and password combination does not exist!");
-          }
-        });
-
+        this.$router.push("/app");
     },
   }
 }
 </script>
 
 <style lang="css">
+
+    body {
+        font-family: 'Lato', 'Helvetica Neue', 'Arial', sans-serif !important;
+        position: relative;
+        width: 100%;
+
+        background: url("../src/assets/bg-pattern.png"), linear-gradient(to left, #F0F8FF, #C3E4FF);
+    }
 
 .form-signin {
   width: 100%;

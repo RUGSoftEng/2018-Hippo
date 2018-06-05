@@ -10,6 +10,15 @@
       <div class="collapse navbar-collapse text-center" id="navbarsExample11">
         <ul class="navbar-nav">
           <li class="nav-item">
+            <a class="nav-link hippo-nav-link" @click="goToLogin()">Search</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hippo-nav-link" href="http://www.juicystory.nl/blog/">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hippo-nav-link" href="mailto:hippo@juicystory.nl">Support</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link hippo-nav-link" @click="logout()">Logout</a>
           </li>
         </ul>
