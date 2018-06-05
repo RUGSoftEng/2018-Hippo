@@ -20,7 +20,7 @@ blockquote.twitter-tweet {
   color: black;
   font-size: 20px;
   line-height: 24px;
-  border-color: #00BFFF;
+  border-color: rgba(255,0,0,0.75);
   border-radius: 10px;
   border-style: solid;
   border-width: 5px;

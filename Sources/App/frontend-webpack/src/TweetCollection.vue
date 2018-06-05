@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
    <blockquote class=twitter-tweet>
-     <h1 class="category">{{searchTerms.split(/[ ,]+/).join(', ')}}</h1>
+     <h1 class="category">{{searchTerms}}</h1>
      <div class="line"></div>
      <div class="padding-bottom">{{tweetData}}</div>
      <div>
@@ -18,11 +18,11 @@
 
 <script>
 export default {
-  props: ['tweetData', 'searchTerms'],
+  props: ['tweetData', 'searchTerms', 'categoryNum'],
   methods: {
     switchToTweets: function() {
       console.log("Switching to tweets...")
-      this.$router.push("/tweetlist")
+      this.$router.push({name: 'TL', params: {id: this.categoryNum}});
     }
   }
 }
@@ -42,7 +42,7 @@ blockquote.twitter-tweet {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   margin: 10px 5px;
   padding: 16px 16px 16px 16px;
-  width: 468px;
+  width: 700px;
   background-color: white;
 }
 
@@ -76,7 +76,7 @@ blockquote.twitter-tweet a:focus {
 }
 
 .line{
-width: 425px;
+width: 660px;
 margin-right: 20px;
 border-bottom: 2px solid black;
 position: absolute;
