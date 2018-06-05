@@ -16,7 +16,6 @@ export default {
   },
   methods: {
     backToCollections() {
-      window.scrollBy(0, -1000);
       this.$router.push('/app');
     }
   }

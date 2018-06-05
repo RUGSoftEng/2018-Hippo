@@ -129,7 +129,7 @@
             <div class = "trow">
               <div class = "cell">
                 <label for="username">Username</label>
-                <input type="text" name="username" placeholder="Username" />
+                <input type="text" name="username" v-model="username" placeholder="Username" />
               </div>
               <div class = "cell">
                 <label for="email">E-mail address</label>
@@ -139,7 +139,7 @@
             <div class = "trow">
               <div class = "cell">
                 <label for="email">Password</label>
-                <input type="password" name="password" placeholder="Password" />
+                <input type="password" name="password" v-model="password" placeholder="Password" />
               </div>
               <div class = "cell">
                 <label for="email">Confirm Password</label>
@@ -185,6 +185,16 @@
 
 <script>
 export default {
+  data() {
+    return {
+      username: ""
+      password: ""
+    }
+  }
+
+  register() {
+
+  }
   methods:{
     goToLogin() {
       this.$router.push('/login');
