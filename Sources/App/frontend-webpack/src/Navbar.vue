@@ -55,9 +55,4 @@ export default {
     margin-left: 30px;
     margin-right: 30px;
   }
-
-  .hippo-nav-logo
-  {
-    height: 40px;
-  }
 </style>

@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
-    <blockquote class=twitter-tweet>
-      <div class="padding-bottom">{{tweetData}}</div>
+    <blockquote class=tweet>
+      <div style="padding-bottom: 1rem;">{{tweetData}}</div>
     </blockquote>
   </div>
 </template>
@@ -14,42 +14,35 @@ export default {
 </script>
 
 <style scoped lang="css">
-blockquote.twitter-tweet {
-  display: inline-block;
-  font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
-  color: black;
-  font-size: 20px;
-  line-height: 24px;
-  border-color: rgba(255,0,0,0.75);
-  border-radius: 10px;
-  border-style: solid;
-  border-width: 5px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  margin: 10px 5px;
-  padding: 16px 16px 16px 16px;
-  width: 468px;
-  background-color: white;
-}
+blockquote.tweet {
+     display: inline-block;
+     color: black;
+     font-size: 20px;
+     line-height: 24px;
+     border-radius: 10px;
+     border: 5px solid rgba(255, 0, 0, 0.75);
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+     margin: 10px 5px;
+     padding: 16px 16px 16px 16px;
+     width: 468px;
+     background-color: white;
+ }
 
-blockquote.twitter-tweet p {
+blockquote.tweet p {
   font-size: 16px;
   font-weight: normal;
   line-height: 20px;
 }
 
-blockquote.twitter-tweet a {
+blockquote.tweet a {
   color: inherit;
   font-weight: normal;
   text-decoration: none;
   outline: 0 none;
 }
 
-blockquote.twitter-tweet a:hover,
-blockquote.twitter-tweet a:focus {
+blockquote.tweet a:hover,
+blockquote.tweet a:focus {
   text-decoration: underline;
-}
-
-.padding-bottom {
-  padding-bottom: 1rem
 }
 </style>

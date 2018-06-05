@@ -1,8 +1,8 @@
 <template lang="html">
   <div class="text-center">
     <form class="form-signin">
-
-        <h1 class="h3 mb-3 font-weight-normal" style="font-family: Catamaran,Helvetica,Arial,sans-serif;">Sign in to Hippo</h1>
+        <img style="height: 100px; margin-bottom: 20px;" src="../src/assets/Logo-black.svg">
+        <h1 class="h3 mb-3 font-weight-normal" style="font-family: Catamaran,Helvetica,Arial,sans-serif;">Sign in</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
@@ -13,7 +13,6 @@
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit" href="../MainApp/Sources/App/frontend-webpack/index.html">Sign in</button>
-        <p class="mt-5 mb-3">&copy; 2017-2018</p>
       </form>
   </div>
 </template>
@@ -25,20 +24,16 @@ export default {
 
 <style lang="css">
 
-h1 {
-  font-family: Catamaran,Helvetica,Arial,sans-serif;
-  font-weight: 400px;
-}
-
 .form-signin {
   width: 100%;
-  max-width: 330px;
-  padding: 15px;
-  margin: auto;
+  max-width: 420px;
+  padding: 40px;
+    margin: 200px auto auto;
+    background-color: rgba(201, 201, 201, 0.18);
+    border-radius: 10px;
+
 }
-.form-signin .checkbox {
-  font-weight: 400;
-}
+
 .form-signin .form-control {
   position: relative;
   box-sizing: border-box;
@@ -46,14 +41,17 @@ h1 {
   padding: 10px;
   font-size: 16px;
 }
+
 .form-signin .form-control:focus {
   z-index: 2;
 }
+
 .form-signin input[type="email"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
+
 .form-signin input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;

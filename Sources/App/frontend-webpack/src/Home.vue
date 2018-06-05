@@ -1,26 +1,24 @@
 <template lang="html">
   <div class="">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-      <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="#page-top">Hippo</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
-          <i class="fa fa-bars"></i>
+    <nav class="navbar navbar-expand-sm hippo-navbar" data-toggle="affix">
+      <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
+        <a class="navbar-brand" style="padding-bottom: 0; margin-right: 50px;" href="#"><img style="height: 40px" src="../src/assets/Logo.svg"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-          <!--  <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#download">Download</a>
-            </li> -->
+        <div class="collapse navbar-collapse text-center" id="navbarsExample11">
+          <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#features">About</a>
+              <a class="nav-link hippo-nav-link" href="#login">Search</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#signup">Sign Up</a>
+              <a class="nav-link hippo-nav-link" href="http://www.juicystory.nl/blog/">Blog</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="../Login/index.html">Log in</a>
+              <a class="nav-link hippo-nav-link" href="mailto:hippo@juicystory.nl">Support</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link hippo-nav-link" href="#">Login</a>
             </li>
           </ul>
         </div>
@@ -32,8 +30,9 @@
         <div class="row h-100">
           <div class="col-lg-7 my-auto">
             <div class="header-content mx-auto">
-              <h1 class="mb-5">Hippo is an app that will help you develop and validate startup ideas!</h1>
-              <a href="#signup" class="btn btn-outline btn-xl js-scroll-trigger">Start Now for Free!</a>
+              <h1 class="mb-5 home-header">Welcome to Hippo</h1>
+              <h3 class="home-header" style="margin-bottom: 75px;">Develop and validate startup ideas.</h3>
+              <a href="#signup" class="btn btn-outline btn-xl js-scroll-trigger signup-link">Sign up now</a>
             </div>
           </div>
           <div class="col-lg-5 my-auto">
@@ -50,7 +49,7 @@
     <section class="features" id="features">
       <div class="container">
         <div class="section-heading text-center">
-          <h2>Check out what you can do with Hippo!</h2>
+          <h2 class="home-header">Check out what you can do with Hippo!</h2>
           <hr>
         </div>
         <div class="row" >
@@ -59,32 +58,32 @@
               <div class="row">
                 <div class="col-lg-6">
                   <div class="feature-item">
-                    <i class="icon-social-twitter text-primary"></i>
-                    <h3>Tweets</h3>
-                    <p class="text-muted">Look at startup ideas from Twitter!</p>
+                    <i class="icon-present text-primary"></i>
+                    <h3>Explore ideas</h3>
+                    <p class="text-muted quote-feature" style="line-height: 1.6; margin-top: 25px;">Hippo allows you to explore ideas that are based on data from Twitter.</p>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="feature-item">
-                    <i class="icon-like text-primary"></i>
-                    <h3>React</h3>
-                    <p class="text-muted">React to ideas you like or dislike!</p>
+                    <i class="icon-screen-smartphone text-primary"></i>
+                    <h3>Search in our data</h3>
+                    <p class="text-muted quote-feature" style="line-height: 1.6; margin-top: 25px;">You can not only search for ideas, but also access the actual tweets behind them.</p>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-lg-6">
                   <div class="feature-item">
-                    <i class="icon-present text-primary"></i>
-                    <h3>Free to Use</h3>
-                    <p class="text-muted">No payment required for membership!</p>
+                    <i class="icon-social-twitter text-primary"></i>
+                    <h3>Data from Twitter</h3>
+                    <p class="text-muted quote-feature" style="line-height: 1.6; margin-top: 25px;">Giving you access to the minds of more than 300 million active users.</p>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="feature-item">
-                    <i class="icon-screen-smartphone text-primary"></i>
-                    <h3>Cross-platform</h3>
-                    <p class="text-muted">Use Hippo on any device!</p>
+                    <i class="icon-like text-primary"></i>
+                    <h3>Interact with ideas</h3>
+                    <p class="text-muted quote-feature" style="line-height: 1.6; margin-top: 25px;">You can like and save ideas, or talk to other users about them.</p>
                   </div>
                 </div>
               </div>
@@ -96,77 +95,49 @@
     <section class="download bg-primary text-center" id="signup">
       <div class="container">
         <div class="section-heading text-center">
-          <h2>Sign up now!</h2>
+          <h2 class="home-header">Sign up now!</h2>
           <!-- <p class="text-muted">Check out what you can do with Hippo!</p> -->
           <hr>
         </div>
-        <div id="login-box">
-          <div class="left">
-            <div class = "trow">
-              <div class = "cell">
-                <label for="firstname">First Name</label>
-                <input type="text" name="firstname" placeholder = "First Name" required/>
+        <div class="signup-form">
+          <div class="container-fluid">
+            <div class="row" style="margin-bottom: 15px;">
+              <div class="col-6">
+                <label class="signup-form-label" for="firstname">First Name</label>
+                <input class="signup-form-field" type="text" name="firstname" placeholder = "First Name" required/>
               </div>
-              <div class = "cell">
-                <label for="lastname">Last Name</label>
-                <input type="text" name="lastname" placeholder = "Last Name" required/>
-              </div>
-            </div>
-            <div class = "trow">
-              <div class = "cell">
-                <label for="country">Country</label>
-                <select class="custom-select d-block w-100" id="country" required>
-                  <option value="">Choose...</option>
-                  <option>United States</option>
-                  <option>Netherlands</option>
-                </select>
-              </div>
-              <div class = "cell">
-                <label for="zip">ZIP</label>
-                <input type="text" name="zip" placeholder="ZIP code" />
+              <div class = "col-6">
+                <label class="signup-form-label" for="lastname">Last Name</label>
+                <input class="signup-form-field" type="text" name="lastname" placeholder = "Last Name" required/>
               </div>
             </div>
-            <div class = "trow">
-              <div class = "cell">
-                <label for="username">Username</label>
-                <input type="text" name="username" placeholder="Username" />
-              </div>
-              <div class = "cell">
-                <label for="email">E-mail address</label>
-                <input type="text" name="email" placeholder="E-mail" />
+            <div class="row" style="margin-bottom: 15px;">
+              <div class = "col-12">
+                <label class="signup-form-label" for="email">E-mail address</label>
+                <input class="signup-form-field" type="text" name="email" placeholder="E-mail" />
               </div>
             </div>
-            <div class = "trow">
-              <div class = "cell">
-                <label for="email">Password</label>
-                <input type="password" name="password" placeholder="Password" />
+            <div class = "row" style="margin-bottom: 15px;">
+              <div class = "col-6">
+                <label class="signup-form-label" for="email">Password</label>
+                <input class="signup-form-field" type="password" name="password" placeholder="Password" />
               </div>
-              <div class = "cell">
-                <label for="email">Confirm Password</label>
-                <input type="password" name="password2" placeholder="Confirm password" />
+              <div class = "col-6">
+                <label class="signup-form-label" for="email">Confirm Password</label>
+                <input class="signup-form-field" type="password" name="password2" placeholder="Confirm password" />
               </div>
             </div>
-            <div class = "signupbutton">
-                <input type="submit" name="signup_submit" value="Sign me up"/>
+            <div>
+                <input class="btn btn-lg btn-primary" style="width: 300px; margin-top: 25px;" type="submit" name="signup_submit" value="Sign up"/>
             </div>
-
           </div>
-
-          <!-- <div class="right">
-            <span class="loginwith">Sign in with<br />social network</span>
-
-            <button class="social-signin facebook">Log in with facebook</button>
-            <button class="social-signin twitter">Log in with Twitter</button>
-            <button class="social-signin google">Log in with Google+</button>
-          </div>
-          <div class="or">OR</div> -->
         </div>
       </div>
     </section>
 
     <footer>
       <div class="container">
-        <p>&copy; Hippo 2018. All Rights Reserved.</p>
+        <p>&copy; 2018 Hippo. All Rights Reserved.</p>
         <ul class="list-inline">
           <li class="list-inline-item">
             <a href="#">Privacy</a>
@@ -189,223 +160,56 @@ export default {
 </script>
 
 <style lang="css">
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
-*:focus {
-  outline: none;
-}
 
-/* body {
-  margin: 0;
-  padding: 0;
-  background: #DDD;
-  font-size: 16px;
-  color: #222;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-} */
+  .hippo-navbar
+  {
+    background-color: rgba(0, 0, 0, 0.75) !important;
+    padding: 2px 0 0;
+  }
 
-#login-box {
-  position: relative;
+  .hippo-nav-link
+  {
+    font-size: 16px;
+    color: white !important;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+
+.signup-form {
   margin: 5% auto;
   width: 600px;
-  height: 550px;
-  background: #FFF;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-}
-
-.left {
-  display: table;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  left: 0;
-  box-sizing: border-box;
+  height: 450px;
   padding: 40px;
-  width: 300px;
-  height: 400px;
-}
-.trow{
-  display: table-row;
-}
-.cell {
-  display: table-cell;
-  padding-bottom: 20px;
+  background-color: #F5F5F5;
+  border-radius: 10px;
 }
 
-input, label {
-  margin-left: 30px;
-}
-
-h1 {
-  margin: 0 0 20px 0;
-  font-weight: 300;
-  font-size: 28px;
-}
-
-input[type="text"],
-input[type="password"] {
-  display: block;
-  box-sizing: border-box;
+.signup-form-field {
   margin-bottom: 20px;
-  padding: 4px;
-  width: 220px;
+  padding: 4px 10px;
   height: 32px;
-  border: none;
-  border-bottom: 1px solid #AAA;
-  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  border: #D1D1D1 solid 0.1em;
+  border-radius: 4px;
   font-weight: 400;
   font-size: 15px;
   transition: 0.2s ease;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
-  border-bottom: 2px solid #16a085;
-  color: #16a085;
-  transition: 0.2s ease;
-}
-
-input[type="submit"] {
-  margin-top: 28px;
-  width: 120px;
-  height: 32px;
-  background: #16a085;
-  border: none;
-  border-radius: 2px;
-  color: #FFF;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  text-transform: uppercase;
-  transition: 0.1s ease;
-  cursor: pointer;
-}
-
-input[type="submit"]:hover,
-input[type="submit"]:focus {
-  opacity: 0.8;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  transition: 0.1s ease;
-}
-
-input[type="submit"]:active {
-  opacity: 1;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-  transition: 0.1s ease;
-}
-
-.or {
-  position: absolute;
-  top: 140px;
-  left: 280px;
-  width: 40px;
-  height: 40px;
-  background: #DDD;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  line-height: 40px;
-  text-align: center;
-}
-
-.right {
-  position: absolute;
-  top: 0;
-  right: 0;
-  box-sizing: border-box;
-  width: 300px;
-  height: 400px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 0 2px 2px 0;
-}
-
-.right .loginwith {
-  display: block;
-  font-size: 28px;
-  color: #FFF;
-  text-align: center;
-}
-
-button.social-signin {
-  margin-bottom: 20px;
-  width: 220px;
-  height: 36px;
-  border: none;
-  border-radius: 2px;
-  color: #FFF;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  transition: 0.2s ease;
-  cursor: pointer;
-}
-
-button.social-signin:hover,
-button.social-signin:focus {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  transition: 0.2s ease;
-}
-
-button.social-signin:active {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-  transition: 0.2s ease;
-}
-
-button.social-signin.facebook {
-  background: #32508E;
-}
-
-button.social-signin.twitter {
-  background: #55ACEE;
-}
-
-button.social-signin.google {
-  background: #DD4B39;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  font-family: 'Muli', 'Helvetica', 'Arial', 'sans-serif';
-}
-
-a {
-  color: #fdcc52;
-  -webkit-transition: all .35s;
-  -moz-transition: all .35s;
-  transition: all .35s;
-}
-
-a:hover, a:focus {
-  color: #fcbd20;
-}
-
 hr {
   max-width: 100px;
   margin: 25px auto 0;
-  border-width: 1px;
-  border-color: rgba(34, 34, 34, 0.1);
+  border: 1px rgba(34, 34, 34, 0.1);
 }
 
-hr.light {
-  border-color: white;
-}
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+.home-header {
   font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
   font-weight: 200;
   letter-spacing: 1px;
 }
 
-p {
+.quote-feature {
   font-size: 18px;
   line-height: 1.5;
   margin-bottom: 20px;
@@ -419,100 +223,6 @@ section h2 {
   font-size: 50px;
 }
 
-#mainNav {
-  border-color: rgba(34, 34, 34, 0.05);
-  background-color: white;
-  -webkit-transition: all .35s;
-  -moz-transition: all .35s;
-  transition: all .35s;
-  font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
-  font-weight: 200;
-  letter-spacing: 1px;
-}
-
-#mainNav .navbar-brand {
-  color: #fdcc52;
-  font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
-  font-weight: 200;
-  letter-spacing: 1px;
-}
-
-#mainNav .navbar-brand:hover, #mainNav .navbar-brand:focus {
-  color: #fcbd20;
-}
-
-#mainNav .navbar-toggler {
-  font-size: 12px;
-  padding: 8px 10px;
-  color: #222222;
-}
-
-#mainNav .navbar-nav > li > a {
-  font-size: 11px;
-  font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-#mainNav .navbar-nav > li > a.active {
-  color: #fdcc52 !important;
-  background-color: transparent;
-}
-
-#mainNav .navbar-nav > li > a.active:hover {
-  background-color: transparent;
-}
-
-#mainNav .navbar-nav > li > a,
-#mainNav .navbar-nav > li > a:focus {
-  color: #222222;
-}
-
-#mainNav .navbar-nav > li > a:hover,
-#mainNav .navbar-nav > li > a:focus:hover {
-  color: #fdcc52;
-}
-
-@media (min-width: 992px) {
-  #mainNav {
-    border-color: transparent;
-    background-color: transparent;
-  }
-  #mainNav .navbar-brand {
-    color: fade(white, 70%);
-  }
-  #mainNav .navbar-brand:hover, #mainNav .navbar-brand:focus {
-    color: white;
-  }
-  #mainNav .navbar-nav > li > a,
-  #mainNav .navbar-nav > li > a:focus {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  #mainNav .navbar-nav > li > a:hover,
-  #mainNav .navbar-nav > li > a:focus:hover {
-    color: white;
-  }
-  #mainNav.navbar-shrink {
-    border-color: rgba(34, 34, 34, 0.1);
-    background-color: white;
-  }
-  #mainNav.navbar-shrink .navbar-brand {
-    color: #222222;
-  }
-  #mainNav.navbar-shrink .navbar-brand:hover, #mainNav.navbar-shrink .navbar-brand:focus {
-    color: #fdcc52;
-  }
-  #mainNav.navbar-shrink .navbar-nav > li > a,
-  #mainNav.navbar-shrink .navbar-nav > li > a:focus {
-    color: #222222;
-  }
-  #mainNav.navbar-shrink .navbar-nav > li > a:hover,
-  #mainNav.navbar-shrink .navbar-nav > li > a:focus:hover {
-    color: #fdcc52;
-  }
-}
-
-
 header.masthead {
   position: relative;
   width: 100%;
@@ -520,8 +230,6 @@ header.masthead {
   padding-bottom: 100px;
   color: white;
   background: url("assets/bg-pattern.png"), #7b4397;
-  background: url("assets/bg-pattern.png"), -webkit-linear-gradient(to left, #7b4397, #dc2430);
-  background: url("assets/bg-pattern.png"), linear-gradient(to left, #7b4397, #dc2430);
 }
 
 header.masthead .header-content {
@@ -650,8 +358,7 @@ section.features .feature-item i {
 section.cta {
   position: relative;
   padding: 250px 0;
-  background-image: url("assets/bg-cta.jpg");
-  background-position: center;
+  background: url("assets/bg-cta.jpg") center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -677,19 +384,6 @@ section.cta .cta-content h2 {
   }
 }
 
-section.cta .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-section.contact {
-  text-align: center;
-}
-
 section.contact h2 {
   margin-top: 0;
   margin-bottom: 25px;
@@ -699,9 +393,6 @@ section.contact h2 i {
   color: #dd4b39;
 }
 
-section.contact ul.list-social {
-  margin-bottom: 0;
-}
 
 section.contact ul.list-social li a {
   font-size: 40px;
@@ -777,27 +468,27 @@ footer ul li a:hover, footer ul li a:focus, footer ul li a:active, footer ul li 
   padding-left: 0;
 }
 
-.btn-outline {
+.signup-link {
   color: white;
-  border: 1px solid;
-  border-color: white;
+  border: 1px solid white;
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
-.btn-outline:hover, .btn-outline:focus, .btn-outline:active, .btn-outline.active {
+.signup-link:hover, .signup-link:focus, .signup-link:active {
   color: white;
   border-color: #fdcc52;
   background-color: #fdcc52;
 }
 
-.btn {
+.signup-link {
   border-radius: 300px;
   font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
   letter-spacing: 2px;
-  text-transform: uppercase;
 }
 
-.btn-xl {
-  font-size: 11px;
+.signup-link {
+  font-weight: bold;
+  font-size: 16px;
   padding: 15px 45px;
 }
 

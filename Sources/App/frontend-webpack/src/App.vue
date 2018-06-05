@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <nav-bar></nav-bar>
-    <!-- <logo-poster></logo-poster> -->
     <div>
       <search-bar></search-bar>
     </div>
@@ -29,9 +28,4 @@ export default {
     color: white;
     background: url("../src/assets/bg-pattern.png"), linear-gradient(to left, #F0F8FF, #C3E4FF);
   }
-  #tweetTitle {
-    color: white;
-  }
-
-
 </style>

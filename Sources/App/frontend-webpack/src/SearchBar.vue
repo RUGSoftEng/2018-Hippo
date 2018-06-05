@@ -108,9 +108,7 @@ export default {
     border: #D1D1D1 solid 0.1em;
     padding-left: 2.75em;
     width: 30em !important;
-    background-image: url("../src/assets/icons8-search.svg");
-    background-repeat: no-repeat;
-    background-position: 0.8em 0.35em;
+    background: url("../src/assets/icons8-search.svg") no-repeat 0.8em 0.35em;
     background-size: 1.5em;
   }
 
@@ -119,32 +117,6 @@ export default {
       padding-top: 100px;
       padding-bottom: 100px;
   }
-
-.btn {
-  border-color: #00BFFF /*rgb(255, 125, 125)*/ !important;
-  background-color: inherit !important;
-  border-radius: 0.5rem
-}
-
-.btn:hover, .btn:visited {
-  box-shadow: 0 0 0 0.5rem rgba(0, 191, 255, 0.25) !important;
-}
-
-.btn:active {
-  background-color: #00BFFF !important;
-}
-
-.btn:focus {
-  box-shadow: 0 0 0 0.5rem rgba(255, 125, 125,0.25) !important;
-}
-
-.btn-outline-success {
-  color: #00BFFF !important;
-}
-
-.btn-outline-success:active {
-  color: rgb(255, 255, 255) !important;
-}
 
 .form-inline {
   margin: 0 auto;
