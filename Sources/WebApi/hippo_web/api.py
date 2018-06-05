@@ -11,6 +11,35 @@ from hippo_web import app, auth, db, es
 
 excluded_keywords = { "https", "i" }
 
+users = []
+
+# /api/quick/register?username=<username>&password=<password>
+@app.route('/api/quick/register', methods=['GET'])
+def quick_register():
+    username = request.args.get('username')
+    password = request.args.get('password')
+    user_obj = (username, password)
+    print(user_obj)
+    
+    if (user_obj not in users):
+        users.append(user_obj)
+        return jsonify({ 'ok': 'true' })
+    
+    return jsonify({'ok' : 'false'})
+    
+@app.route('/api/quick/login', methods=['GET'])
+def quick_login():
+    username = request.args.get('username')
+    password = request.args.get('password')
+    user_obj = (username, password)
+    print(user_obj)
+    
+    if (user_obj in users):
+        return jsonify({ 'ok': 'true' })
+    
+    return jsonify({'ok' : 'false'})
+
+
 @auth.verify_password
 def verify_password(email_or_token, password):
     # First try to authenticate by token, otherwise try with username/password.

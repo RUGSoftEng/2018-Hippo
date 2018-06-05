@@ -6,19 +6,43 @@
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <input type="password" id="inputPassword" v-model="password" class="form-control" placeholder="Password" required>
         <div class="checkbox mb-3">
           <label>
             <input type="checkbox" value="remember-me"> Remember me
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit" href="../MainApp/Sources/App/frontend-webpack/index.html">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" @click="login()" href="../MainApp/Sources/App/frontend-webpack/index.html">Sign in</button>
+        <p class="mt-5 mb-3">&copy; 2017-2018</p>
       </form>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+    }
+  },
+  methods: {
+    login() {
+        let cmp = this;
+        console.log(cmp.username, cmp.password)
+        axios.get("http://localhost:5000/api/quick/login?username=" + cmp.username + "&password=" + cmp.password).then(function (response){
+          console.log(response.data);
+          if(response.data.ok === "true"){
+            cmp.$router.push("/app");
+          } else {
+            alert("Username and password combination does not exist!");
+          }
+        });
+
+    },
+  }
 }
 </script>
 

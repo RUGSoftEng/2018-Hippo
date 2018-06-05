@@ -18,7 +18,7 @@
               <a class="nav-link hippo-nav-link" href="mailto:hippo@juicystory.nl">Support</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link hippo-nav-link" href="#">Login</a>
+              <a class="nav-link js-scroll-trigger" @click="goToLogin()">Log in</a>
             </li>
           </ul>
         </div>
@@ -49,7 +49,7 @@
     <section class="features" id="features">
       <div class="container">
         <div class="section-heading text-center">
-          <h2 class="home-header">Check out what you can do with Hippo!</h2>
+          <h2>Check out what you can do with Hippo!</h2>
           <hr>
         </div>
         <div class="row" >
@@ -137,7 +137,7 @@
 
     <footer>
       <div class="container">
-        <p>&copy; 2018 Hippo. All Rights Reserved.</p>
+        <p>&copy; Hippo 2018. All Rights Reserved.</p>
         <ul class="list-inline">
           <li class="list-inline-item">
             <a href="#">Privacy</a>
@@ -155,7 +155,33 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+      confirmedPassword: ""
+    }
+  },
+
+  methods:{
+    goToLogin() {
+      this.$router.push('/login');
+    },
+
+    register() {
+        let cmp = this;
+        console.log(cmp.username, cmp.password)
+        axios.get("http://localhost:5000/api/quick/register?username=" + cmp.username + "&password=" + cmp.password).then(function (response){
+          console.log(response.data);
+          if(response.data.ok === "true"){
+            cmp.$router.push("/login");
+          }
+        });
+
+    },
+  }
 }
 </script>
 
@@ -230,6 +256,8 @@ header.masthead {
   padding-bottom: 100px;
   color: white;
   background: url("assets/bg-pattern.png"), #7b4397;
+  background: url("assets/bg-pattern.png"), -webkit-linear-gradient(to left, #7b4397, #dc2430);
+  background: url("assets/bg-pattern.png"), linear-gradient(to left, #7b4397, #dc2430);
 }
 
 header.masthead .header-content {
