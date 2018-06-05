@@ -128,12 +128,8 @@
             </div>
             <div class = "trow">
               <div class = "cell">
-                <label for="username">Username</label>
-                <input type="text" name="username" v-model="username" placeholder="Username" />
-              </div>
-              <div class = "cell">
-                <label for="email">E-mail address</label>
-                <input type="text" name="email" placeholder="E-mail" />
+                <label for="username">E-mail Address</label>
+                <input type="text" name="username" v-model="username" placeholder="Email Address" />
               </div>
             </div>
             <div class = "trow">
