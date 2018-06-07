@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     backToCollections() {
-      this.$router.push('/');
+      this.$router.push('/app');
     }
   }
 }

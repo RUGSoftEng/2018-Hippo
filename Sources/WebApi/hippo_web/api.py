@@ -32,14 +32,11 @@ def get_tweet(tweet_id: int):
     pass
 
 def search_by_keywords(terms):
-    result_tweets = []
     terms_list=terms.split()
     should = []
     for term in terms_list:
-        #content->keyw
-        query=elasticsearch_dsl.Q("match", content=term)
+        query=elasticsearch_dsl.Q("match", keywords=term)
         should.append(query)
-
 
     q = elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
     s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
@@ -50,7 +47,7 @@ def search_by_keywords(terms):
 
 @app.route('/api/search/<terms>', methods=['GET'])
 def search(terms):
-    return jsonify(search_by_keywords())
+    return jsonify(search_by_keywords(terms))
 
 @app.route('/api/search_category/<terms>')
 def search_category(terms):
@@ -59,7 +56,7 @@ def search_category(terms):
     # query and add the terms themselfs
     query_results = search_by_keywords(terms)
     results.append({'keywords': terms.split(), 'tweets': query_results})
-    
+
     # make a keyword frequency dictionary
     keyword_frequencies = defaultdict(int)
     for hit in query_results:
@@ -68,21 +65,30 @@ def search_category(terms):
         for keyword in keywords:
             if keyword not in excluded_keywords and keyword not in terms:
                 keyword_frequencies[keyword] += 1
-            
-    
+
+
     keyword_frequencies = dict(keyword_frequencies)
     keyword_frequencies = sorted(keyword_frequencies.items(), key=itemgetter(1))
-    
+
     # add the 4 most common keywords
     for i in range(0,5):
         keyword = keyword_frequencies[-(i + 1)][0]
         new_terms = terms + " " + keyword
         new_results = search_by_keywords(terms + " " + keyword)
         results.append({'keywords': new_terms.split(), 'tweets': new_results})
-        
-    
+
+
     return jsonify(results)
 
+
+@app.route('/api/view', methods=['POST'])
+def view():
+    pass
+
+
+@app.route('', methods=['POST'])
+def like():
+    pass
 
 #generate (most general) synonym from terms/keyw
 #generate (most general) synonym from terms/keyw
@@ -96,7 +102,7 @@ def pick_category(terms):
     #get synonyms for tweet keywords from ES
     #analyzer=elasticsearch_dsl.analyzer('analyzer', tokenizer=elasticsearch_dsl.tokenizer('tokenizer', 'tweet'), filter=['lowercase'])
     #res=analyzer.execute()
-    
+
     #keywords
     res=search(terms)
     res=json.loads(res)
@@ -105,7 +111,7 @@ def pick_category(terms):
     #TODO - scoring
     for category in categ:
         for option in options:
-            if category==option: 
+            if category==option:
                 score=1
                 if category not in categories:
                     categories[category]=score
@@ -127,7 +133,7 @@ def add_to_category(tweet):
     if not(elasticsearch_dsl.Index(category).exists()):
         index=elasticsearch_dsl.Index(category)
         index.create()
-    
+
     #add results to categ idx
     elasticsearch_dsl.DocType('Tweet').update(using=es, index=category, content=tweet)
     es.update(index=category, id=tweet.id, doc_type="my_type",body={tweet})
@@ -137,7 +143,7 @@ def add_to_category(tweet):
 @app.route('/api/collection/<terms>', methods=['GET'])
 def get_collection(terms):
     result_tweets=[]
-    
+
     category=pick_category(terms)
 
     #if term doesn't match existing try synonym of categ
@@ -148,13 +154,13 @@ def get_collection(terms):
 
         for hit in results:
             result_tweets.append(hit._d_)
-        
+
         return jsonify(result_tweets)
 
-    else: 
+    else:
         return 0
-    
-    
+
+
 @app.route('/api/suggestions/<terms>', methods=['GET'])
 def suggestions(terms):
     suggestions=[]

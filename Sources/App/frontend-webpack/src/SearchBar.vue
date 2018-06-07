@@ -3,8 +3,8 @@
     <div class="search-view form-inline">
       <input class="form-control mr-sm-3 search-box" type="text" v-model="searchText" v-on:keyup.enter="search(searchText)" placeholder="Search for tweets..." aria-label="Search">
     </div>
-    <tweet-collections-list v-if="$route.name == 'TCL'" :tweetList="tweetList" :searchTerms="currentlySearchingFor"></tweet-collections-list>
-    <tweet-list v-if="$route.name == 'TL'" :tweetList="tweetList"></tweet-list>
+    <tweet-collections-list v-if="$route.name == 'TCL'" :categoryList="categories" :searchTerms="currentlySearchingFor"></tweet-collections-list>
+    <tweet-list v-else :tweetList="currentTweetsDisplayed"></tweet-list>
   </div>
 </template>
 
@@ -17,49 +17,60 @@ export default {
     return {
       searchText: '',
       tweetList: [],
+      currentTweetsDisplayed: [],
       startIndex: 0,
-      endIndex: 9,
+      endIndex: 10,
       newTweetFactor: 10,
-      currentlySearchingFor: ''
+      currentlySearchingFor: '',
+
+      categories: []
     };
   },
   methods:{
     search: function() {
-      this.$router.push('/');
+      this.categories = [];
+      this.$router.push('/app');
       let cmp = this;
       cmp.currentlySearchingFor = cmp.searchText;
       this.tweetList =   [];
       cmp.startIndex = 0;
       cmp.endIndex = 10;
-      axios.get('http://localhost:5000/api/search/' + cmp.searchText, {'timeout': 5000})
+      axios.get('http://localhost:5000/api/search_category/' + cmp.searchText, {'timeout': 5000})
         .then(function (response) {
           console.log(response.data)
-          cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
-          cmp.startIndex += cmp.newTweetFactor;
-          cmp.endIndex += cmp.newTweetFactor;
+          cmp.categories = response.data;
+        //  cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
+        //  cmp.startIndex += cmp.newTweetFactor;
+        //  cmp.endIndex += cmp.newTweetFactor;
         })
         .catch(function (error) {
           console.log(error);
        });
     },
-    scroll(tweetList){
+
+    displayTweets(){
       let cmp = this
+      console.log("Displayig Tweets");
+      console.log(cmp.tweetList);
+      cmp.currentTweetsDisplayed.push.apply(cmp.currentTweetsDisplayed, cmp.tweetList.slice(cmp.startIndex, cmp.endIndex));
+      cmp.startIndex += cmp.newTweetFactor;
+      cmp.endIndex += cmp.newTweetFactor;
       window.onscroll = ()  => {
         let bottomOfWindow = (document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 0.6 &&
                               document.documentElement.scrollTop + window.innerHeight < document.documentElement.offsetHeight + 0.6);
         console.log(document.documentElement.scrollTop + window.innerHeight, document.documentElement.offsetHeight);
         if (bottomOfWindow) {
-          axios.get('http://localhost:5000/api/search/' + cmp.currentlySearchingFor, {'timeout': 5000})
-            .then(function (response) {
-              console.log("Trying to scroll");
-              cmp.tweetList.push.apply(cmp.tweetList, response.data.slice(cmp.startIndex, cmp.endIndex));
-              cmp.startIndex += cmp.newTweetFactor;
-              cmp.endIndex += cmp.newTweetFactor;
-            })
-            .catch(function (error) {
-              console.log(error);
-              cmp.tweetList = [];
-           });
+        //  axios.get('http://localhost:5000/api/search/' + cmp.currentlySearchingFor, {'timeout': 5000})
+          //  .then(function (response) {
+          console.log("Trying to scroll");
+          cmp.currentTweetsDisplayed.push.apply(cmp.currentTweetsDisplayed, cmp.tweetList.slice(cmp.startIndex, cmp.endIndex));
+          cmp.startIndex += cmp.newTweetFactor;
+          cmp.endIndex += cmp.newTweetFactor;
+          //  })
+          //  .catch(function (error) {
+          //    console.log(error);
+          //    cmp.tweetList = [];
+          // });
         }
       }
     }
@@ -68,9 +79,26 @@ export default {
     'tweet-collections-list': TweetCollectionsList,
     'tweet-list': TweetList
   },
-  mounted() {
-    this.scroll(this.tweetList);
+  watch: {
+    $route (to, from) {
+      console.log("Changed route");
+      console.log(to, from);
+      console.log(to.params.id);
+      if(to.params.id != undefined){
+        this.tweetList = this.categories[to.params.id].tweets;
+        this.displayTweets();
+      } else {
+        this.tweetList = [];
+        this.currentTweetsDisplayed = [];
+        this.startIndex = 0;
+        this.endIndex = 10;
+        window.onscroll = () => {};
+      }
+    }
   }
+  //mounted() {
+  //  this.displayTweets();
+  //}
 }
 </script>
 
@@ -80,9 +108,8 @@ export default {
     border: #D1D1D1 solid 0.1em;
     padding-left: 2.75em;
     width: 30em !important;
-    background-image: url("../src/assets/icons8-search.svg");
-    background-repeat: no-repeat;
-    background-position: 0.8em 0.35em;
+    background: url("../src/assets/icons8-search.svg") no-repeat 0.8em 0.35em;
+    background-color: white;
     background-size: 1.5em;
   }
 
@@ -91,32 +118,6 @@ export default {
       padding-top: 100px;
       padding-bottom: 100px;
   }
-
-.btn {
-  border-color: #00BFFF /*rgb(255, 125, 125)*/ !important;
-  background-color: inherit !important;
-  border-radius: 0.5rem
-}
-
-.btn:hover, .btn:visited {
-  box-shadow: 0 0 0 0.5rem rgba(0, 191, 255, 0.25) !important;
-}
-
-.btn:active {
-  background-color: #00BFFF !important;
-}
-
-.btn:focus {
-  box-shadow: 0 0 0 0.5rem rgba(255, 125, 125,0.25) !important;
-}
-
-.btn-outline-success {
-  color: #00BFFF !important;
-}
-
-.btn-outline-success:active {
-  color: rgb(255, 255, 255) !important;
-}
 
 .form-inline {
   margin: 0 auto;

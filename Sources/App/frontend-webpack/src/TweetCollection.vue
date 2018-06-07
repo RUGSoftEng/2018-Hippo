@@ -1,15 +1,15 @@
 <template lang="html">
   <div>
-   <blockquote class=twitter-tweet>
-     <h1 class="category">{{searchTerms.split(/[ ,]+/).join(', ')}}</h1>
+   <blockquote class=tweet-collection>
+     <h1 class="category">{{searchTerms}}</h1>
      <div class="line"></div>
-     <div class="padding-bottom">{{tweetData}}</div>
+     <div style="padding-bottom: 1.5rem; padding-top: 1.5rem;">{{tweetData}}</div>
      <div>
        <i style="color: #1dcaff; font-size: 30px; text-align: left; float: left;" class="fa fa-twitter"></i>
-       <h5 style="text-align: left; float: left">420</h5>
+       <h5 style="text-align: left; float: left">0</h5>
        <i style="color: red; font-size: 30px; text-align: left; float: left; padding-left: 5px;" class="fa fa-heart"></i>
-       <h5 style="text-align: left; float: left; padding-left: 5px">420</h5>
-       <button style="text-align: right; float: right; background: #1569C7; color: white; border: none; border-radius: 4px;" v-on:click="switchToTweets()">More</button>
+       <h5 style="text-align: left; float: left; padding-left: 5px">0</h5>
+       <button class="collection-button" style="font-size: 14px; float: right; background: #1569C7; color: white; border: none; border-radius: 4px; padding: 5px 10px;" v-on:click="switchToTweets()">More</button>
 
      </div>
    </blockquote>
@@ -18,67 +18,79 @@
 
 <script>
 export default {
-  props: ['tweetData', 'searchTerms'],
+  props: ['tweetData', 'searchTerms', 'categoryNum'],
   methods: {
     switchToTweets: function() {
-      console.log("Switching to tweets...")
-      this.$router.push("/tweetlist")
+      console.log("Switching to tweets...");
+      window.scrollBy(0, -1000);
+      this.$router.push({name: 'TL', params: {id: this.categoryNum}});
     }
   }
 }
 </script>
 
 <style scoped lang="css">
-blockquote.twitter-tweet {
-  display: inline-block;
-  font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
-  color: black;
-  font-size: 20px;
-  line-height: 24px;
-  border-color: #00BFFF;
-  border-radius: 10px;
-  border-style: solid;
-  border-width: 5px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  margin: 10px 5px;
-  padding: 16px 16px 16px 16px;
-  width: 468px;
-  background-color: white;
-}
+    .collection-button {
+        border-color: #00BFFF /*rgb(255, 125, 125)*/ !important;
+        border-radius: 0.5rem
+    }
 
-blockquote.twitter-tweet p {
-  font-size: 16px;
-  font-weight: normal;
-  line-height: 20px;
-}
+    .collection-button:hover, .collection-button:visited {
+        box-shadow: 0 0 0 0.5rem rgba(0, 191, 255, 0.25) !important;
+    }
 
-blockquote.twitter-tweet a {
-  color: inherit;
-  font-weight: normal;
-  text-decoration: none;
-  outline: 0 none;
-}
+    .collection-button:active {
+        background-color: #00BFFF !important;
+    }
 
-blockquote.twitter-tweet a:hover,
-blockquote.twitter-tweet a:focus {
-  text-decoration: underline;
-}
+    .collection-button:focus {
+        box-shadow: 0 0 0 0.5rem rgba(255, 125, 125,0.25) !important;
+    }
 
-.padding-bottom {
-  padding-bottom: 1rem
-}
+    blockquote.tweet-collection {
+        display: inline-block;
+        font-family: Lato, "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
+        color: #B5B5B5;
+        font-size: 16px;
+        line-height: 24px;
+        border-radius: 5px;
+        border: 2px solid #d1d1d1;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        margin: 10px 5px;
+        padding: 16px 16px 16px 16px;
+        width: 468px;
+        background-color: white;
+    }
 
-@import url(https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900);
+    blockquote.tweet-collection p {
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 20px;
+    }
 
-.category {
- padding: 0px 0px 0px 60px;
- font-size: 38px;
-}
+    blockquote.tweet-collection a {
+        color: inherit;
+        font-weight: normal;
+        text-decoration: none;
+        outline: 0 none;
+    }
 
-.line{
-width: 425px;
-margin-right: 20px;
-border-bottom: 2px solid black;
-position: absolute;
-}
+    blockquote.tweet-collection a:hover,
+    blockquote.tweet-collection a:focus {
+        text-decoration: underline;
+    }
+
+    .category {
+        padding: 0 20px 0 60px;
+        font-size: 38px;
+        text-align: right;
+
+    }
+
+    .line{
+        width: 425px;
+        margin-right: 20px;
+        border-bottom: 2px solid #d1d1d1;
+        position: absolute;
+    }
 </style>
