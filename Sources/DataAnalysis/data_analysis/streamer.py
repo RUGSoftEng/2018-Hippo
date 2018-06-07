@@ -3,7 +3,7 @@ import json
 from tweepy import *
 
 from data_analysis.models import Tweet
-from data_analysis.nlp import analyse_tweet, match_keywords_filter
+from data_analysis.nlp import analyse_tweet
 
 consumer_key = "19zbXP0QH2etpYqk1oHwVFRrA"
 consumer_secret = "P4i0N3umEfmxCoseeL10X8EgxWLlc5v59pZRms1EYj5tKJk8Gi"
@@ -17,28 +17,27 @@ class _TwitterStreamListener(StreamListener):
     def on_data(self, data):
         json_tweet = json.loads(data)
 
-        if ("text" not in json_tweet):
+        if "text" not in json_tweet:
             return True
         
-        if ("retweeted_status" in json_tweet):
+        if "retweeted_status" in json_tweet:
             return True
         
         # TODO: Remove in production.
         print(json_tweet["text"])
 
-        if match_keywords_filter(json_tweet["text"]):
-            tweet = Tweet()
+        tweet = Tweet()
 
-            tweet.content = json_tweet["text"]
-            tweet.date = json_tweet["created_at"]
-            tweet.raw = data
-            tweet.id = json_tweet["id_str"]
+        tweet.content = json_tweet["text"]
+        tweet.date = json_tweet["created_at"]
+        tweet.raw = data
+        tweet.id = json_tweet["id_str"]
 
-            keywords, synonyms = analyse_tweet(json_tweet["text"])
+        keywords, synonyms = analyse_tweet(json_tweet["text"])
 
-            tweet.keywords = keywords;
-            
-            tweet.save()
+        tweet.keywords = keywords
+
+        tweet.save()
 
         return True
 

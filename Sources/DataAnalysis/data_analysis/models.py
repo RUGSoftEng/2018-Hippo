@@ -1,7 +1,5 @@
 from elasticsearch_dsl import *
 
-import data_analysis.databases
-
 
 class Tweet(DocType):
     keywords = Text(analyzer='snowball', fields={'raw': Keyword()})
