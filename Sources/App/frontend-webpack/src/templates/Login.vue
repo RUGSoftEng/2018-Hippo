@@ -23,17 +23,16 @@
 </template>
 
 <script>
-    import axios from 'axios';
-
     export default {
         data() {
             return {
-                username: "",
-                password: "",
+                username: str.empty(),
+                password: str.empty(),
             }
         },
         methods: {
             login() {
+                // TODO: Add login logic.
                 this.$router.push("/app");
             },
         }
@@ -41,14 +40,6 @@
 </script>
 
 <style lang="css">
-
-    body {
-        font-family: 'Lato', 'Helvetica Neue', 'Arial', sans-serif !important;
-        position: relative;
-        width: 100%;
-
-        background: url("../assets/bg-pattern.png"), linear-gradient(to left, #F0F8FF, #C3E4FF);
-    }
 
     .form-signin {
         width: 100%;
@@ -78,17 +69,9 @@
         border-bottom-left-radius: 0;
     }
 
-    .h3 {
-        color: black;
-    }
-
     .form-signin input[type="password"] {
         margin-bottom: 10px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
-    }
-
-    .checkbox {
-        color: black;
     }
 </style>

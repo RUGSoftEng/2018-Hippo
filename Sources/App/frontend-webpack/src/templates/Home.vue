@@ -153,8 +153,6 @@
 <script>
     import NavBar from '../components/NavBar.vue';
 
-    import axios from 'axios';
-
     export default {
         components: {
             'nav-bar': NavBar,
@@ -169,49 +167,12 @@
         },
 
         methods: {
-            goToLogin() {
-                this.$router.push('/login');
-            },
 
-            register() {
-                let cmp = this;
-                console.log(cmp.username, cmp.password)
-                axios.get("http://localhost:5000/api/quick/register?username=" + cmp.username + "&password=" + cmp.password).then(function (response) {
-                    console.log(response.data);
-                    if (response.data.ok === "true") {
-                        cmp.$router.push("/login");
-                    } else {
-                        alert("Something went wrong. User may already exist with these details.")
-                    }
-                });
-
-            },
         }
     }
 </script>
 
 <style lang="css">
-
-    body {
-        font-family: 'Lato', 'Helvetica Neue', 'Arial', sans-serif !important;
-        position: relative;
-        width: 100%;
-        color: white !important;
-        background: url("../assets/bg-pattern.png"), linear-gradient(to left, #F0F8FF, #C3E4FF);
-    }
-
-    .hippo-navbar {
-        background-color: rgba(0, 0, 0, 0.75) !important;
-        padding: 2px 0 0;
-    }
-
-    .hippo-nav-link {
-        font-size: 16px;
-        color: white !important;
-        margin-left: 30px;
-        margin-right: 30px;
-        cursor: pointer;
-    }
 
     .signup-form {
         margin: 5% auto;
@@ -267,8 +228,6 @@
         padding-top: 150px;
         padding-bottom: 100px;
         color: white;
-        background: url("../assets/bg-pattern.png"), #7b4397;
-        background: url("../assets/bg-pattern.png"), -webkit-linear-gradient(to left, #7b4397, #dc2430);
         background: url("../assets/bg-pattern.png"), linear-gradient(to left, #7b4397, #dc2430);
     }
 

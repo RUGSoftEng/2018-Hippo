@@ -1,13 +1,18 @@
 /*jshint esversion: 6 */
 
 import Home from './templates/Home.vue';
+import Explore from './templates/Explore.vue';
 import Search from './templates/Search.vue';
 import Login from './templates/Login.vue';
+import Logout from './templates/Logout.vue';
+import Register from './templates/Register.vue';
 
 export const routes = [
     { path: '/', component: Home},
-    { path: '/app', component: Search },
-    { path: '/app/explore', component: Search },
+    { path: '/app', component: Explore },
+    { path: '/app/explore', component: Explore },
     { path: '/app/search', component: Search },
     { path: '/login', component: Login},
+    { path: '/logout', component: Logout},
+    { path: '/register', component: Register},
 ];
