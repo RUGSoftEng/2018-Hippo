@@ -1,7 +1,6 @@
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 from datetime import datetime
 
-import elasticsearch_dsl
 from flask import *
 import elasticsearch_dsl
 import collections
@@ -11,35 +10,6 @@ from hippo_web.models import User
 from hippo_web import app, auth, db, es
 
 excluded_keywords = { "https", "i" }
-
-users = []
-
-# /api/quick/register?username=<username>&password=<password>
-@app.route('/api/quick/register', methods=['GET'])
-def quick_register():
-    username = request.args.get('username')
-    password = request.args.get('password')
-    user_obj = (username, password)
-    print(user_obj)
-
-    if (user_obj not in users):
-        users.append(user_obj)
-        return jsonify({ 'ok': 'true' })
-
-    return jsonify({'ok' : 'false'})
-
-@app.route('/api/quick/login', methods=['GET'])
-def quick_login():
-    username = request.args.get('username')
-    password = request.args.get('password')
-    user_obj = (username, password)
-    print(user_obj)
-
-    if (user_obj in users):
-        return jsonify({ 'ok': 'true' })
-
-    return jsonify({'ok' : 'false'})
-
 
 @auth.verify_password
 def verify_password(email_or_token, password):
@@ -62,20 +32,17 @@ def get_tweet(tweet_id: int):
     pass
 
 def search_by_keywords(terms):
-    result_tweets = []
     terms_list=terms.split()
     should = []
     for term in terms_list:
-        #content->keyw
-        query=elasticsearch_dsl.Q("match", content=term)
+        query=elasticsearch_dsl.Q("match", keywords=term)
         should.append(query)
-
 
     q = elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
     s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
 
     results = s[:250]
-
+        
     return [hit._d_ for hit in results]
 
 @app.route('/api/search/<terms>', methods=['GET'])
@@ -93,11 +60,8 @@ def search_category(terms):
     # make a keyword frequency dictionary
     keyword_frequencies = defaultdict(int)
     for hit in query_results:
-        if "keywords" in hit:
-            keywords = hit["keywords"]
-        else:
-            keywords = hit["content"].split()
-
+        keywords = hit["keywords"]
+        
         for keyword in keywords:
             if keyword not in excluded_keywords and keyword not in terms:
                 keyword_frequencies[keyword] += 1
@@ -115,6 +79,7 @@ def search_category(terms):
 
 
     return jsonify(results)
+
 
 @app.route('/api/view', methods=['POST'])
 def view():
