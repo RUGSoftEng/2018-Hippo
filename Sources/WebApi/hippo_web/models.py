@@ -3,6 +3,30 @@ from passlib.hash import pbkdf2_sha256
 
 from hippo_web import db, app
 
+from elasticsearch_dsl import *
+
+class AgeGroup():
+    def __init__(self, min, max, str_rep):
+        self.min = min
+        self.max = max
+        self.str_rep = str_rep
+
+age_groups = [
+    AgeGroup(0, 15, "<16"),
+    AgeGroup(16, 24, "16-24"),
+    AgeGroup(25, 34, "25-34"),
+    AgeGroup(35, 44, "35-44"),
+    AgeGroup(45, 54, "45-54"),
+    AgeGroup(55, 64, "55-64"),
+    AgeGroup(65, 200, "65+"),
+]
+
+def get_age_group(age: int):
+    for group in age_groups:
+        if (group.min <= age and age <= group.max):
+            return group
+    
+    return age_groups[-1]
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -22,6 +46,10 @@ class User(db.Model):
     birthday = db.Column(db.Date())
     location_country = db.Column(db.String(3))
 
+    # TODO: calculate the age of the user
+    def get_age(self):
+        return 0
+    
     def hash_password(self, password: str):
         self.password_hash = pbkdf2_sha256.hash(password)
 
@@ -59,3 +87,17 @@ class Tweet(object):
     def __init__(self):
         self.sender: str = None
         self.content: str = None
+
+# Demographics model.
+
+class Demographic(DocType):
+    count = Integer()
+    age_group = Text()
+    country = Text()
+        
+class Demographics(DocType):
+    keywords = Text()
+    data = Nested(Demographic)
+
+    class Meta:
+        index = 'demographics'

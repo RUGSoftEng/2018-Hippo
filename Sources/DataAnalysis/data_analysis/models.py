@@ -9,6 +9,7 @@ class Tweet(DocType):
     date = Date()
     content = Text(analyzer='snowball')
     raw = Text()
+    id = Text()
 
     class Meta:
         index = 'tweet'

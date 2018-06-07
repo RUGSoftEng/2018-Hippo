@@ -32,6 +32,7 @@ class _TwitterStreamListener(StreamListener):
             tweet.content = json_tweet["text"]
             tweet.date = json_tweet["created_at"]
             tweet.raw = data
+            tweet.id = json_tweet["id_str"]
 
             keywords, synonyms = analyse_tweet(json_tweet["text"])
 
