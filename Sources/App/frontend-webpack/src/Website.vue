@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import App from './App.vue';
-import Home from './Home.vue';
-import Login from './Login.vue';
+import App from './templates/App.vue';
+import Home from './templates/Home.vue';
+import Login from './templates/Login.vue';
 export default {
   components: {
     'app': App,
