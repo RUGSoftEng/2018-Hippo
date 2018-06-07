@@ -32,14 +32,11 @@ def get_tweet(tweet_id: int):
     pass
 
 def search_by_keywords(terms):
-    result_tweets = []
     terms_list=terms.split()
     should = []
     for term in terms_list:
-        #content->keyw
-        query=elasticsearch_dsl.Q("match", content=term)
+        query=elasticsearch_dsl.Q("match", keywords=term)
         should.append(query)
-
 
     q = elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
     s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
@@ -50,7 +47,7 @@ def search_by_keywords(terms):
 
 @app.route('/api/search/<terms>', methods=['GET'])
 def search(terms):
-    return jsonify(search_by_keywords())
+    return jsonify(search_by_keywords(terms))
 
 @app.route('/api/search_category/<terms>')
 def search_category(terms):
@@ -82,78 +79,6 @@ def search_category(terms):
         
     
     return jsonify(results)
-
-
-#generate (most general) synonym from terms/keyw
-#generate (most general) synonym from terms/keyw
-@app.route('/api/category/<terms>', methods=['GET'])
-def pick_category(terms):
-    #placeholder - compiled (manual) categories from tweets on ES
-    options=["app","music", "pets","school","food","flowers","car","art","fashion","bar","hotel","friends","business"]
-    categories = {}
-    categ=terms.split()
-
-    #get synonyms for tweet keywords from ES
-    #analyzer=elasticsearch_dsl.analyzer('analyzer', tokenizer=elasticsearch_dsl.tokenizer('tokenizer', 'tweet'), filter=['lowercase'])
-    #res=analyzer.execute()
-    
-    #keywords
-    res=search(terms)
-    res=json.loads(res)
-    for tweet in res:
-        categ.extend(tweet.keywords)
-    #TODO - scoring
-    for category in categ:
-        for option in options:
-            if category==option: 
-                score=1
-                if category not in categories:
-                    categories[category]=score
-                else:
-                    categories[category]+=score
-    #sort
-    if len(categories) > 0:
-        sortedCategories = sorted(categories.items(), key=itemgetter(1), reverse=True)
-        category = sortedCategories[0][0]
-
-    return category
-
-#add individual tweet to a category idx
-def add_to_category(tweet):
-    #pick general categ
-    category=pick_category(tweet.keywords)
-
-    #create idx for categ if non existent
-    if not(elasticsearch_dsl.Index(category).exists()):
-        index=elasticsearch_dsl.Index(category)
-        index.create()
-    
-    #add results to categ idx
-    elasticsearch_dsl.DocType('Tweet').update(using=es, index=category, content=tweet)
-    es.update(index=category, id=tweet.id, doc_type="my_type",body={tweet})
-    return 0
-
-#returns tweets in a category index
-@app.route('/api/collection/<terms>', methods=['GET'])
-def get_collection(terms):
-    result_tweets=[]
-    
-    category=pick_category(terms)
-
-    #if term doesn't match existing try synonym of categ
-    if elasticsearch_dsl.Index(category).exists():
-        #get + return idx content
-        s=elasticsearch_dsl.Search(using=es, index=category)
-        results=s.execute()
-
-        for hit in results:
-            result_tweets.append(hit._d_)
-        
-        return jsonify(result_tweets)
-
-    else: 
-        return 0
-    
     
 @app.route('/api/suggestions/<terms>', methods=['GET'])
 def suggestions(terms):
