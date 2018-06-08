@@ -11,23 +11,6 @@ from hippo_web import app, auth, db, es
 
 excluded_keywords = {"https", "i"}
 
-
-@auth.verify_password
-def verify_password(email_or_token, password):
-    # First try to authenticate by token, otherwise try with username/password.
-    user = User.verify_auth_token(email_or_token)
-
-    if not user:
-        user = User.query.filter_by(email=email_or_token).first()
-
-        if not user or not user.verify_password(password):
-            return False
-
-    g.user = user
-
-    return True
-
-
 def search_by_keywords(terms):
     terms_list = terms.split()
     should = []
@@ -87,32 +70,10 @@ def view():
 def like():
     pass
 
-@app.route('/api/suggestions/<terms>', methods=['GET'])
-def suggestions(terms):
-    suggestions = []
-    terms_list = terms.split()
-    should = []
-    for term in terms_list:
-        query = elasticsearch_dsl.Q("match", keywords=term)
-        should.append(query)
-
-    q = elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
-    s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
-
-    results = s.execute()
-
-    for hit in results:
-        hit_keywords = hit.keywords
-        for keyword in hit_keywords:
-            if keyword not in terms_list and keyword not in suggestions:
-                suggestions.append(keyword)
-
-    return jsonify(suggestions)
-
-def user_exists(user_email):
+def get_user(user_email):
     if not es.indices.exists(index="user"):
         es.indices.create(index="user")
-        return False
+        return None
 
     must = elasticsearch_dsl.Q('match', email=user_email)
     q = elasticsearch_dsl.Q('bool', should=[must])
@@ -121,9 +82,9 @@ def user_exists(user_email):
     
     for hit in results:
         if (hit._d_['email'] == user_email):
-            return True
+            return User.get(hit.meta.id)
     
-    return False
+    return None
     
 @app.route('/api/users', methods=['POST'])
 def register():
@@ -138,7 +99,7 @@ def register():
     if None in (email, password, first_name, last_name):
         abort(400, description="Not enough valid information to finish the registration has been given.")
 
-    if (user_exists(email)):
+    if (get_user(email)):
         abort(400, description="A user with that email has already been registered.")
     
     user = User()
@@ -160,11 +121,26 @@ def register():
     
     return jsonify({'email': email}), 201
 
+import inspect    
+
+@auth.verify_password
+def verify_password(email_or_token, password):
+    # First try to authenticate by token, otherwise try with username/password.
+    user = User.verify_auth_token(email_or_token)
+
+    if not user:
+        user = get_user(email_or_token)
+        if not user or not user.verify_password(password):
+            return False
+
+    g.user = user
+    return True
+
 @app.route('/api/token')
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
-    return jsonify({'token': token.decode('ascii')})
+    return jsonify({'token': token})
 
 @app.route('/api/user/profile')
 @auth.login_required

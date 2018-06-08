@@ -1,5 +1,6 @@
-from itsdangerous import Serializer, SignatureExpired, BadSignature
+from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from passlib.hash import pbkdf2_sha256
+import base64
 
 from hippo_web import app
 
@@ -47,11 +48,9 @@ class User(DocType):
     def verify_password(self, password: str) -> bool:
         return pbkdf2_sha256.verify(password, self.password_hash)
 
-    # TODO: Check whether "serializer.dumps" returns a string or bytes.
-    def generate_auth_token(self, expiration: int = 600) -> object:
-        serializer = Serializer(app.config['SECRET_KEY'], expires_in=expiration)
-
-        return serializer.dumps({'id': self.id})
+    def generate_auth_token(self):
+        serializer = Serializer(app.config['SECRET_KEY'])
+        return serializer.dumps({'id': self.meta.id}).decode("utf-8")
 
     @staticmethod
     def verify_auth_token(token: str) -> object:
@@ -59,14 +58,18 @@ class User(DocType):
 
         try:
             data = serializer.loads(token)
-
+            print(data)
         except SignatureExpired:
             # Valid token, but expired.
+            print("expired")
             return None
 
         except BadSignature:
             # Invalid token.
+            print("Bad")
             return None
+        
+        return User.get(data["id"])
 
         
     class Meta:
