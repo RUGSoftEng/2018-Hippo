@@ -133,4 +133,25 @@ Group meeting / working on backend, streaming, keywords, etc
 Group meeting / working on backend, streaming, keywords, etc
 Group meeting / working on backend, streaming, keywords, etc
 
---- UP TO DATE: june 4nd, 2018 --- 
+Fixing bug to ensure Said could continue on frontend
+
+Group meeting / finishing project for presentation
+Group meeting / finishing project for presentation
+Group meeting / finishing project for presentation
+Group meeting / finishing project for presentation
+Group meeting / finishing project for presentation
+Group meeting / finishing project for presentation
+Group meeting / finishing project for presentation
+Group meeting / finishing project for presentation
+
+Back-end meeting - working on users: registering and logging in
+Back-end meeting - working on users: registering and logging in
+Back-end meeting - working on users: registering and logging in
+Back-end meeting - working on users: registering and logging in
+Back-end meeting - working on users: registering and logging in
+Back-end meeting - working on users: registering and logging in
+Back-end meeting - working on users: registering and logging in
+Back-end meeting - working on users: registering and logging in
+Back-end meeting - working on users: registering and logging in
+
+--- UP TO DATE: june 8th, 2018 --- 
