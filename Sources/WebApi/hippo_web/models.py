@@ -1,7 +1,7 @@
 from itsdangerous import Serializer, SignatureExpired, BadSignature
 from passlib.hash import pbkdf2_sha256
 
-from hippo_web import db, app
+from hippo_web import app
 
 from elasticsearch_dsl import *
 
@@ -28,23 +28,14 @@ def get_age_group(age: int):
     
     return age_groups[-1]
 
-class User(db.Model):
-    __tablename__ = 'users'
-
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(128), index=True)
-    first_name = db.Column(db.String(64))
-    last_name = db.Column(db.String(64))
-
-    # TODO: Check which format this should be and what size.
-    password_hash = db.Column(db.Binary(256))
-
-    # If null: opt-out for data collection, record datetime for opt-in.
-    data_collection_consent = db.Column(db.DateTime())
-    marketing_consent = db.Column(db.DateTime())
-
-    birthday = db.Column(db.Date())
-    location_country = db.Column(db.String(3))
+class User(DocType):
+    email = Text()
+    passhash = Text()
+    first_name = Text()
+    last_name = Text()
+    birthdate = Date()
+    dataCollectionConsent = Boolean()
+    marketingConsent = Boolean()
 
     # TODO: calculate the age of the user
     def get_age(self):
@@ -77,9 +68,12 @@ class User(db.Model):
             # Invalid token.
             return None
 
-        user = User.query.get(data['id'])
-
-        return user
+        
+    class Meta:
+        index = 'user'
+        
+    def save(self, ** kwargs):
+        return super(User, self).save(** kwargs)
 
 
 # Elasticsearch model.
