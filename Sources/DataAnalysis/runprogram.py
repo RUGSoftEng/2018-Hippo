@@ -19,4 +19,3 @@ if len(sys.argv) > 1:
 # Run
 streamer = TwitterStreaming()
 streamer.start(keyword_filter=content)
-    
