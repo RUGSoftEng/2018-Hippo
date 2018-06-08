@@ -1,26 +1,39 @@
 <template lang="html">
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">Hippo</a>
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        Menu
-        <i class="fa fa-bars"></i>
+
+  <!-- 11 - contained in center example -->
+  <nav class="navbar navbar-expand-sm hippo-navbar" data-toggle="affix">
+    <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
+      <a class="navbar-brand" style="padding-bottom: 0; margin-right: 50px;" href="#"><img style="height: 40px" src="../src/assets/Logo.svg"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#account">My Account</a>
+      <div class="collapse navbar-collapse text-center" id="navbarsExample11">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link hippo-nav-link" href="#">Explore</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#settings">Settings</a>
+            <a class="nav-link hippo-nav-link" href="#">Search</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#logout">Log Out</a>
+            <a class="nav-link hippo-nav-link" href="#">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hippo-nav-link" href="#">Support</a>
+          </li>
+          <li class="nav-item">
+
+            <a class="nav-link hippo-nav-link" href="#"><img style="height: 28px; padding-right: 20px;" src="../src/assets/icons8-male-user-filled.svg">Account</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hippo-nav-link" href="#">Logout</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+
+
 </template>
 
 <script>
@@ -29,96 +42,22 @@ export default {
 </script>
 
 <style scoped lang="css">
-#mainNav {
-  border-color: rgba(34, 34, 34, 0.05);
-  background-color: white;
-  -webkit-transition: all .35s;
-  -moz-transition: all .35s;
-  transition: all .35s;
-  font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
-  font-weight: 200;
-  letter-spacing: 1px;
-}
+  .hippo-navbar
+  {
+    background-color: rgba(0, 0, 0, 0.75) !important;
+    padding: 2px 0 0;
+  }
 
-#mainNav .navbar-brand {
-  color: #fdcc52;
-  font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
-  font-weight: 200;
-  letter-spacing: 1px;
-}
+  .hippo-nav-link
+  {
+    font-size: 16px;
+    color: white !important;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
 
-#mainNav .navbar-brand:hover, #mainNav .navbar-brand:focus {
-  color: #fcbd20;
-}
-
-#mainNav .navbar-toggler {
-  font-size: 12px;
-  padding: 8px 10px;
-  color: #222222;
-}
-
-#mainNav .navbar-nav > li > a {
-  font-size: 11px;
-  font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-#mainNav .navbar-nav > li > a.active {
-  color: #fdcc52 !important;
-  background-color: transparent;
-}
-
-#mainNav .navbar-nav > li > a.active:hover {
-  background-color: transparent;
-}
-
-#mainNav .navbar-nav > li > a,
-#mainNav .navbar-nav > li > a:focus {
-  color: #222222;
-}
-
-#mainNav .navbar-nav > li > a:hover,
-#mainNav .navbar-nav > li > a:focus:hover {
-  color: #fdcc52;
-}
-
-@media (min-width: 992px) {
-  #mainNav {
-    border-color: transparent;
-    background-color: transparent;
+  .hippo-nav-logo
+  {
+    height: 40px;
   }
-  #mainNav .navbar-brand {
-    color: fade(white, 70%);
-  }
-  #mainNav .navbar-brand:hover, #mainNav .navbar-brand:focus {
-    color: white;
-  }
-  #mainNav .navbar-nav > li > a,
-  #mainNav .navbar-nav > li > a:focus {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  #mainNav .navbar-nav > li > a:hover,
-  #mainNav .navbar-nav > li > a:focus:hover {
-    color: white;
-  }
-  #mainNav.navbar-shrink {
-    border-color: rgba(34, 34, 34, 0.1);
-    background-color: white;
-  }
-  #mainNav.navbar-shrink .navbar-brand {
-    color: #222222;
-  }
-  #mainNav.navbar-shrink .navbar-brand:hover, #mainNav.navbar-shrink .navbar-brand:focus {
-    color: #fdcc52;
-  }
-  #mainNav.navbar-shrink .navbar-nav > li > a,
-  #mainNav.navbar-shrink .navbar-nav > li > a:focus {
-    color: #222222;
-  }
-  #mainNav.navbar-shrink .navbar-nav > li > a:hover,
-  #mainNav.navbar-shrink .navbar-nav > li > a:focus:hover {
-    color: #fdcc52;
-  }
-}
 </style>

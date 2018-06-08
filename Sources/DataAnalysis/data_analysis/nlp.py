@@ -1,8 +1,21 @@
-from nltk import ne_chunk, pos_tag, word_tokenize, re
+import nltk
+
 from nltk.tree import Tree
+from nltk import ne_chunk, pos_tag, word_tokenize, wordnet
+
+from vocabulary.vocabulary import Vocabulary
+
+from acora import AcoraBuilder
+
+nltk.download("punkt")
+nltk.download("averaged_perceptron_tagger")
+nltk.download("wordnet")
 
 
-def get_continuous_chunks(text):
+# TODO: Check whether still needed.
+# this function is taken and slightly modified from
+# https://stackoverflow.com/questions/24398536/named-entity-recognition-with-regular-expression-nltk
+def get_continuous_chunks(text: str):
     chunked = ne_chunk(pos_tag(word_tokenize(text)))
 
     continuous_chunk = []
@@ -27,10 +40,80 @@ def get_continuous_chunks(text):
     return continuous_chunk
 
 
-def check_wish(c):
-    wish = ['I wish there was ']
-    for i in wish:
-        if re.search(i, c):
-            result = re.sub(i, "", c)
-            return result
-    return ""
+def analyse_tweet(tweet: str) -> ([str], [str]):
+    keywords = get_keywords(tweet)
+    # synonyms = get_synonyms(keywords)
+
+    return keywords, []
+
+
+def create_string_match_engine(keywords: [str]):
+    builder = AcoraBuilder()
+    builder.update(keywords)
+    builder.ignore_case = True
+
+    return builder.build()
+
+
+#
+# idea_filter = create_string_match_engine(["", ""]) # want
+# product_filter = create_string_match_engine(["", ""]) # app startup
+
+
+def match_keywords_filter(text: str) -> bool:
+    # a = idea_filter.findall(text)
+    # b = product_filter.findall(text)
+
+    # if a.count() < 1 or b.count() < 1:
+    #    return False
+
+    return True
+
+
+def get_keywords(text: str) -> [str]:
+    tokens = nltk.tokenize.word_tokenize(text)
+    alpha_tokens = [w.lower() for w in tokens if w.isalpha()]
+
+    pos_tagged = nltk.pos_tag(alpha_tokens)
+
+    grammar = r"""
+                KEYWORD:
+                    {<NN.*>}              #nouns
+                    {<V.*>}               #all types of verbs
+                    {<JJ.*>}              #adjectives
+                    """
+
+    cp = nltk.RegexpParser(grammar)
+    chunks = cp.parse(pos_tagged)
+
+    keywords = []
+
+    # extract keywords
+    for subtree in chunks.subtrees():
+        if subtree.label() == "KEYWORD":
+            keywords.append((subtree.leaves()[0])[0])
+
+    return keywords
+
+
+def get_synonyms(keywords: [str]) -> [str]:
+    synonyms = []
+
+    for keyword in keywords:
+        synonym = Vocabulary.synonym(keyword, format="list")
+        if synonym is not False:
+            synonyms.append(synonym)
+
+    return synonyms
+
+
+# TODO: Check whether still needed, with get_synonyms.
+def get_synonyms_wordnet(keywords: [str]) -> [str]:
+    synonyms = []
+
+    for keyword in keywords:
+        for synonym in wordnet.synsets(keyword):
+            if synonym.name() not in synonyms:
+                synonyms.append(synonym.name())
+
+    return synonyms

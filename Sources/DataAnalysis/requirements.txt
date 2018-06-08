@@ -1,4 +1,6 @@
+vocabulary
 nltk
 tweepy
 elasticsearch
 elasticsearch_dsl
+acora

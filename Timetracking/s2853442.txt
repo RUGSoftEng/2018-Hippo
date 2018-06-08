@@ -2,6 +2,7 @@ Work on important functional requirements
 Research data analysis
 Research natural language processing
 Research python nltk 
+weekly group meeting
 Work on descriptions for the data analysis technology stack
 start codding layout for data analysis (tokenization)
 start codding layout for data analysis (cleaning punctuation)
@@ -20,8 +21,33 @@ start codding layout for data analysis (regular expressions)
 start codding layout for data analysis (regular expressions)
 learn about docker
 learn about docker
+weekly group meeting
 prepare for the presentation
 prepare for the presentation
 prepare for the presentation
 prepare for the presentation
 presentation itself
+weekly group meeting
+cleaning up
+cleaning up
+weekly group meeting
+making code more efficient
+weekly group meeting
+merging Jean`s backend with nltk
+merging Jean`s backend with nltk
+merging Jean`s backend with nltk
+merging Jean`s backend with nltk
+weekly group meeting
+reseraching function to compare 2 sets of keywords
+reseraching function to compare 2 sets of keywords
+reseraching function to compare 2 sets of keywords
+reseraching function to compare 2 sets of keywords
+weekly group meeting
+group work
+group work
+group work
+group work
+group work
+group work
+group work
+group work

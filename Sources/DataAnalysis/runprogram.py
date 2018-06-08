@@ -1,10 +1,13 @@
 #!/usr/bin/python
-
 import sys
 
 from data_analysis.streamer import TwitterStreaming
 
-content = []
+content = [
+    "like", "love", "wish", "want", "need", "request", "desire", "require", "hope", "ask", "seek",
+    "idea", "suggest", "suggestion", "proposal", "business", "startup",
+    "app", "device", "program", "website", "site"
+]
 
 if len(sys.argv) > 1:
     with open(sys.argv[1]) as f:
@@ -14,5 +17,5 @@ if len(sys.argv) > 1:
         content = [x.strip() for x in content]
 
 # Run
-i = TwitterStreaming()
-i.start(keyword_filter=content)
+streamer = TwitterStreaming()
+streamer.start(keyword_filter=content)
