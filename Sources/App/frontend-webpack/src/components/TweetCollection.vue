@@ -1,32 +1,36 @@
 <template lang="html">
-  <div>
-   <blockquote class=tweet-collection>
-     <h1 class="category">{{searchTerms}}</h1>
-     <div class="line"></div>
-     <div style="padding-bottom: 1.5rem; padding-top: 1.5rem;">{{tweetData}}</div>
-     <div>
-       <i style="color: #1dcaff; font-size: 30px; text-align: left; float: left;" class="fa fa-twitter"></i>
-       <h5 style="text-align: left; float: left">0</h5>
-       <i style="color: red; font-size: 30px; text-align: left; float: left; padding-left: 5px;" class="fa fa-heart"></i>
-       <h5 style="text-align: left; float: left; padding-left: 5px">0</h5>
-       <button class="collection-button" style="font-size: 14px; float: right; background: #1569C7; color: white; border: none; border-radius: 4px; padding: 5px 10px;" v-on:click="switchToTweets()">More</button>
+    <div>
+        <blockquote class=tweet-collection>
+            <h1 class="category">{{searchTerms}}</h1>
+            <div class="line"></div>
+            <div style="padding-bottom: 1.5rem; padding-top: 1.5rem;">{{tweetData}}</div>
+            <div>
+                <i style="color: #1dcaff; font-size: 30px; text-align: left; float: left;" class="fa fa-twitter"></i>
+                <h5 style="text-align: left; float: left">0</h5>
+                <i style="color: red; font-size: 30px; text-align: left; float: left; padding-left: 5px;"
+                   class="fa fa-heart"></i>
+                <h5 style="text-align: left; float: left; padding-left: 5px">0</h5>
+                <button class="collection-button"
+                        style="font-size: 14px; float: right; background: #1569C7; color: white; border: none; border-radius: 4px; padding: 5px 10px;"
+                        v-on:click="switchToTweets()">More
+                </button>
 
-     </div>
-   </blockquote>
- </div>
+            </div>
+        </blockquote>
+    </div>
 </template>
 
 <script>
-export default {
-  props: ['tweetData', 'searchTerms', 'categoryNum'],
-  methods: {
-    switchToTweets: function() {
-      console.log("Switching to tweets...");
-      window.scrollBy(0, -1000);
-      this.$router.push({name: 'TL', params: {id: this.categoryNum}});
+    export default {
+        props: ['tweetData', 'searchTerms', 'categoryNum'],
+        methods: {
+            switchToTweets: function () {
+                console.log("Switching to tweets...");
+                window.scrollBy(0, -1000);
+                this.$router.push({name: 'TL', params: {id: this.categoryNum}});
+            }
+        }
     }
-  }
-}
 </script>
 
 <style scoped lang="css">
@@ -44,7 +48,7 @@ export default {
     }
 
     .collection-button:focus {
-        box-shadow: 0 0 0 0.5rem rgba(255, 125, 125,0.25) !important;
+        box-shadow: 0 0 0 0.5rem rgba(255, 125, 125, 0.25) !important;
     }
 
     blockquote.tweet-collection {
@@ -87,7 +91,7 @@ export default {
 
     }
 
-    .line{
+    .line {
         width: 425px;
         margin-right: 20px;
         border-bottom: 2px solid #d1d1d1;

@@ -11,11 +11,12 @@ Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-  routes
+    mode: 'history',
+    routes
 });
 
 new Vue({
-  el: '#app',
-  router,
-  render: h => h(Website)
+    el: '#app',
+    router,
+    render: h => h(Website)
 });

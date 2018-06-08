@@ -1,13 +1,18 @@
 /*jshint esversion: 6 */
 
-import TweetList from './components/TweetList.vue';
-import TweetCollectionList from './components/TweetCollectionsList.vue';
 import Home from './templates/Home.vue';
+import Explore from './templates/Explore.vue';
+import Search from './templates/Search.vue';
 import Login from './templates/Login.vue';
-export const routes = [
-  { path: '/app', name:'TCL', component: TweetCollectionList },
-  { path: '/', name: 'H', component: Home},
-  { path: '/login', name: 'L', component: Login},
-  { path: '/app/tweetlist:id', name: 'TL', component: TweetList },
+import Logout from './templates/Logout.vue';
+import Register from './templates/Register.vue';
 
+export const routes = [
+    { path: '/', component: Home},
+    { path: '/app', component: Explore },
+    { path: '/app/explore', component: Explore },
+    { path: '/app/search', component: Search },
+    { path: '/login', component: Login},
+    { path: '/logout', component: Logout},
+    { path: '/register', component: Register},
 ];
