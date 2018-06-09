@@ -19,15 +19,19 @@ class _TwitterStreamListener(StreamListener):
     def on_data(self, data):
         json_tweet = json.loads(data)
 
+        # this checks whether the data is an actual tweet (and not
+        # another message like a deletion, etc)
         if "text" not in json_tweet:
             return True
         
+        # filter out retweets
         if "retweeted_status" in json_tweet:
             return True
         
         # TODO: Remove in production.
         print(json_tweet["text"])
 
+        # create the tweet object, analyse it and save it in ElasticSearch
         tweet = Tweet()
 
         tweet.content = json_tweet["text"]

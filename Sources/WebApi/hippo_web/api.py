@@ -12,21 +12,25 @@ from operator import itemgetter
 from hippo_web.models import User
 from hippo_web import app, auth, db, es
 
+
+# hardcoded keywords that need to be excluded.
 excluded_keywords = {"https", "i"}
 
 
 def search_by_keywords(terms):
+    # create the query
     terms_list = terms.split()
     should = []
     for term in terms_list:
         query = elasticsearch_dsl.Q("match", keywords=term)
         should.append(query)
 
+    # perform the query
     q = elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
     s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
 
+    # return the first 250 hits
     results = s[:250]
-
     return [hit._d_ for hit in results]
 
 
@@ -51,9 +55,14 @@ def search_category(terms):
         keywords = hit["keywords"]
 
         for keyword in keywords:
+            # make the keyword lowercase, to remove duplicates that differ in case
+            keyword = keyword.lower()
+            
+            # exclude searched terms and hardcoded exclusions
             if keyword not in excluded_keywords and keyword not in terms:
                 keyword_frequencies[keyword] += 1
 
+    # sort the keywords by frequency
     keyword_frequencies = dict(keyword_frequencies)
     keyword_frequencies = sorted(keyword_frequencies.items(), key=itemgetter(1))
 
@@ -90,20 +99,24 @@ def check_valid_email(email, password, first_name, last_name):
 def check_password(email, password, first_name, last_name):
     password_results = zxcvbn(password, user_inputs=[email, first_name, last_name])
     
+    # score is between 0 (very bad password) and 4 (very good password)
     if (password_results["score"] < 2):
         abort(400, description="Insecure password: Please provide a secure password.")
 
         
 def get_user(user_email):
+    # no user database implies user doesn't exist. Also create the database
     if not es.indices.exists(index="user"):
         es.indices.create(index="user")
         return None
 
+    # query for the user email
     must = elasticsearch_dsl.Q('match', email=user_email)
     q = elasticsearch_dsl.Q('bool', should=[must])
     s = elasticsearch_dsl.Search(using=es, index="user").query(q)
     results = s.execute()
 
+    # if there is an exact match: return the user
     for hit in results:
         if (hit._d_['email'] == user_email):
             return User.get(hit.meta.id)
@@ -113,6 +126,7 @@ def get_user(user_email):
 
 @app.route('/api/users', methods=['POST'])
 def register():
+    # retrieve the fields from the POST request
     email: str = request.json.get('email')
     password: str = request.json.get('password')
     first_name: str = request.json.get('first_name')
@@ -121,6 +135,7 @@ def register():
     data_collection_consent: bool = request.json.get('data_collection_consent')
     marketing_consent: bool = request.json.get('marketing_consent')
 
+    # check for valid info
     if None in (email, password, first_name, last_name):
         abort(400, description="Not enough valid information to finish the registration has been given.")
 
@@ -131,6 +146,7 @@ def register():
     
     check_password(email, password, first_name, last_name)
     
+    # create the user object
     user = User()
     user.email = email
     user.hash_password(password)
@@ -140,13 +156,14 @@ def register():
     if birthday is not None:
         user.birthday = birthday
 
-    # You need to save the date at which the user gave consent, GDPR.
+    # We need to save the date at which the user gave consent, GDPR.
     if data_collection_consent is not None:
         user.data_collection_consent = datetime.utcnow()
 
     if marketing_consent is not None:
         user.marketing_consent = datetime.utcnow()
 
+    # put the new user in the database
     user.save()
 
     return jsonify({'email': email}), 201
