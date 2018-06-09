@@ -4,8 +4,7 @@
         <div class="d-flex justify-content-center" style="margin-top: 100px;">
             <div class="card" style="width: 500px; color: black !important;">
                 <header class="card-header">
-                    <a href="" class="float-right btn btn-outline-primary mt-1">Log in</a>
-                    <h4 class="card-title mt-2">Sign up</h4>
+                    <h2 class="card-title mt-2 text-center">Sign up</h2>
                 </header>
                 <article class="card-body">
                     <form>
@@ -44,7 +43,7 @@
                         <small class="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms of use and Privacy Policy.</small>
                     </form>
                 </article> <!-- card-body end .// -->
-                <div class="border-top card-body text-center">Have an account? <a href="">Log In</a></div>
+                <div class="border-top card-body text-center">Have an account? <router-link to="/login">Log In</router-link></div>
             </div> <!-- card.// -->
         </div>
     </div>

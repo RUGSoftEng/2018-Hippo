@@ -3,7 +3,7 @@
     <div class="search-view form-inline">
       <input class="form-control mr-sm-3 search-box" type="text" v-model="searchText" v-on:keyup.enter="search(searchText)" placeholder="Search for tweets..." aria-label="Search">
     </div>
-    <tweet-collections-list v-if="$route.name == 'TCL'" :categoryList="categories" :searchTerms="currentlySearchingFor"></tweet-collections-list>
+    <tweet-collections-list v-if="$route.path == '/app/search'" :categoryList="categories" :searchTerms="currentlySearchingFor"></tweet-collections-list>
     <tweet-list v-else :tweetList="currentTweetsDisplayed"></tweet-list>
   </div>
 </template>
