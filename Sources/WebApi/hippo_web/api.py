@@ -83,12 +83,11 @@ def view():
     pass
 
 
-@app.route('', methods=['POST'])
+@app.route('/api/like', methods=['POST'])
 def like():
     pass
 
 
-# generate (most general) synonym from terms/keyw
 # generate (most general) synonym from terms/keyw
 @app.route('/api/category/<terms>', methods=['GET'])
 def pick_category(terms):

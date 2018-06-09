@@ -9,9 +9,9 @@ services:
      - ".:/app"
     restart: always
 
-  PostgreSQL:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./docker/postgresql:/var/lib/postgresql
+  #PostgreSQL:
+  #  image: postgres:latest
+  #  ports:
+  #    - "5432:5432"
+  #  volumes:
+  #    - ./docker/postgresql:/var/lib/postgresql
