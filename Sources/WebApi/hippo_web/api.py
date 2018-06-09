@@ -11,6 +11,7 @@ from hippo_web import app, auth, db, es
 
 excluded_keywords = {"https", "i"}
 
+
 def search_by_keywords(terms):
     terms_list = terms.split()
     should = []
@@ -72,6 +73,7 @@ def view():
 def like():
     pass
 
+
 def get_user(user_email):
     if not es.indices.exists(index="user"):
         es.indices.create(index="user")
@@ -88,6 +90,7 @@ def get_user(user_email):
 
     return None
 
+
 @app.route('/api/users', methods=['POST'])
 def register():
     email: str = request.json.get('email')
@@ -101,7 +104,7 @@ def register():
     if None in (email, password, first_name, last_name):
         abort(400, description="Not enough valid information to finish the registration has been given.")
 
-    if (get_user(email)):
+    if get_user(email):
         abort(400, description="A user with that email has already been registered.")
 
     user = User()
@@ -110,18 +113,20 @@ def register():
     user.first_name = first_name
     user.last_name = last_name
 
-    if birthday != None:
+    if birthday is not None:
         user.birthday = birthday
 
-    if data_collection_consent != None:
-        user.data_collection_consent = data_collection_consent
+    # You need to save the date at which the user gave consent, GDPR.
+    if data_collection_consent is not None:
+        user.data_collection_consent = datetime.utcnow()
 
-    if marketing_consent != None:
-        user.marketing_consent = marketing_consent
+    if marketing_consent is not None:
+        user.marketing_consent = datetime.utcnow()
 
     user.save()
 
     return jsonify({'email': email}), 201
+
 
 @auth.verify_password
 def verify_password(email_or_token, password):
@@ -136,22 +141,26 @@ def verify_password(email_or_token, password):
     g.user = user
     return True
 
+
 @app.route('/api/token')
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
     return jsonify({'token': token})
 
+
 @app.route('/api/user/profile')
 @auth.login_required
 def user():
     return jsonify({'data': 'Hello, %s!' % g.user.email})
 
+
 # TODO: Implement functions for GDPR compliance for production.
 @app.route('/api/user/delete', methods=['POST'])
 @auth.login_required
 def delete_user():
-	pass
+    pass
+
 
 # TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)
 @app.route('/api/user/data', methods=['GET'])

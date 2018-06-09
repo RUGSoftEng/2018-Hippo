@@ -37,7 +37,7 @@ def get_age_group(age: int):
     return age_groups[-1]
 
 
-class User(db.Model):
+class User_SQL(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
