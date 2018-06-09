@@ -5,14 +5,14 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
 auth = HTTPBasicAuth()
 
 db = SQLAlchemy(app)
+
 es = Elasticsearch()
 
 import hippo_web.config
-import hippo_web.databases
 import hippo_web.models
 import hippo_web.api
