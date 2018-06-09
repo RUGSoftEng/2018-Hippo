@@ -121,9 +121,7 @@ def register():
     
     user.save()
     
-    return jsonify({'email': email}), 201
-
-import inspect    
+    return jsonify({'email': email}), 201 
 
 @auth.verify_password
 def verify_password(email_or_token, password):
