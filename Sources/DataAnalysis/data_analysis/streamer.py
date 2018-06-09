@@ -5,6 +5,8 @@ from tweepy import *
 from data_analysis.models import Tweet
 from data_analysis.nlp import analyse_tweet
 
+import data_analysis.databases
+
 consumer_key = "19zbXP0QH2etpYqk1oHwVFRrA"
 consumer_secret = "P4i0N3umEfmxCoseeL10X8EgxWLlc5v59pZRms1EYj5tKJk8Gi"
 
