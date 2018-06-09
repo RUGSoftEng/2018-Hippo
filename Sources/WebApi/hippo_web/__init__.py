@@ -16,3 +16,4 @@ es = Elasticsearch()
 import hippo_web.config
 import hippo_web.models
 import hippo_web.api
+import hippo_web.databases

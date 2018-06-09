@@ -90,6 +90,7 @@ class User_SQL(db.Model):
         return user
 
 
+# ElasticSearch User model
 class User(DocType):
     email = Text()
     passhash = Text()
@@ -122,12 +123,10 @@ class User(DocType):
             print(data)
         except SignatureExpired:
             # Valid token, but expired.
-            print("expired")
             return None
 
         except BadSignature:
             # Invalid token.
-            print("Bad")
             return None
 
         return User.get(data["id"])
@@ -137,13 +136,6 @@ class User(DocType):
 
     def save(self, **kwargs):
         return super(User, self).save(**kwargs)
-
-
-# Elasticsearch model.
-class Tweet(object):
-    def __init__(self):
-        self.sender: str = None
-        self.content: str = None
 
 
 # Demographics model.
