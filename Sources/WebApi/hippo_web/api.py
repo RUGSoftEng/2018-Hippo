@@ -1,6 +1,9 @@
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 from datetime import datetime
 
+from email_validator import validate_email, EmailNotValidError
+from zxcvbn import zxcvbn
+
 from flask import *
 import elasticsearch_dsl
 
@@ -72,6 +75,21 @@ def view():
 def like():
     pass
 
+def check_valid_email(email, password, first_name, last_name):
+    try:
+        v = validate_email(email)
+        email = v["email"]
+    except EmailNotValidError as e:
+        abort(400, description="Invalid email: " + str(e))
+    
+    return email
+    
+def check_password(email, password, first_name, last_name):
+    password_results = zxcvbn(password, user_inputs=[email, first_name, last_name])
+    
+    if (password_results["score"] < 2):
+        abort(400, description="Insecure password: Please provide a secure password.")
+
 def get_user(user_email):
     if not es.indices.exists(index="user"):
         es.indices.create(index="user")
@@ -100,9 +118,13 @@ def register():
 
     if None in (email, password, first_name, last_name):
         abort(400, description="Not enough valid information to finish the registration has been given.")
-
+        
+    email = check_valid_email(email, password, first_name, last_name)
+        
     if (get_user(email)):
         abort(400, description="A user with that email has already been registered.")
+    
+    check_password(email, password, first_name, last_name)
     
     user = User()
     user.email = email
@@ -151,7 +173,7 @@ def user():
 @app.route('/api/user/delete', methods=['POST'])
 @auth.login_required
 def delete_user():
-	pass
+    pass
 
 # TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)
 @app.route('/api/user/data', methods=['GET'])
