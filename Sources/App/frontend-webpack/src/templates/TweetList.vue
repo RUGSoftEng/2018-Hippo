@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Tweet from './Tweet.vue';
+import Tweet from '../components/Tweet.vue';
 export default {
   props: ['tweetList'],
   components: {

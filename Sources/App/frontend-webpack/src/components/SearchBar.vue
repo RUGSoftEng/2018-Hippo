@@ -11,7 +11,7 @@
 <script>
 import axios from 'axios';
 import TweetCollectionsList from './TweetCollectionsList.vue';
-import TweetList from './TweetList.vue';
+import TweetList from '../templates/TweetList.vue';
 export default {
   data() {
     return {

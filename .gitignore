@@ -261,5 +261,5 @@ fabric.properties
 
 Sources/DataAnalysis/docker/
 Sources/WebApi/docker/
-Sources/App/frontend-webpack/package*.json
-Sources/App/frontend-webpack/package.json
+
+Sources/App/frontend-webpack/package-lock.json
