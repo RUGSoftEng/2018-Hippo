@@ -135,13 +135,6 @@ class User_ES(DocType):
         return super(User, self).save(**kwargs)
 
 
-# Elasticsearch model.
-class Tweet(object):
-    def __init__(self):
-        self.sender: str = None
-        self.content: str = None
-
-
 # Demographics model.
 class Demographic(DocType):
     count = Integer()

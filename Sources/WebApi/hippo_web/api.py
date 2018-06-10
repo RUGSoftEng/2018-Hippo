@@ -12,19 +12,24 @@ from operator import itemgetter
 from hippo_web.models import User
 from hippo_web import app, auth, db, es
 
+
+# hardcoded keywords that need to be excluded.
 excluded_keywords = {"https", "i"}
 
 
 def search_by_keywords(terms):
+    # create the query
     terms_list = terms.split()
     should = []
     for term in terms_list:
         query = elasticsearch_dsl.Q("match", keywords=term)
         should.append(query)
 
+    # perform the query
     q = elasticsearch_dsl.Q("bool", should=should, minimum_should_match=1)
     s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
 
+    # return the first 250 hits
     results = s[:250]
 
     return [hit._d_ for hit in results]
@@ -51,9 +56,14 @@ def search_category(terms):
         keywords = hit["keywords"]
 
         for keyword in keywords:
+            # make the keyword lowercase, to remove duplicates that differ in case
+            keyword = keyword.lower()
+
+            # exclude searched terms and hardcoded exclusions
             if keyword not in excluded_keywords and keyword not in terms:
                 keyword_frequencies[keyword] += 1
 
+    # sort the keywords by frequency
     keyword_frequencies = dict(keyword_frequencies)
     keyword_frequencies = sorted(keyword_frequencies.items(), key=itemgetter(1))
 
@@ -87,6 +97,7 @@ def check_valid_email(email: str) -> str:
 def check_password(email: str, password: str, first_name: str, last_name: str):
     password_results = zxcvbn(password, user_inputs=[email, first_name, last_name])
 
+    # score is between 0 (very bad password) and 4 (very good password)
     if password_results["score"] < 2:
         abort(400, jsonify(description="WEAK_PASSWORD", message="The given password is insecure."))
 
@@ -124,7 +135,7 @@ def register():
     if birthday is not None:
         user.birthday = birthday
 
-    # You need to save the date at which the user gave consent, GDPR.
+    # We need to save the date at which the user gave consent, GDPR.
     if data_collection_consent is True:
         user.data_collection_consent = datetime.utcnow()
 
@@ -134,7 +145,7 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify(message="1")
+    return jsonify({'email': email})
 
 
 @auth.verify_password
