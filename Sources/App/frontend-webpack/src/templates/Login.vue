@@ -3,13 +3,13 @@
         <nav-bar></nav-bar>
 
         <div class="text-center" style="color: black !important;">
-            <form class="form-signin">
+            <form class="form-signin" @submit.prevent="login()">
                 <img style="height: 100px; margin-bottom: 20px;" src="../assets/Logo-black.svg">
                 <h1 class="h3 mb-3 font-weight-normal"
-                    style="color: black !important; font-family: Catamaran,Helvetica,Arial,sans-serif;">Sign in</h1>
+                    style="color: black !important; font-family: Catamaran,Helvetica,Arial,sans-serif; margin-bottom: 30px !important;">Sign in</h1>
                 <label for="inputEmail" class="sr-only">Email address</label>
-                <input type="email" id="inputEmail" v-model="username" class="form-control" placeholder="Email address"
-                       required autofocus>
+                <input type="email" id="inputEmail" v-model="email" class="form-control" placeholder="Email address"
+                       required autofocus name="email">
                 <label for="inputPassword" class="sr-only">Password</label>
                 <input type="password" id="inputPassword" v-model="password" class="form-control" placeholder="Password"
                        required>
@@ -18,9 +18,10 @@
                         <input type="checkbox" style="color: black !important;" value="remember-me"> Remember me
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit" @click="login()" v-on:keyup.enter="login()">
+                <button type="submit" class="btn btn-lg btn-primary btn-block">
                     Sign in
                 </button>
+                <div class="text-center" style="margin-top: 30px;">Don't have an account yet? <router-link to="/register">Register</router-link></div>
             </form>
         </div>
     </div>
@@ -28,24 +29,61 @@
 
 <script>
     import NavBar from '../components/NavBar.vue';
+    import store from '../store'
+
+    import axios from 'axios';
+    import * as vm from "vue";
 
     export default {
+        store,
         components: {
             'nav-bar': NavBar,
         },
         data() {
             return {
-                username: str.empty(),
-                password: str.empty(),
+                isLoggedIn: store.state.isLoggedIn,
+
+                email: '',
+                password: ''
             }
         },
         methods: {
-            login() {
-                // TODO: Add login logic.
-                this.$router.push("/app");
+            login: function () {
+                const { email, password } = this;
+
+                const self = this;
+
+                axios.get('http://localhost:5000/api/token', {
+                    auth: {
+                        username: email,
+                        password: password
+                    },
+                })
+                    .then(function (response) {
+                        console.log(response);
+
+                        self.$store.dispatch('login', {
+                            token: response.data.token
+                        }).then(() => {
+                            self.redirect();
+                            location.reload();
+                        });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
-        }
+            redirect: function () {
+                this.$router.push("/app");
+            }
+        },
+        beforeMount(){
+            if (this.isLoggedIn){
+                this.redirect();
+            }
+        },
     }
+
 </script>
 
 <style lang="css">
@@ -53,10 +91,12 @@
     .form-signin {
         width: 100%;
         max-width: 420px;
-        padding: 40px;
+        padding: 30px 25px;
         margin: 200px auto auto;
-        background-color: rgba(255, 255, 255, 0.75);
+        background-color: white;
         border-radius: 10px;
+        border: rgba(0, 0, 0, 0.125) solid 1px;
+
 
     }
 

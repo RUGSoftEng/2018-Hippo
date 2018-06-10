@@ -77,42 +77,24 @@ def like():
     pass
 
   
-def check_valid_email(email, password, first_name, last_name):
+def check_valid_email(email: str) -> str:
     try:
-        v = validate_email(email)
-        email = v["email"]
-    except EmailNotValidError as e:
-        abort(400, description="Invalid email: " + str(e))
-    
-    return email
-    
-    
-def check_password(email, password, first_name, last_name):
+        return validate_email(email)["email"]
+    except EmailNotValidError as ex:
+        abort(400, jsonify(description="INVALID_EMAIL", message="The given email is invalid:" + str(ex)))
+
+
+def check_password(email: str, password: str, first_name: str, last_name: str):
     password_results = zxcvbn(password, user_inputs=[email, first_name, last_name])
-    
-    if (password_results["score"] < 2):
-        abort(400, description="Insecure password: Please provide a secure password.")
 
-        
-def get_user(user_email):
-    if not es.indices.exists(index="user"):
-        es.indices.create(index="user")
-        return None
-
-    must = elasticsearch_dsl.Q('match', email=user_email)
-    q = elasticsearch_dsl.Q('bool', should=[must])
-    s = elasticsearch_dsl.Search(using=es, index="user").query(q)
-    results = s.execute()
-
-    for hit in results:
-        if (hit._d_['email'] == user_email):
-            return User.get(hit.meta.id)
-
-    return None
+    if password_results["score"] < 2:
+        abort(400, jsonify(description="WEAK_PASSWORD", message="The given password is insecure."))
 
 
 @app.route('/api/users', methods=['POST'])
 def register():
+    db.create_all()
+
     email: str = request.json.get('email')
     password: str = request.json.get('password')
     first_name: str = request.json.get('first_name')
@@ -122,18 +104,20 @@ def register():
     marketing_consent: bool = request.json.get('marketing_consent')
 
     if None in (email, password, first_name, last_name):
-        abort(400, description="Not enough valid information to finish the registration has been given.")
+        abort(400, jsonify(description="MISSING_INFO", message="Not enough valid information to finish the registration has been given."))
 
-    email = check_valid_email(email, password, first_name, last_name)
-        
-    if get_user(email):
-        abort(400, description="A user with that email has already been registered.")
-    
+    check_valid_email(email)
+
+    if User.query.filter_by(email=email).first():
+        abort(400, jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered."))
+
     check_password(email, password, first_name, last_name)
-    
+
     user = User()
+
     user.email = email
     user.hash_password(password)
+
     user.first_name = first_name
     user.last_name = last_name
 
@@ -141,15 +125,16 @@ def register():
         user.birthday = birthday
 
     # You need to save the date at which the user gave consent, GDPR.
-    if data_collection_consent is not None:
+    if data_collection_consent is True:
         user.data_collection_consent = datetime.utcnow()
 
-    if marketing_consent is not None:
+    if marketing_consent is True:
         user.marketing_consent = datetime.utcnow()
 
-    user.save()
+    db.session.add(user)
+    db.session.commit()
 
-    return jsonify({'email': email}), 201
+    return jsonify(message="1")
 
 
 @auth.verify_password
@@ -158,7 +143,8 @@ def verify_password(email_or_token, password):
     user = User.verify_auth_token(email_or_token)
 
     if not user:
-        user = get_user(email_or_token)
+        user = User.query.filter_by(email=email_or_token).first()
+
         if not user or not user.verify_password(password):
             return False
 
