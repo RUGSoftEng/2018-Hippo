@@ -32,7 +32,6 @@
     import store from '../store'
 
     import axios from 'axios';
-    import * as vm from "vue";
 
     export default {
         store,

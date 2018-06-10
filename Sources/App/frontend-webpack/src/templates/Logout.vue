@@ -11,6 +11,8 @@
         store,
         methods: {
             logout: function () {
+                const self = this;
+
                 this.$store.dispatch('logout').then(() => {
                     self.redirect();
                     location.reload();
