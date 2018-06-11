@@ -23,11 +23,11 @@ class _TwitterStreamListener(StreamListener):
         # another message like a deletion, etc)
         if "text" not in json_tweet:
             return True
-        
+
         # filter out retweets
         if "retweeted_status" in json_tweet:
             return True
-        
+
         # TODO: Remove in production.
         print(json_tweet["text"])
 

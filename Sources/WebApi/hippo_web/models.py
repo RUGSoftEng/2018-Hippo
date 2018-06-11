@@ -91,7 +91,7 @@ class User(db.Model):
         return user
 
 
-#class Like(db.Model):
+# class Like(db.Model):
 #    __tablename__ = 'likes'
 
 #    id = db.Column(db.Integer, primary_key=True)
@@ -110,7 +110,8 @@ class User_ES(DocType):
 
     def get_age(self):
         current = date.today()
-        age = current.year-self.birthdate.year-((current.month, current.day) < (self.birthdate.month, self.birthdate.day))
+        age = current.year - self.birthdate.year - (
+                    (current.month, current.day) < (self.birthdate.month, self.birthdate.day))
         return age
 
     def hash_password(self, password: str):

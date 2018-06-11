@@ -22,23 +22,27 @@
                             </div> <!-- form-group end.// -->
                             <div class="col form-group">
                                 <label>Last name</label>
-                                <input v-model="last_name" type="text" class="form-control" placeholder="" required name="family-name">
+                                <input v-model="last_name" type="text" class="form-control" placeholder="" required
+                                       name="family-name">
                             </div> <!-- form-group end.// -->
                         </div> <!-- form-row end.// -->
                         <div class="form-group">
                             <label>Email address</label>
-                            <input v-model="email" type="email" class="form-control" placeholder="" required name="email">
+                            <input v-model="email" type="email" class="form-control" placeholder="" required
+                                   name="email">
                             <small class="form-text text-muted">We'll never share your email with anyone
                                 else.
                             </small>
                         </div> <!-- form-group end.// -->
                         <div class="form-group">
                             <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" value="m" v-model="gender" required>
+                                <input class="form-check-input" type="radio" name="gender" value="m" v-model="gender"
+                                       required>
                                 <span class="form-check-label"> Male </span>
                             </label>
                             <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" value="f" v-model="gender" required>
+                                <input class="form-check-input" type="radio" name="gender" value="f" v-model="gender"
+                                       required>
                                 <span class="form-check-label"> Female</span>
                             </label>
                         </div> <!-- form-group end.// -->
@@ -51,14 +55,16 @@
                         </div> <!-- form-group// -->
                         <div class="form-row" style="padding-top: 25px;">
                             <div class="col form-group">
-                                You can delete your account, this is <mark><strong>irreversible</strong></mark>.
+                                You can delete your account, this is
+                                <mark><strong>irreversible</strong></mark>
+                                .
                             </div> <!-- form-group end.// -->
                             <div class="form-group" style="padding-right: 5px;">
-                                <button type="button" class="btn btn-danger btn-block" @click="delete_account()">Delete account</button>
+                                <button type="button" class="btn btn-danger btn-block" @click="delete_account()">Delete
+                                    account
+                                </button>
                             </div> <!-- form-group// -->
                         </div> <!-- form-row end.// -->
-
-
                     </form>
                 </article> <!-- card-body end .// -->
             </div> <!-- card.// -->
@@ -95,8 +101,8 @@
                 document.getElementById("success-window").style.display = "none";
                 document.getElementById("error-window").style.display = "none";
 
-                axios.post('http://localhost:5000/api/user/account',  {
-                    auth:{
+                axios.post('http://localhost:5000/api/user/account', {
+                    auth: {
                         username: store.getters.token,
                     },
 
@@ -119,12 +125,10 @@
 
                         document.getElementById("error-window").style.display = "block";
 
-                        if (typeof error.response !== "undefined")
-                        {
+                        if (typeof error.response !== "undefined") {
                             document.getElementById("error-window").innerHTML = error.response.data.message;
                         }
-                        else
-                        {
+                        else {
                             document.getElementById("error-window").innerHTML = "An unknown exception occurred.";
                         }
                     });
@@ -134,8 +138,8 @@
 
                 const self = this;
 
-                axios.delete('http://localhost:5000/api/user/account',  {
-                    auth:{
+                axios.delete('http://localhost:5000/api/user/account', {
+                    auth: {
                         username: store.getters.token,
                     },
                 })
@@ -154,8 +158,8 @@
             get_account: function () {
                 const self = this;
 
-                axios.get('http://localhost:5000/api/user/account',  {
-                    auth:{
+                axios.get('http://localhost:5000/api/user/account', {
+                    auth: {
                         username: store.getters.token,
                     }
                 })
@@ -179,7 +183,7 @@
             }
         },
         beforeMount() {
-           this.get_account();
+            this.get_account();
         },
     }
 </script>

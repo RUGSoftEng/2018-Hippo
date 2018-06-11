@@ -163,7 +163,7 @@ def check_password(email: str, password: str, first_name: str, last_name: str):
     return None
 
 
-def get_location(ip_address : str):
+def get_location(ip_address: str):
     pass
 
 
@@ -190,7 +190,8 @@ def register():
         return jsonify(description="INVALID_EMAIL", message="The given email is invalid."), 400
 
     if User.query.filter_by(email=email).first():
-        return jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered."), 400
+        return jsonify(description="USER_ALREADY_EXISTS",
+                       message="A user with that email has already been registered."), 400
 
     result = check_password(email, password, first_name, last_name)
 
@@ -289,7 +290,8 @@ def change_account():
 
     # Make sure only to run the tests when these values have changed.
     if email != user.email and User.query.filter_by(email=email).first():
-        return jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered."), 400
+        return jsonify(description="USER_ALREADY_EXISTS",
+                       message="A user with that email has already been registered."), 400
 
     if password != "":
         result = check_password(email, password, first_name, last_name)

@@ -12,15 +12,15 @@ import Account from './templates/Account.vue';
 
 
 export const routes = [
-    { path: '/', component: Home},
-    { path: '/app', component: Explore },
-    { path: '/app/explore', component: Explore },
-    { path: '/app/search', component: Search },
-    { path: '/app/collection:id', component: TweetList},
+    {path: '/', component: Home},
+    {path: '/app', component: Explore},
+    {path: '/app/explore', component: Explore},
+    {path: '/app/search', component: Search},
+    {path: '/app/collection:id', component: TweetList},
 
-    { path: '/login', component: Login},
-    { path: '/logout', component: Logout},
-    { path: '/register', component: Register},
-    { path: '/account', component: Account},
+    {path: '/login', component: Login},
+    {path: '/logout', component: Logout},
+    {path: '/register', component: Register},
+    {path: '/account', component: Account},
 
 ];

@@ -2,7 +2,8 @@
     <div class="container center">
         <div class="search-view form-inline">
             <input class="form-control mr-sm-3 search-box" type="text" v-model="searchText"
-                   v-on:keyup.enter="search(searchText)" placeholder="Search for ideas..." aria-label="Search" autofocus>
+                   v-on:keyup.enter="search(searchText)" placeholder="Search for ideas..." aria-label="Search"
+                   autofocus>
         </div>
         <tweet-collections-list v-if="$route.path == '/app/search'" :categoryList="categories"
                                 :searchTerms="currentlySearchingFor"></tweet-collections-list>
@@ -16,8 +17,7 @@
     import TweetList from '../templates/TweetList.vue';
     import store from '../store'
 
-    export default
-    {
+    export default {
         store,
 
         data() {

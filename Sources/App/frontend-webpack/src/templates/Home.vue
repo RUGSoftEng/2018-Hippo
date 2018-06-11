@@ -166,9 +166,7 @@
             }
         },
 
-        methods: {
-
-        }
+        methods: {}
     }
 </script>
 

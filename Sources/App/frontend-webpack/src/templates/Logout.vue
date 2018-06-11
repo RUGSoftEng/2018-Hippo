@@ -22,7 +22,7 @@
                 this.$router.push("/");
             }
         },
-        beforeMount(){
+        beforeMount() {
             this.logout()
         },
     }

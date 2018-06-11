@@ -20,7 +20,9 @@
                     </li>
                     <li style="width: 25px;"></li>
                     <li class="nav-item" v-if="isLoggedIn">
-                        <router-link class="nav-link hippo-nav-link" to="/account"><img style="height: 24px; margin-right: 10px;" src="../assets/icons8-male-user-filled.svg">Account</router-link>
+                        <router-link class="nav-link hippo-nav-link" to="/account"><img
+                                style="height: 24px; margin-right: 10px;" src="../assets/icons8-male-user-filled.svg">Account
+                        </router-link>
                     </li>
                     <li class="nav-item" v-if="isLoggedIn">
                         <router-link class="nav-link hippo-nav-link" to="/logout">Logout</router-link>
@@ -44,7 +46,7 @@
 
     export default {
         store,
-        data () {
+        data() {
             return {
                 isLoggedIn: store.state.isLoggedIn
             }

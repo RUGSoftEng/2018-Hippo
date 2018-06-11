@@ -8,7 +8,8 @@
             <form class="form-signin" @submit.prevent="login()">
                 <img style="height: 100px; margin-bottom: 20px;" src="../assets/Logo-black.svg">
                 <h1 class="h3 mb-3 font-weight-normal"
-                    style="color: black !important; font-family: Catamaran,Helvetica,Arial,sans-serif; margin-bottom: 30px !important;">Sign in</h1>
+                    style="color: black !important; font-family: Catamaran,Helvetica,Arial,sans-serif; margin-bottom: 30px !important;">
+                    Sign in</h1>
                 <label for="inputEmail" class="sr-only">Email address</label>
                 <input type="email" id="inputEmail" v-model="email" class="form-control" placeholder="Email address"
                        required autofocus name="email">
@@ -23,7 +24,9 @@
                 <button type="submit" class="btn btn-lg btn-primary btn-block">
                     Sign in
                 </button>
-                <div class="text-center" style="margin-top: 30px;">Don't have an account yet? <router-link to="/register">Register</router-link></div>
+                <div class="text-center" style="margin-top: 30px;">Don't have an account yet?
+                    <router-link to="/register">Register</router-link>
+                </div>
             </form>
         </div>
     </div>
@@ -50,7 +53,7 @@
         },
         methods: {
             login: function () {
-                const { email, password } = this;
+                const {email, password} = this;
 
                 const self = this;
 
@@ -80,8 +83,8 @@
                 this.$router.push("/app");
             }
         },
-        beforeMount(){
-            if (this.isLoggedIn){
+        beforeMount() {
+            if (this.isLoggedIn) {
                 this.redirect();
             }
         },
@@ -99,7 +102,6 @@
         background-color: white;
         border-radius: 10px;
         border: rgba(0, 0, 0, 0.125) solid 1px;
-
 
     }
 

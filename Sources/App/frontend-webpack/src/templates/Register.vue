@@ -18,23 +18,27 @@
                             </div> <!-- form-group end.// -->
                             <div class="col form-group">
                                 <label>Last name</label>
-                                <input v-model="last_name" type="text" class="form-control" placeholder="" required name="family-name">
+                                <input v-model="last_name" type="text" class="form-control" placeholder="" required
+                                       name="family-name">
                             </div> <!-- form-group end.// -->
                         </div> <!-- form-row end.// -->
                         <div class="form-group">
                             <label>Email address</label>
-                            <input v-model="email" type="email" class="form-control" placeholder="" required name="email">
+                            <input v-model="email" type="email" class="form-control" placeholder="" required
+                                   name="email">
                             <small class="form-text text-muted">We'll never share your email with anyone
                                 else.
                             </small>
                         </div> <!-- form-group end.// -->
                         <div class="form-group">
                             <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" value="m" v-model="gender" required>
+                                <input class="form-check-input" type="radio" name="gender" value="m" v-model="gender"
+                                       required>
                                 <span class="form-check-label"> Male </span>
                             </label>
                             <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" value="f" v-model="gender" required>
+                                <input class="form-check-input" type="radio" name="gender" value="f" v-model="gender"
+                                       required>
                                 <span class="form-check-label"> Female</span>
                             </label>
                         </div> <!-- form-group end.// -->
@@ -88,7 +92,7 @@
 
                 document.getElementById("error-window").style.display = "none";
 
-                axios.post('http://localhost:5000/api/users',  {
+                axios.post('http://localhost:5000/api/users', {
                     first_name: first_name,
                     last_name: last_name,
                     gender: gender,
@@ -107,12 +111,10 @@
 
                         document.getElementById("error-window").style.display = "block";
 
-                        if (typeof error.response !== "undefined")
-                        {
+                        if (typeof error.response !== "undefined") {
                             document.getElementById("error-window").innerHTML = error.response.data.message;
                         }
-                        else
-                        {
+                        else {
                             document.getElementById("error-window").innerHTML = "An unknown exception occurred.";
                         }
                     });
