@@ -44,7 +44,6 @@ class User(db.Model):
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
 
-    # TODO: Check which format this should be and what size.
     password_hash = db.Column(db.String(256))
 
     # If null: opt-out for data collection, record datetime for opt-in.
@@ -86,6 +85,13 @@ class User(db.Model):
         user = User.query.get(data['id'])
 
         return user
+
+
+#class Like(db.Model):
+#    __tablename__ = 'likes'
+
+#    id = db.Column(db.Integer, primary_key=True)
+#    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
 class User_ES(DocType):

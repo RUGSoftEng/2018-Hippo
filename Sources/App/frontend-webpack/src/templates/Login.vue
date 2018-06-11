@@ -61,12 +61,10 @@
                     .then(function (response) {
                         console.log(response);
 
-                        self.$store.dispatch('login', {
-                            token: response.data.token
-                        }).then(() => {
-                            self.redirect();
-                            location.reload();
-                        });
+                        localStorage.setItem("token", response.data.token.toString());
+
+                        self.redirect();
+                        location.reload();
                     })
                     .catch(function (error) {
                         console.log(error);

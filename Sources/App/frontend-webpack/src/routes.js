@@ -8,6 +8,7 @@ import TweetList from './templates/TweetList.vue';
 import Login from './templates/Login.vue';
 import Logout from './templates/Logout.vue';
 import Register from './templates/Register.vue';
+import Account from './templates/Account.vue';
 
 
 export const routes = [
@@ -20,5 +21,6 @@ export const routes = [
     { path: '/login', component: Login},
     { path: '/logout', component: Logout},
     { path: '/register', component: Register},
+    { path: '/account', component: Account},
 
 ];

@@ -1,5 +1,6 @@
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 from datetime import datetime
+from flask_cors import CORS
 
 from email_validator import validate_email, EmailNotValidError
 from zxcvbn import zxcvbn
@@ -11,6 +12,8 @@ from collections import defaultdict
 from operator import itemgetter
 from hippo_web.models import User
 from hippo_web import app, auth, db, es
+
+CORS(app)
 
 
 # hardcoded keywords that need to be excluded.
@@ -151,6 +154,11 @@ def register():
 @auth.verify_password
 def verify_password(email_or_token, password):
     # First try to authenticate by token, otherwise try with username/password.
+
+    # Migrate an issue in Axios.
+    if email_or_token == "":
+        email_or_token = request.json.get('auth')['username']
+
     user = User.verify_auth_token(email_or_token)
 
     if not user:
@@ -160,6 +168,7 @@ def verify_password(email_or_token, password):
             return False
 
     g.user = user
+
     return True
 
 
@@ -170,17 +179,63 @@ def get_auth_token():
     return jsonify({'token': token})
 
 
-@app.route('/api/user/profile')
+@app.route('/api/user/account', methods=['GET'])
 @auth.login_required
-def user():
-    return jsonify({'data': 'Hello, %s!' % g.user.email})
+def account():
+    user = g.user
+    return jsonify({'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name, 'data_collection_consent': user.data_collection_consent, 'marketing_consent': user.marketing_consent})
+
+
+@app.route('/api/user/account1', methods=['POST'])
+@auth.login_required
+def change_account():
+    email: str = request.json.get('email')
+    password: str = request.json.get('password')
+    first_name: str = request.json.get('first_name')
+    last_name: str = request.json.get('last_name')
+    data_collection_consent: bool = request.json.get('data_collection_consent')
+    marketing_consent: bool = request.json.get('marketing_consent')
+
+    if None in (email, first_name, last_name):
+        abort(400, jsonify(description="MISSING_INFO",
+                           message="Not enough valid information to finish the registration has been given."))
+
+    check_valid_email(email)
+    user = g.user
+
+    if email != user.email and User.query.filter_by(email=email).first():
+        abort(400,
+              jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered."))
+
+    if password != "":
+        check_password(email, password, first_name, last_name)
+        user.hash_password(password)
+
+    user.email = email
+
+    user.first_name = first_name
+    user.last_name = last_name
+
+    # We need to save the date at which the user gave consent, GDPR.
+    if data_collection_consent is True and user.data_collection_consent is not True:
+        user.data_collection_consent = datetime.utcnow()
+
+    if marketing_consent is True and user.marketing_consent is not True:
+        user.marketing_consent = datetime.utcnow()
+
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
 
 
 # TODO: Implement functions for GDPR compliance for production.
 @app.route('/api/user/delete', methods=['POST'])
 @auth.login_required
 def delete_user():
-    pass
+    db.session.delete(g.user)
+    db.session.commit()
+
+    return 200
 
 
 # TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)
