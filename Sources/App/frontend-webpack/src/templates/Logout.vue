@@ -5,11 +5,27 @@
 </template>
 
 <script>
-    // TODO: Add logic for logging out.
+    import store from '../store'
 
-    // 1: Logout user.
+    export default {
+        store,
+        methods: {
+            logout: function () {
+                const self = this;
 
-    // 2: redirect user to the main page.
+                this.$store.dispatch('logout').then(() => {
+                    self.redirect();
+                    location.reload();
+                });
+            },
+            redirect: function () {
+                this.$router.push("/");
+            }
+        },
+        beforeMount(){
+            this.logout()
+        },
+    }
 </script>
 
 <style scoped>
