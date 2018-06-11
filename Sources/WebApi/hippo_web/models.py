@@ -8,6 +8,7 @@ from hippo_web import db, app
 
 from elasticsearch_dsl import *
 
+db.create_all()
 
 
 class AgeGroup:
@@ -36,7 +37,7 @@ def get_age_group(age: int):
     return age_groups[-1]
 
 
-class User(db.Model):
+class User_SQL(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -45,7 +46,7 @@ class User(db.Model):
     last_name = db.Column(db.String(64))
 
     # TODO: Check which format this should be and what size.
-    password_hash = db.Column(db.String(256))
+    password_hash = db.Column(db.Binary(256))
 
     # If null: opt-out for data collection, record datetime for opt-in.
     data_collection_consent = db.Column(db.DateTime())
@@ -63,10 +64,11 @@ class User(db.Model):
     def verify_password(self, password: str) -> bool:
         return pbkdf2_sha256.verify(password, self.password_hash)
 
-    def generate_auth_token(self) -> str:
+    # TODO: Check whether "serializer.dumps" returns a string or bytes.
+    def generate_auth_token(self) -> object:
         serializer = Serializer(app.config['SECRET_KEY'])
 
-        return serializer.dumps({'id': self.id}).decode("utf-8")
+        return serializer.dumps({'id': self.id})
 
     @staticmethod
     def verify_auth_token(token: str) -> object:
@@ -88,18 +90,19 @@ class User(db.Model):
         return user
 
 
-class User_ES(DocType):
+# ElasticSearch User model
+class User(DocType):
     email = Text()
-    password_hash = Text()
+    passhash = Text()
     first_name = Text()
     last_name = Text()
-    birthday = Date()
-    data_collection_consent = Date()
-    marketing_consent = Date()
+    birthdate = Date()
+    dataCollectionConsent = Boolean()
+    marketingConsent = Boolean()
 
     # TODO: calculate the age of the user
     def get_age(self):
-        return relativedelta(datetime.today(), self.birthday).years
+        return 0
 
     def hash_password(self, password: str):
         self.password_hash = pbkdf2_sha256.hash(password)
@@ -107,9 +110,8 @@ class User_ES(DocType):
     def verify_password(self, password: str) -> bool:
         return pbkdf2_sha256.verify(password, self.password_hash)
 
-    def generate_auth_token(self) -> str:
+    def generate_auth_token(self):
         serializer = Serializer(app.config['SECRET_KEY'])
-
         return serializer.dumps({'id': self.meta.id}).decode("utf-8")
 
     @staticmethod
@@ -118,6 +120,7 @@ class User_ES(DocType):
 
         try:
             data = serializer.loads(token)
+            print(data)
         except SignatureExpired:
             # Valid token, but expired.
             return None

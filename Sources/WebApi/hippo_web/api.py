@@ -31,7 +31,6 @@ def search_by_keywords(terms):
 
     # return the first 250 hits
     results = s[:250]
-
     return [hit._d_ for hit in results]
 
 
@@ -58,7 +57,7 @@ def search_category(terms):
         for keyword in keywords:
             # make the keyword lowercase, to remove duplicates that differ in case
             keyword = keyword.lower()
-
+            
             # exclude searched terms and hardcoded exclusions
             if keyword not in excluded_keywords and keyword not in terms:
                 keyword_frequencies[keyword] += 1
@@ -87,25 +86,47 @@ def like():
     pass
 
   
-def check_valid_email(email: str) -> str:
+def check_valid_email(email, password, first_name, last_name):
     try:
-        return validate_email(email)["email"]
-    except EmailNotValidError as ex:
-        abort(400, jsonify(description="INVALID_EMAIL", message="The given email is invalid:" + str(ex)))
-
-
-def check_password(email: str, password: str, first_name: str, last_name: str):
+        v = validate_email(email)
+        email = v["email"]
+    except EmailNotValidError as e:
+        abort(400, description="Invalid email: " + str(e))
+    
+    return email
+    
+    
+def check_password(email, password, first_name, last_name):
     password_results = zxcvbn(password, user_inputs=[email, first_name, last_name])
-
+    
     # score is between 0 (very bad password) and 4 (very good password)
-    if password_results["score"] < 2:
-        abort(400, jsonify(description="WEAK_PASSWORD", message="The given password is insecure."))
+    if (password_results["score"] < 2):
+        abort(400, description="Insecure password: Please provide a secure password.")
+
+        
+def get_user(user_email):
+    # no user database implies user doesn't exist. Also create the database
+    if not es.indices.exists(index="user"):
+        es.indices.create(index="user")
+        return None
+
+    # query for the user email
+    must = elasticsearch_dsl.Q('match', email=user_email)
+    q = elasticsearch_dsl.Q('bool', should=[must])
+    s = elasticsearch_dsl.Search(using=es, index="user").query(q)
+    results = s.execute()
+
+    # if there is an exact match: return the user
+    for hit in results:
+        if (hit._d_['email'] == user_email):
+            return User.get(hit.meta.id)
+
+    return None
 
 
 @app.route('/api/users', methods=['POST'])
 def register():
-    db.create_all()
-
+    # retrieve the fields from the POST request
     email: str = request.json.get('email')
     password: str = request.json.get('password')
     first_name: str = request.json.get('first_name')
@@ -114,21 +135,21 @@ def register():
     data_collection_consent: bool = request.json.get('data_collection_consent')
     marketing_consent: bool = request.json.get('marketing_consent')
 
+    # check for valid info
     if None in (email, password, first_name, last_name):
-        abort(400, jsonify(description="MISSING_INFO", message="Not enough valid information to finish the registration has been given."))
+        abort(400, description="Not enough valid information to finish the registration has been given.")
 
-    check_valid_email(email)
-
-    if User.query.filter_by(email=email).first():
-        abort(400, jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered."))
-
+    email = check_valid_email(email, password, first_name, last_name)
+        
+    if get_user(email):
+        abort(400, description="A user with that email has already been registered.")
+    
     check_password(email, password, first_name, last_name)
-
+    
+    # create the user object
     user = User()
-
     user.email = email
     user.hash_password(password)
-
     user.first_name = first_name
     user.last_name = last_name
 
@@ -136,16 +157,16 @@ def register():
         user.birthday = birthday
 
     # We need to save the date at which the user gave consent, GDPR.
-    if data_collection_consent is True:
+    if data_collection_consent is not None:
         user.data_collection_consent = datetime.utcnow()
 
-    if marketing_consent is True:
+    if marketing_consent is not None:
         user.marketing_consent = datetime.utcnow()
 
-    db.session.add(user)
-    db.session.commit()
+    # put the new user in the database
+    user.save()
 
-    return jsonify({'email': email})
+    return jsonify({'email': email}), 201
 
 
 @auth.verify_password
@@ -154,8 +175,7 @@ def verify_password(email_or_token, password):
     user = User.verify_auth_token(email_or_token)
 
     if not user:
-        user = User.query.filter_by(email=email_or_token).first()
-
+        user = get_user(email_or_token)
         if not user or not user.verify_password(password):
             return False
 
