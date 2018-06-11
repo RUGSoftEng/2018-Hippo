@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 from itsdangerous import Serializer, SignatureExpired, BadSignature
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from passlib.hash import pbkdf2_sha256
+from datetime import date
 import base64
 
 from hippo_web import db, app
@@ -96,16 +97,18 @@ class User(db.Model):
 
 class User_ES(DocType):
     email = Text()
-    password_hash = Text()
+    passhash = Text()
     first_name = Text()
     last_name = Text()
-    birthday = Date()
-    data_collection_consent = Date()
-    marketing_consent = Date()
+    birthdate = Date()
+    gender = Text()
+    dataCollectionConsent = Boolean()
+    marketingConsent = Boolean()
 
-    # TODO: calculate the age of the user
     def get_age(self):
-        return relativedelta(datetime.today(), self.birthday).years
+        current=date.today()
+        age=current.year-self.birthdate.year-((current.month, current.day)<(self.birthdate.month, self.birthdate.day))
+        return age
 
     def hash_password(self, password: str):
         self.password_hash = pbkdf2_sha256.hash(password)
@@ -113,9 +116,8 @@ class User_ES(DocType):
     def verify_password(self, password: str) -> bool:
         return pbkdf2_sha256.verify(password, self.password_hash)
 
-    def generate_auth_token(self) -> str:
+    def generate_auth_token(self):
         serializer = Serializer(app.config['SECRET_KEY'])
-
         return serializer.dumps({'id': self.meta.id}).decode("utf-8")
 
     @staticmethod
@@ -124,6 +126,7 @@ class User_ES(DocType):
 
         try:
             data = serializer.loads(token)
+            print(data)
         except SignatureExpired:
             # Valid token, but expired.
             return None

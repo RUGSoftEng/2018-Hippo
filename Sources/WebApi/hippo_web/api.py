@@ -80,21 +80,67 @@ def search_category(terms):
     return jsonify(results)
 
 
-@app.route('/api/view', methods=['POST'])
-def view():
-    pass
+@app.route('/api/view/<tweet_id>', methods=['POST'])
+@auth.login_required
+def view(tweet_id):
+    # update nr views for tweet id
+    q = {"script":{ "inline": "views=views?views+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    es.update_by_query(body = q, index="tweets")
+
+    # update views per age group for tweet id
+    age_group = get_age_group(get_age(g.user))
+    categ = "views_" + str(age_group)
+    q = {"script":{ "inline": "categ=categ?categ+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    es.update_by_query(body = q, index="tweets")
 
 
-@app.route('/api/like', methods=['POST'])
-def like():
-    pass
+@app.route('/api/like/<tweet_id>', methods=['POST'])
+@auth.login_required
+def like(tweet_id):
+    # update nr likes for tweet id
+    q = {"script":{ "inline": "age=age?age+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    es.update_by_query(body = q, index="tweets")
 
-  
-def check_valid_email(email: str) -> str:
+    # update likes per age group for tweet id
+    age_group = get_age_group(get_age(g.user))
+    categ = "likes_" + str(age_group)
+    q = {"script":{ "inline": "categ=categ?categ+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    es.update_by_query(body = q, index="tweets")
+
+
+#likes/views-total, group likes/views- count for max groups
+@app.route('/api/demographics/<tweet_id>',methods=['GET'])
+@auth.login_required
+def demographics(tweet_id):
+    # get tweet
+    q = elasticsearch_dsl.Q("bool", tweet_id=tweet_id, minimum_should_match=1)
+    s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
+    res = s.execute()
+    tweet = res[0]._d_
+    # determine group w most likes/views
+    group_likes=get_group(tweet,"likes")
+    group_views=get_group(tweet,"views")
+
+    return jsonify({'likes':tweet.likes , 'views':tweet.views ,'most_likes_group':group_likes[0] ,'group_likes':group_likes[1], 'most_views_group':group_views[0], 'group_views':group_views[1]})
+
+
+# returns a tuple with (group name, value)
+def get_group(tweet, field):
+    if field is "views":
+        views=[('age_26_24',tweet['views_age_16_24']),('age_25_34', tweet['views_age_25_34']),('age_35_44', tweet['views_age_35_44']),('age_55_64', tweet['views_age_55_64']),('age_65_plus', tweet['views_age_65_plus'])]
+        return max(views,key=itemgetter(1))
+    else:
+        likes=[('age_26_24',tweet['likes_age_16_24']),('age_25_34', tweet['likes_age_25_34']),('age_35_44', tweet['likes_age_35_44']),('age_55_64', tweet['likes_age_55_64']),('age_65_plus', tweet['likes_age_65_plus'])]
+        return max(likes,key=itemgetter(1))
+
+
+def check_valid_email(email):
     try:
-        return validate_email(email)["email"]
+        validate_email(email)["email"]
     except EmailNotValidError as ex:
-        abort(400, jsonify(description="INVALID_EMAIL", message="The given email is invalid:" + str(ex)))
+        return str(ex)
+
+    return None
 
 
 def check_password(email: str, password: str, first_name: str, last_name: str):
@@ -102,7 +148,9 @@ def check_password(email: str, password: str, first_name: str, last_name: str):
 
     # score is between 0 (very bad password) and 4 (very good password)
     if password_results["score"] < 2:
-        abort(400, jsonify(description="WEAK_PASSWORD", message="The given password is insecure."))
+        return False
+
+    return True
 
 
 @app.route('/api/users', methods=['POST'])
@@ -114,18 +162,21 @@ def register():
     first_name: str = request.json.get('first_name')
     last_name: str = request.json.get('last_name')
     birthday: str = request.json.get('birthday')
+    gender: str = request.json.get('gender')
     data_collection_consent: bool = request.json.get('data_collection_consent')
     marketing_consent: bool = request.json.get('marketing_consent')
 
     if None in (email, password, first_name, last_name):
-        abort(400, jsonify(description="MISSING_INFO", message="Not enough valid information to finish the registration has been given."))
+        return jsonify(description="MISSING_INFO", message="Not enough valid information to finish the registration has been given.")
 
-    check_valid_email(email)
+    if check_valid_email(email) is not None:
+        return jsonify(description="INVALID_EMAIL", message="The given email is invalid:")
 
     if User.query.filter_by(email=email).first():
-        abort(400, jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered."))
+        return jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered.")
 
-    check_password(email, password, first_name, last_name)
+    if not check_password(email, password, first_name, last_name):
+        return jsonify(description="WEAK_PASSWORD", message="The given password is insecure.")
 
     user = User()
 
@@ -138,6 +189,9 @@ def register():
     if birthday is not None:
         user.birthday = birthday
 
+    if gender is not None:
+        user.gender = gender
+
     # We need to save the date at which the user gave consent, GDPR.
     if data_collection_consent is True:
         user.data_collection_consent = datetime.utcnow()
@@ -148,7 +202,7 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({'email': email})
+    return jsonify({'result': 'success'})
 
 
 @auth.verify_password
@@ -186,7 +240,7 @@ def account():
     return jsonify({'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name, 'data_collection_consent': user.data_collection_consent, 'marketing_consent': user.marketing_consent})
 
 
-@app.route('/api/user/account1', methods=['POST'])
+@app.route('/api/user/account', methods=['POST'])
 @auth.login_required
 def change_account():
     email: str = request.json.get('email')
@@ -197,15 +251,16 @@ def change_account():
     marketing_consent: bool = request.json.get('marketing_consent')
 
     if None in (email, first_name, last_name):
-        abort(400, jsonify(description="MISSING_INFO",
-                           message="Not enough valid information to finish the registration has been given."))
+        return jsonify(description="MISSING_INFO",
+                           message="Not enough valid information to finish the registration has been given.")
 
-    check_valid_email(email)
+    if check_valid_email(email) is not None:
+        return jsonify(description="INVALID_EMAIL", message="The given email is invalid:")
+
     user = g.user
 
     if email != user.email and User.query.filter_by(email=email).first():
-        abort(400,
-              jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered."))
+        return jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered.")
 
     if password != "":
         check_password(email, password, first_name, last_name)
@@ -235,10 +290,11 @@ def delete_user():
     db.session.delete(g.user)
     db.session.commit()
 
-    return 200
+    return jsonify({'result': 'success'})
 
 
 # TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)
 @app.route('/api/user/data', methods=['GET'])
+@auth.login_required
 def get_personal_data():
     pass
