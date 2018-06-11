@@ -32,13 +32,19 @@
         methods: {
             search: function () {
                 this.categories = [];
-                this.$router.push('/app/searcg');
+                this.$router.push('/app/search');
                 let cmp = this;
                 cmp.currentlySearchingFor = cmp.searchText;
                 this.tweetList = [];
                 cmp.startIndex = 0;
                 cmp.endIndex = 10;
-                axios.get('http://localhost:5000/api/search_category/' + cmp.searchText, {'timeout': 5000})
+
+                axios.get('http://localhost:5000/api/search_category/' + cmp.searchText, {
+                    auth: {
+                        username: email,
+                        password: password
+                    },
+                })
                     .then(function (response) {
                         console.log(response.data);
 
