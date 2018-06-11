@@ -1,7 +1,9 @@
 <template lang="html">
     <div>
         <nav-bar></nav-bar>
-
+        <div id="error-window" class="alert alert-danger" role="alert" style="margin: 10px; display: none;">
+            The given email/password is incorrect.
+        </div>
         <div class="text-center" style="color: black !important;">
             <form class="form-signin" @submit.prevent="login()">
                 <img style="height: 100px; margin-bottom: 20px;" src="../assets/Logo-black.svg">
@@ -52,6 +54,8 @@
 
                 const self = this;
 
+                document.getElementById("error-window").style.display = "none";
+
                 axios.get('http://localhost:5000/api/token', {
                     auth: {
                         username: email,
@@ -68,6 +72,8 @@
                     })
                     .catch(function (error) {
                         console.log(error);
+
+                        document.getElementById("error-window").style.display = "block";
                     });
             },
             redirect: function () {

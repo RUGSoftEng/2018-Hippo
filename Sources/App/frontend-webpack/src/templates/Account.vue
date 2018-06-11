@@ -1,7 +1,10 @@
 <template>
     <div>
         <nav-bar></nav-bar>
+        <div id="error-window" class="alert alert-danger" role="alert" style="margin: 10px; display: none;">
+        </div>
         <div class="d-flex justify-content-center" style="margin-top: 100px;">
+
             <div class="card" style="width: 500px; color: black !important;">
                 <header class="card-header text-center">
                     <h2 class="h3 mb-3 font-weight-normal" style="margin-top: 20px;">My account</h2>
@@ -75,7 +78,9 @@
             update_account: function () {
                 const {first_name, last_name, email, password} = this;
 
-                axios.post('http://localhost:5000/api/user/account1',  {
+                document.getElementById("error-window").style.display = "none";
+
+                axios.post('http://localhost:5000/api/user/account',  {
                     auth:{
                         username: store.getters.token,
                     },
@@ -93,6 +98,9 @@
                     })
                     .catch(function (error) {
                         console.log(error);
+
+                        document.getElementById("error-window").style.display = "block";
+                        document.getElementById("error-window").innerHTML = error.response.data.message;
                     });
 
             },

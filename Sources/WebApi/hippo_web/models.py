@@ -9,6 +9,7 @@ from hippo_web import db, app
 
 from elasticsearch_dsl import *
 
+SECRET_KEY = app.config['SECRET_KEY']
 
 
 class AgeGroup:
@@ -63,14 +64,15 @@ class User(db.Model):
     def verify_password(self, password: str) -> bool:
         return pbkdf2_sha256.verify(password, self.password_hash)
 
+    # TODO: We need to know how long tokens remain valid, when do they expire?
     def generate_auth_token(self) -> str:
-        serializer = Serializer(app.config['SECRET_KEY'])
+        serializer = Serializer(SECRET_KEY)
 
         return serializer.dumps({'id': self.id}).decode("utf-8")
 
     @staticmethod
     def verify_auth_token(token: str) -> object:
-        serializer = Serializer(app.config['SECRET_KEY'])
+        serializer = Serializer(SECRET_KEY)
 
         try:
             data = serializer.loads(token)
@@ -117,12 +119,12 @@ class User_ES(DocType):
         return pbkdf2_sha256.verify(password, self.password_hash)
 
     def generate_auth_token(self):
-        serializer = Serializer(app.config['SECRET_KEY'])
+        serializer = Serializer(SECRET_KEY)
         return serializer.dumps({'id': self.meta.id}).decode("utf-8")
 
     @staticmethod
     def verify_auth_token(token: str) -> object:
-        serializer = Serializer(app.config['SECRET_KEY'])
+        serializer = Serializer(SECRET_KEY)
 
         try:
             data = serializer.loads(token)

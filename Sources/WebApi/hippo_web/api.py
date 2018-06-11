@@ -1,4 +1,3 @@
-# Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 from datetime import datetime
 from flask_cors import CORS
 
@@ -13,6 +12,10 @@ from operator import itemgetter
 from hippo_web.models import User, get_age_group
 from hippo_web import app, auth, db, es
 
+# Ensure that the database tables exist.
+db.create_all()
+
+# Easier during development, remove and add cross-origin resource sharing in deployment.
 CORS(app)
 
 # hardcoded keywords that need to be excluded.
@@ -151,17 +154,20 @@ def check_valid_email(email):
 def check_password(email: str, password: str, first_name: str, last_name: str):
     password_results = zxcvbn(password, user_inputs=[email, first_name, last_name])
 
-    # score is between 0 (very bad password) and 4 (very good password)
+    # NOTE: score is between 0 (very weak password) and 4 (very strong password).
     if password_results["score"] < 2:
-        return False
+        # Ensure that the user gets feedback, since there are no clear password requirements.
+        suggestions = ""
+        for suggestion in password_results["feedback"]["suggestions"]:
+            suggestions += suggestion + "\n"
 
-    return True
+        return suggestions
+
+    return None
 
 
 @app.route('/api/users', methods=['POST'])
 def register():
-    db.create_all()
-
     email: str = escape(request.json.get('email'))
     password: str = request.json.get('password')
     first_name: str = escape(request.json.get('first_name'))
@@ -173,16 +179,18 @@ def register():
 
     if None in (email, password, first_name, last_name):
         return jsonify(description="MISSING_INFO",
-                       message="Not enough valid information to finish the registration has been given.")
+                       message="Not enough valid information to finish the registration has been given."), 400
 
     if check_valid_email(email) is not None:
-        return jsonify(description="INVALID_EMAIL", message="The given email is invalid:")
+        return jsonify(description="INVALID_EMAIL", message="The given email is invalid."), 400
 
     if User.query.filter_by(email=email).first():
-        return jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered.")
+        return jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered."), 400
 
-    if not check_password(email, password, first_name, last_name):
-        return jsonify(description="WEAK_PASSWORD", message="The given password is insecure.")
+    result = check_password(email, password, first_name, last_name)
+
+    if result is not None:
+        return jsonify(description="WEAK_PASSWORD", message="The given password is insecure. \n" + result), 400
 
     user = User()
 
@@ -211,11 +219,12 @@ def register():
     return jsonify(description="success")
 
 
+# Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 @auth.verify_password
 def verify_password(email_or_token, password):
     # First try to authenticate by token, otherwise try with username/password.
 
-    # Migrate an issue in Axios.
+    # Migrate an issue in Axios, authentication headers not send correctly in POST requests.
     if email_or_token == "":
         email_or_token = request.json.get('auth')['username']
 
@@ -224,7 +233,11 @@ def verify_password(email_or_token, password):
     if not user:
         user = User.query.filter_by(email=email_or_token).first()
 
-        if not user or not user.verify_password(password):
+        if not user:
+            return False
+
+        # Had an issue with an empty hash, only in development.
+        if not user.verify_password(password):
             return False
 
     g.user = user
@@ -260,18 +273,22 @@ def change_account():
 
     if None in (email, first_name, last_name):
         return jsonify(description="MISSING_INFO",
-                       message="Not enough valid information to finish the registration has been given.")
+                       message="Not enough valid information to finish the registration has been given."), 400
 
     if check_valid_email(email) is not None:
-        return jsonify(description="INVALID_EMAIL", message="The given email is invalid:")
+        return jsonify(description="INVALID_EMAIL", message="The given email is invalid."), 400
 
     user = g.user
 
+    # Make sure only to run the tests when these values have changed.
     if email != user.email and User.query.filter_by(email=email).first():
-        return jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered.")
+        return jsonify(description="USER_ALREADY_EXISTS", message="A user with that email has already been registered."), 400
 
     if password != "":
-        check_password(email, password, first_name, last_name)
+        result = check_password(email, password, first_name, last_name)
+        if result is not None:
+            return jsonify(description="WEAK_PASSWORD", message="The given password is insecure. \n" + result), 400
+
         user.hash_password(password)
 
     user.email = email

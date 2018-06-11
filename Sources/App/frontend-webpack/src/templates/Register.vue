@@ -1,7 +1,8 @@
 <template>
     <div>
         <nav-bar></nav-bar>
-
+        <div id="error-window" class="alert alert-danger" role="alert" style="margin: 10px; display: none;">
+        </div>
         <div class="d-flex justify-content-center" style="margin-top: 100px;">
             <div class="card" style="width: 500px; color: black !important;">
                 <header class="card-header text-center">
@@ -84,6 +85,8 @@
 
                 const self = this;
 
+                document.getElementById("error-window").style.display = "none";
+
                 axios.post('http://localhost:5000/api/users',  {
                     first_name: first_name,
                     last_name: last_name,
@@ -99,6 +102,9 @@
                     })
                     .catch(function (error) {
                         console.log(error);
+
+                        document.getElementById("error-window").style.display = "block";
+                        document.getElementById("error-window").innerHTML = error.response.data.message;
                     });
 
             },
