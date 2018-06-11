@@ -14,8 +14,12 @@
     import axios from 'axios';
     import TweetCollectionsList from './TweetCollectionsList.vue';
     import TweetList from '../templates/TweetList.vue';
+    import store from '../store'
 
-    export default {
+    export default
+    {
+        store,
+
         data() {
             return {
                 searchText: '',
@@ -41,8 +45,7 @@
 
                 axios.get('http://localhost:5000/api/search_category/' + cmp.searchText, {
                     auth: {
-                        username: email,
-                        password: password
+                        username: store.getters.token,
                     },
                 })
                     .then(function (response) {
