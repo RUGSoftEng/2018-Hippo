@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 from itsdangerous import Serializer, SignatureExpired, BadSignature
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from passlib.hash import pbkdf2_sha256
+from datetime import date
 import base64
 
 from hippo_web import db, app
@@ -101,9 +102,10 @@ class User(DocType):
     dataCollectionConsent = Boolean()
     marketingConsent = Boolean()
 
-    # TODO: calculate the age of the user
     def get_age(self):
-        return 0
+        current=date.today()
+        age=current.year-self.birthdate.year-((current.month, current.day)<(self.birthdate.month, self.birthdate.day))
+        return age
 
     def hash_password(self, password: str):
         self.password_hash = pbkdf2_sha256.hash(password)
