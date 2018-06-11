@@ -10,11 +10,10 @@ import elasticsearch_dsl
 
 from collections import defaultdict
 from operator import itemgetter
-from hippo_web.models import User
+from hippo_web.models import User, get_age_group
 from hippo_web import app, auth, db, es
 
 CORS(app)
-
 
 # hardcoded keywords that need to be excluded.
 excluded_keywords = {"https", "i"}
@@ -84,32 +83,32 @@ def search_category(terms):
 @auth.login_required
 def view(tweet_id):
     # update nr views for tweet id
-    q = {"script":{ "inline": "views=views?views+=1:1"}, "query": { "match":{"id":tweet_id}}}
-    es.update_by_query(body = q, index="tweets")
+    q = {"script": {"inline": "views=views?views+=1:1"}, "query": {"match": {"id": tweet_id}}}
+    es.update_by_query(body=q, index="tweets")
 
     # update views per age group for tweet id
-    age_group = get_age_group(get_age(g.user))
+    age_group = get_age_group(g.user.get_age())
     categ = "views_" + str(age_group)
-    q = {"script":{ "inline": "categ=categ?categ+=1:1"}, "query": { "match":{"id":tweet_id}}}
-    es.update_by_query(body = q, index="tweets")
+    q = {"script": {"inline": "categ=categ?categ+=1:1"}, "query": {"match": {"id": tweet_id}}}
+    es.update_by_query(body=q, index="tweets")
 
 
 @app.route('/api/like/<tweet_id>', methods=['POST'])
 @auth.login_required
 def like(tweet_id):
     # update nr likes for tweet id
-    q = {"script":{ "inline": "age=age?age+=1:1"}, "query": { "match":{"id":tweet_id}}}
-    es.update_by_query(body = q, index="tweets")
+    q = {"script": {"inline": "age=age?age+=1:1"}, "query": {"match": {"id": tweet_id}}}
+    es.update_by_query(body=q, index="tweets")
 
     # update likes per age group for tweet id
-    age_group = get_age_group(get_age(g.user))
+    age_group = get_age_group(g.user.get_age())
     categ = "likes_" + str(age_group)
-    q = {"script":{ "inline": "categ=categ?categ+=1:1"}, "query": { "match":{"id":tweet_id}}}
-    es.update_by_query(body = q, index="tweets")
+    q = {"script": {"inline": "categ=categ?categ+=1:1"}, "query": {"match": {"id": tweet_id}}}
+    es.update_by_query(body=q, index="tweets")
 
 
-#likes/views-total, group likes/views- count for max groups
-@app.route('/api/demographics/<tweet_id>',methods=['GET'])
+# likes/views-total, group likes/views- count for max groups
+@app.route('/api/demographics/<tweet_id>', methods=['GET'])
 @auth.login_required
 def demographics(tweet_id):
     # get tweet
@@ -118,20 +117,26 @@ def demographics(tweet_id):
     res = s.execute()
     tweet = res[0]._d_
     # determine group w most likes/views
-    group_likes=get_group(tweet,"likes")
-    group_views=get_group(tweet,"views")
+    group_likes = get_group(tweet, "likes")
+    group_views = get_group(tweet, "views")
 
-    return jsonify({'likes':tweet.likes , 'views':tweet.views ,'most_likes_group':group_likes[0] ,'group_likes':group_likes[1], 'most_views_group':group_views[0], 'group_views':group_views[1]})
+    return jsonify(
+        {'likes': tweet.likes, 'views': tweet.views, 'most_likes_group': group_likes[0], 'group_likes': group_likes[1],
+         'most_views_group': group_views[0], 'group_views': group_views[1]})
 
 
 # returns a tuple with (group name, value)
 def get_group(tweet, field):
     if field is "views":
-        views=[('age_26_24',tweet['views_age_16_24']),('age_25_34', tweet['views_age_25_34']),('age_35_44', tweet['views_age_35_44']),('age_55_64', tweet['views_age_55_64']),('age_65_plus', tweet['views_age_65_plus'])]
-        return max(views,key=itemgetter(1))
+        views = [('age_26_24', tweet['views_age_16_24']), ('age_25_34', tweet['views_age_25_34']),
+                 ('age_35_44', tweet['views_age_35_44']), ('age_55_64', tweet['views_age_55_64']),
+                 ('age_65_plus', tweet['views_age_65_plus'])]
+        return max(views, key=itemgetter(1))
     else:
-        likes=[('age_26_24',tweet['likes_age_16_24']),('age_25_34', tweet['likes_age_25_34']),('age_35_44', tweet['likes_age_35_44']),('age_55_64', tweet['likes_age_55_64']),('age_65_plus', tweet['likes_age_65_plus'])]
-        return max(likes,key=itemgetter(1))
+        likes = [('age_26_24', tweet['likes_age_16_24']), ('age_25_34', tweet['likes_age_25_34']),
+                 ('age_35_44', tweet['likes_age_35_44']), ('age_55_64', tweet['likes_age_55_64']),
+                 ('age_65_plus', tweet['likes_age_65_plus'])]
+        return max(likes, key=itemgetter(1))
 
 
 def check_valid_email(email):
@@ -157,17 +162,18 @@ def check_password(email: str, password: str, first_name: str, last_name: str):
 def register():
     db.create_all()
 
-    email: str = request.json.get('email')
+    email: str = escape(request.json.get('email'))
     password: str = request.json.get('password')
-    first_name: str = request.json.get('first_name')
-    last_name: str = request.json.get('last_name')
+    first_name: str = escape(request.json.get('first_name'))
+    last_name: str = escape(request.json.get('last_name'))
     birthday: str = request.json.get('birthday')
-    gender: str = request.json.get('gender')
+    gender: int = request.json.get('gender')
     data_collection_consent: bool = request.json.get('data_collection_consent')
     marketing_consent: bool = request.json.get('marketing_consent')
 
     if None in (email, password, first_name, last_name):
-        return jsonify(description="MISSING_INFO", message="Not enough valid information to finish the registration has been given.")
+        return jsonify(description="MISSING_INFO",
+                       message="Not enough valid information to finish the registration has been given.")
 
     if check_valid_email(email) is not None:
         return jsonify(description="INVALID_EMAIL", message="The given email is invalid:")
@@ -202,7 +208,7 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({'result': 'success'})
+    return jsonify(description="success")
 
 
 @auth.verify_password
@@ -230,29 +236,31 @@ def verify_password(email_or_token, password):
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
-    return jsonify({'token': token})
+    return jsonify(token=token)
 
 
 @app.route('/api/user/account', methods=['GET'])
 @auth.login_required
 def account():
     user = g.user
-    return jsonify({'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name, 'data_collection_consent': user.data_collection_consent, 'marketing_consent': user.marketing_consent})
+    return jsonify({'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name,
+                    'data_collection_consent': user.data_collection_consent,
+                    'marketing_consent': user.marketing_consent})
 
 
 @app.route('/api/user/account', methods=['POST'])
 @auth.login_required
 def change_account():
-    email: str = request.json.get('email')
+    email: str = escape(request.json.get('email'))
     password: str = request.json.get('password')
-    first_name: str = request.json.get('first_name')
-    last_name: str = request.json.get('last_name')
+    first_name: str = escape(request.json.get('first_name'))
+    last_name: str = escape(request.json.get('last_name'))
     data_collection_consent: bool = request.json.get('data_collection_consent')
     marketing_consent: bool = request.json.get('marketing_consent')
 
     if None in (email, first_name, last_name):
         return jsonify(description="MISSING_INFO",
-                           message="Not enough valid information to finish the registration has been given.")
+                       message="Not enough valid information to finish the registration has been given.")
 
     if check_valid_email(email) is not None:
         return jsonify(description="INVALID_EMAIL", message="The given email is invalid:")
@@ -280,17 +288,16 @@ def change_account():
 
     db.session.commit()
 
-    return jsonify({'result': 'success'})
+    return jsonify(description="success")
 
 
-# TODO: Implement functions for GDPR compliance for production.
 @app.route('/api/user/delete', methods=['POST'])
 @auth.login_required
 def delete_user():
     db.session.delete(g.user)
     db.session.commit()
 
-    return jsonify({'result': 'success'})
+    return jsonify(description="success")
 
 
 # TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)

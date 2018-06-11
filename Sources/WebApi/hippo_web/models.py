@@ -106,12 +106,12 @@ class User_ES(DocType):
     marketingConsent = Boolean()
 
     def get_age(self):
-        current=date.today()
-        age=current.year-self.birthdate.year-((current.month, current.day)<(self.birthdate.month, self.birthdate.day))
+        current = date.today()
+        age = current.year-self.birthdate.year-((current.month, current.day) < (self.birthdate.month, self.birthdate.day))
         return age
 
     def hash_password(self, password: str):
-        self.password_hash = pbkdf2_sha256.hash(password)
+        self.passhash = pbkdf2_sha256.hash(password)
 
     def verify_password(self, password: str) -> bool:
         return pbkdf2_sha256.verify(password, self.password_hash)
