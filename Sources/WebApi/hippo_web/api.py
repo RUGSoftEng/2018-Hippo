@@ -129,7 +129,7 @@ def get_group(tweet, field):
         return max(likes,key=itemgetter(1))
 
 
-def check_valid_email(email, password, first_name, last_name):
+def check_valid_email(email):
     try:
         v = validate_email(email)
         email = v["email"]
@@ -144,7 +144,9 @@ def check_password(email, password, first_name, last_name):
     
     # score is between 0 (very bad password) and 4 (very good password)
     if (password_results["score"] < 2):
-        abort(400, description="Insecure password: Please provide a secure password.")
+        return False
+    
+    return True
 
         
 def get_user(user_email):
@@ -175,19 +177,21 @@ def register():
     first_name: str = request.json.get('first_name')
     last_name: str = request.json.get('last_name')
     birthday: str = request.json.get('birthday')
+    gender: str = request.json.get('gender')
     data_collection_consent: bool = request.json.get('data_collection_consent')
     marketing_consent: bool = request.json.get('marketing_consent')
 
     # check for valid info
     if None in (email, password, first_name, last_name):
-        abort(400, description="Not enough valid information to finish the registration has been given.")
+        return jsonify({ "result": "fail", "reason": "Not enough valid information to finish the registration has been given." })
 
-    email = check_valid_email(email, password, first_name, last_name)
+    email = check_valid_email(email)
         
     if get_user(email):
-        abort(400, description="A user with that email has already been registered.")
+        return jsonify({ "result": "fail", "reason": "A user with that email has already been registered." })
     
-    check_password(email, password, first_name, last_name)
+    if not check_password(email, password, first_name, last_name):
+        return jsonify({ "result": "fail", "reason": "An insecure password was given." })
     
     # create the user object
     user = User()
@@ -198,6 +202,9 @@ def register():
 
     if birthday is not None:
         user.birthday = birthday
+    
+    if gender is not None:
+        user.gender = gender
 
     # We need to save the date at which the user gave consent, GDPR.
     if data_collection_consent is not None:
@@ -209,11 +216,13 @@ def register():
     # put the new user in the database
     user.save()
 
-    return jsonify({'email': email}), 201
+    return jsonify({ "result": "ok" })
 
 
 @auth.verify_password
 def verify_password(email_or_token, password):
+    print("verify", email_or_token, password)
+
     # First try to authenticate by token, otherwise try with username/password.
     user = User.verify_auth_token(email_or_token)
 
@@ -239,14 +248,23 @@ def user():
     return jsonify({'data': 'Hello, %s!' % g.user.email})
 
 
-# TODO: Implement functions for GDPR compliance for production.
-@app.route('/api/user/delete', methods=['POST'])
+# Deletes a user (GDPR compliance)
+@app.route('/api/user', methods=['DELETE'])
 @auth.login_required
 def delete_user():
-    pass
+    g.user.delete()
+    return jsonify({"result" : "ok"})
 
 
-# TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)
 @app.route('/api/user/data', methods=['GET'])
+@auth.login_required
 def get_personal_data():
-    pass
+    userdata = {}
+    
+    userdata["user"] = dict(g.user._d_)
+    
+    # we don't want to expose the password hash
+    del userdata["user"]["password_hash"]
+   
+    return jsonify(userdata)
+

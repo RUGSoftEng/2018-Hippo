@@ -98,6 +98,7 @@ class User(DocType):
     first_name = Text()
     last_name = Text()
     birthdate = Date()
+    gender = Text()
     dataCollectionConsent = Boolean()
     marketingConsent = Boolean()
 
