@@ -76,16 +76,59 @@ def search_category(terms):
     return jsonify(results)
 
 
-@app.route('/api/view', methods=['POST'])
-def view():
-    pass
+@app.route('/api/view/<tweet_id>', methods=['POST'])
+@auth.login_required
+def view(tweet_id):
+    #update nr views for tweet id
+    q={"script":{ "inline": "views=views?views+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    es.update_by_query(body=q, index="tweets")
+
+    #update views per age group for tweet id
+    age_group=get_age_group(get_age(g.user))
+    categ="views_"
+    categ=categ+str(age_group)
+    q={"script":{ "inline": "categ=categ?categ+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    es.update_by_query(body=q, index="tweets")
+    
+@app.route('/api/like/<tweet_id>', methods=['POST'])
+@auth.login_required
+def like(tweet_id):
+    #update nr likes for tweet id
+    q={"script":{ "inline": "age=age?age+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    es.update_by_query(body=q, index="tweets")
+
+    #update likes per age group for tweet id
+    age_group=get_age_group(get_age(g.user))
+    categ="likes_"
+    categ=categ+str(age_group)
+    q={"script":{ "inline": "categ=categ?categ+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    es.update_by_query(body=q, index="tweets")
+
+#likes/views-total, group likes/views- count for max groups
+@app.route('/api/demographics/<tweet_id>',methods=['GET'])
+@auth.login_required
+def demographics(tweet_id):
+    #get tweet
+    q = elasticsearch_dsl.Q("bool", tweet_id=tweet_id, minimum_should_match=1)
+    s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
+    res=s.execute()
+    tweet=res[0]._d_
+    #determine group w most likes/views
+    group_likes=get_group(tweet,"likes")
+    group_views=get_group(tweet,"views")
+
+    return jsonify({'likes':tweet.likes , 'views':tweet.views ,'most_likes_group':group_likes[0] ,'group_likes':group_likes[1], 'most_views_group':group_views[0], 'group_views':group_views[1]})
+
+#returns a tuple with (group name, value)
+def get_group(tweet, field):
+    if (field is "views"):
+        views=[('age_26_24',tweet['views_age_16_24']),('age_25_34', tweet['views_age_25_34']),('age_35_44', tweet['views_age_35_44']),('age_55_64', tweet['views_age_55_64']),('age_65_plus', tweet['views_age_65_plus'])]
+        return max(views,key=itemgetter(1))
+    else:
+        likes=[('age_26_24',tweet['likes_age_16_24']),('age_25_34', tweet['likes_age_25_34']),('age_35_44', tweet['likes_age_35_44']),('age_55_64', tweet['likes_age_55_64']),('age_65_plus', tweet['likes_age_65_plus'])]
+        return max(likes,key=itemgetter(1))
 
 
-@app.route('/api/like', methods=['POST'])
-def like():
-    pass
-
-  
 def check_valid_email(email, password, first_name, last_name):
     try:
         v = validate_email(email)
