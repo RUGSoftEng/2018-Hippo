@@ -45,6 +45,7 @@ class User(db.Model):
     email = db.Column(db.String(128), index=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
+    gender = db.Column(db.String(1))
 
     password_hash = db.Column(db.String(256))
 

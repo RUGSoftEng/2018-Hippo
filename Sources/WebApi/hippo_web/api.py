@@ -12,9 +12,6 @@ from operator import itemgetter
 from hippo_web.models import User, get_age_group
 from hippo_web import app, auth, db, es
 
-# Ensure that the database tables exist.
-db.create_all()
-
 # Easier during development, remove and add cross-origin resource sharing in deployment.
 CORS(app)
 
@@ -166,18 +163,26 @@ def check_password(email: str, password: str, first_name: str, last_name: str):
     return None
 
 
+def get_location(ip_address : str):
+    pass
+
+
 @app.route('/api/users', methods=['POST'])
 def register():
+    # Ensure that the database tables exist.
+    db.create_all()
+
+    # Ensure all strings that can be displayed are escaped, to protect against cross-site scripting (XSS).
     email: str = escape(request.json.get('email'))
     password: str = request.json.get('password')
     first_name: str = escape(request.json.get('first_name'))
     last_name: str = escape(request.json.get('last_name'))
     birthday: str = request.json.get('birthday')
-    gender: int = request.json.get('gender')
+    gender: str = request.json.get('gender')
     data_collection_consent: bool = request.json.get('data_collection_consent')
     marketing_consent: bool = request.json.get('marketing_consent')
 
-    if None in (email, password, first_name, last_name):
+    if None in (email, password, first_name, last_name, gender):
         return jsonify(description="MISSING_INFO",
                        message="Not enough valid information to finish the registration has been given."), 400
 
@@ -199,16 +204,16 @@ def register():
 
     user.first_name = first_name
     user.last_name = last_name
+    user.gender = gender
 
     if birthday is not None:
         user.birthday = birthday
 
-    if gender is not None:
-        user.gender = gender
-
     # We need to save the date at which the user gave consent, GDPR.
     if data_collection_consent is True:
         user.data_collection_consent = datetime.utcnow()
+
+        # user.location_country = get_location(request.remote_addr)
 
     if marketing_consent is True:
         user.marketing_consent = datetime.utcnow()
@@ -257,21 +262,23 @@ def get_auth_token():
 def account():
     user = g.user
     return jsonify({'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name,
-                    'data_collection_consent': user.data_collection_consent,
+                    'gender': user.gender, 'data_collection_consent': user.data_collection_consent,
                     'marketing_consent': user.marketing_consent})
 
 
 @app.route('/api/user/account', methods=['POST'])
 @auth.login_required
 def change_account():
+    # Ensure all strings that can be displayed are escaped, to protect against cross-site scripting (XSS).
     email: str = escape(request.json.get('email'))
     password: str = request.json.get('password')
     first_name: str = escape(request.json.get('first_name'))
     last_name: str = escape(request.json.get('last_name'))
+    gender: str = request.json.get('gender')
     data_collection_consent: bool = request.json.get('data_collection_consent')
     marketing_consent: bool = request.json.get('marketing_consent')
 
-    if None in (email, first_name, last_name):
+    if None in (email, first_name, last_name, gender):
         return jsonify(description="MISSING_INFO",
                        message="Not enough valid information to finish the registration has been given."), 400
 
@@ -295,6 +302,7 @@ def change_account():
 
     user.first_name = first_name
     user.last_name = last_name
+    user.gender = gender
 
     # We need to save the date at which the user gave consent, GDPR.
     if data_collection_consent is True and user.data_collection_consent is not True:
@@ -308,7 +316,7 @@ def change_account():
     return jsonify(description="success")
 
 
-@app.route('/api/user/delete', methods=['POST'])
+@app.route('/api/user/account', methods=['DELETE'])
 @auth.login_required
 def delete_user():
     db.session.delete(g.user)

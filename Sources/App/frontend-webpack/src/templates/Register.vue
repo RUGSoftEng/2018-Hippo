@@ -30,11 +30,11 @@
                         </div> <!-- form-group end.// -->
                         <div class="form-group">
                             <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" value="option1">
+                                <input class="form-check-input" type="radio" name="gender" value="m" v-model="gender" required>
                                 <span class="form-check-label"> Male </span>
                             </label>
                             <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" value="option2">
+                                <input class="form-check-input" type="radio" name="gender" value="f" v-model="gender" required>
                                 <span class="form-check-label"> Female</span>
                             </label>
                         </div> <!-- form-group end.// -->
@@ -75,13 +75,14 @@
 
                 first_name: '',
                 last_name: '',
+                gender: '',
                 email: '',
                 password: ''
             }
         },
         methods: {
             register: function () {
-                const {first_name, last_name, email, password} = this;
+                const {first_name, last_name, gender, email, password} = this;
 
                 const self = this;
 
@@ -90,6 +91,7 @@
                 axios.post('http://localhost:5000/api/users',  {
                     first_name: first_name,
                     last_name: last_name,
+                    gender: gender,
                     email: email,
                     password: password,
                     data_collection_consent: true,
@@ -104,7 +106,15 @@
                         console.log(error);
 
                         document.getElementById("error-window").style.display = "block";
-                        document.getElementById("error-window").innerHTML = error.response.data.message;
+
+                        if (typeof error.response !== "undefined")
+                        {
+                            document.getElementById("error-window").innerHTML = error.response.data.message;
+                        }
+                        else
+                        {
+                            document.getElementById("error-window").innerHTML = "An unknown exception occurred.";
+                        }
                     });
 
             },
