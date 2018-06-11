@@ -178,6 +178,8 @@ def register():
 
 @auth.verify_password
 def verify_password(email_or_token, password):
+    print("verify", email_or_token, password)
+
     # First try to authenticate by token, otherwise try with username/password.
     user = User.verify_auth_token(email_or_token)
 
@@ -203,14 +205,23 @@ def user():
     return jsonify({'data': 'Hello, %s!' % g.user.email})
 
 
-# TODO: Implement functions for GDPR compliance for production.
-@app.route('/api/user/delete', methods=['POST'])
+# Deletes a user (GDPR compliance)
+@app.route('/api/user', methods=['DELETE'])
 @auth.login_required
 def delete_user():
-    pass
+    g.user.delete()
+    return jsonify({"result" : "ok"})
 
 
-# TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)
 @app.route('/api/user/data', methods=['GET'])
+@auth.login_required
 def get_personal_data():
-    pass
+    userdata = {}
+    
+    userdata["user"] = dict(g.user._d_)
+    
+    # we don't want to expose the password hash
+    del userdata["user"]["password_hash"]
+   
+    return jsonify(userdata)
+
