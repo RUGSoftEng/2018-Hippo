@@ -1,8 +1,18 @@
 <template lang="html">
-    <div>
-        <blockquote class=tweet>
-            <div style="padding-bottom: 1rem;">{{tweetData}}</div>
-        </blockquote>
+    <div class=tweet>
+        <div class="row">
+            <div class="col-1">
+                <img src="{{tweetData.user_profile_image}}" style="height: 40px; border-radius: 50%;">
+            </div>
+            <div class="col-11" style="padding-left: 20px;">
+                <div style="">
+                    <h4 style="margin-top: 5px;">{{tweetData.user_name}}<a href="https://twitter.com/statuses/{{tweetData.id}}"><img src="../assets/icons8-external-link.svg" style="width: 18px; margin-left: 20px;"></a></h4>
+                </div>
+                <div style="">
+                    {{tweetData.content}}
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -14,35 +24,35 @@
 </script>
 
 <style scoped lang="css">
-    blockquote.tweet {
+    .tweet {
         display: inline-block;
         color: black;
-        font-size: 20px;
+        font-size: 16px;
         line-height: 24px;
-        border-radius: 10px;
-        border: 5px solid rgba(255, 0, 0, 0.75);
+        border-radius: 5px;
+        border: 1px solid #A7A7A7;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
         margin: 10px 5px;
         padding: 16px 16px 16px 16px;
-        width: 468px;
+        width: 600px;
         background-color: white;
     }
 
-    blockquote.tweet p {
+    .tweet p {
         font-size: 16px;
         font-weight: normal;
         line-height: 20px;
     }
 
-    blockquote.tweet a {
+    .tweet a {
         color: inherit;
         font-weight: normal;
         text-decoration: none;
         outline: 0 none;
     }
 
-    blockquote.tweet a:hover,
-    blockquote.tweet a:focus {
+    .tweet a:hover,
+    .tweet a:focus {
         text-decoration: underline;
     }
 </style>

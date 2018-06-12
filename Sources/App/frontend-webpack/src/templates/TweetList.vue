@@ -2,7 +2,7 @@
     <section class="py-5">
         <div class="container text-center">
             <button type="button" class="btn btn-default" @click="backToCollections">Back to search overview</button>
-            <tweet v-for="t in tweetList" :tweetData="t.content"></tweet>
+            <tweet v-for="t in tweetList" :tweetData="t"></tweet>
         </div>
     </section>
 </template>
