@@ -17,7 +17,7 @@
         },
         methods: {
             backToCollections() {
-                this.$router.push('/app');
+                this.$router.push('/app/search');
             }
         }
     }

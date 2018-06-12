@@ -16,11 +16,13 @@ export const routes = [
     {path: '/app', redirect: '/app/search'},
     {path: '/app/explore', component: Explore},
     {path: '/app/search', component: Search},
-    {path: '/app/collection:id', component: TweetList},
+    {path: '/app/collection:id', name: 'TL', component: Search},
 
     {path: '/login', component: Login},
     {path: '/logout', component: Logout},
     {path: '/register', component: Register},
     {path: '/account', component: Account},
+
+    {path: '*', redirect: '/'}
 
 ];
