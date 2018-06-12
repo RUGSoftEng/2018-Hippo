@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 import dateutil
 from flask_cors import CORS
@@ -141,7 +142,7 @@ def get_group(tweet, field):
         return max(likes, key=itemgetter(1))
 
 
-def check_valid_email(email):
+def check_valid_email(email) -> Optional[str]:
     try:
         validate_email(email)["email"]
     except EmailNotValidError as ex:
@@ -150,7 +151,7 @@ def check_valid_email(email):
     return None
 
 
-def check_password(email: str, password: str, first_name: str, last_name: str):
+def check_password(email: str, password: str, first_name: str, last_name: str) -> Optional[str]:
     password_results = zxcvbn(password, user_inputs=[email, first_name, last_name])
 
     # NOTE: score is between 0 (very weak password) and 4 (very strong password).
@@ -165,7 +166,7 @@ def check_password(email: str, password: str, first_name: str, last_name: str):
     return None
 
 
-def get_location(ip_address: str):
+def get_location(ip_address: str) -> str:
     pass
 
 
@@ -229,7 +230,7 @@ def register():
 
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 @auth.verify_password
-def verify_password(email_or_token, password):
+def verify_password(email_or_token: str, password: str) -> bool:
     # First try to authenticate by token, otherwise try with username/password.
 
     # Migrate an issue in Axios, authentication headers not send correctly in POST requests.

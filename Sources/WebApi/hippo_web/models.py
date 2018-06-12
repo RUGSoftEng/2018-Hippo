@@ -1,3 +1,5 @@
+from typing import Optional
+
 from dateutil.relativedelta import relativedelta
 from itsdangerous import Serializer, SignatureExpired, BadSignature
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
@@ -72,7 +74,7 @@ class User(db.Model):
         return serializer.dumps({'id': self.id}).decode("utf-8")
 
     @staticmethod
-    def verify_auth_token(token: str) -> object:
+    def verify_auth_token(token: str) -> Optional[object]:
         serializer = Serializer(SECRET_KEY)
 
         try:
