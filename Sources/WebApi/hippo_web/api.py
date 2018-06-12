@@ -1,4 +1,6 @@
 from datetime import datetime
+
+import dateutil
 from flask_cors import CORS
 
 from email_validator import validate_email, EmailNotValidError
@@ -208,7 +210,7 @@ def register():
     user.gender = gender
 
     if birthday is not None:
-        user.birthday = birthday
+        user.birthday = dateutil.parser.parse(birthday)
 
     # We need to save the date at which the user gave consent, GDPR.
     if data_collection_consent is True:
