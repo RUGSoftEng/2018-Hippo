@@ -12,7 +12,7 @@ import elasticsearch_dsl
 
 from collections import defaultdict
 from operator import itemgetter
-from hippo_web.models import User, get_age_group
+from hippo_web.models import User, get_age_group, Demographics
 from hippo_web import app, auth, db, es
 
 # Easier during development, remove and add cross-origin resource sharing in deployment.
@@ -37,10 +37,10 @@ def search_by_keywords(terms):
     # return the first 250 hits
     results = s[:250]
     tweets = [dict(hit._d_) for hit in results]
-    
+
     for tweet in tweets:
         del tweet["raw"]
-        
+
     return tweets
 
 
@@ -57,7 +57,12 @@ def search_category(terms):
 
     # query and add the terms themselves
     query_results = search_by_keywords(terms)
-    results.append({'keywords': terms.split(), 'tweets': query_results})
+
+    collection_name = collection_mapping(terms.split())
+
+    demographics = get_demographics(collection_name)
+
+    results.append({'keywords': terms.split(), 'likes': demographics.likes, 'views': demographics.views, 'tweets': query_results})
 
     # make a keyword frequency dictionary
     keyword_frequencies = defaultdict(int)
@@ -81,72 +86,178 @@ def search_category(terms):
         keyword = keyword_frequencies[-(i + 1)][0]
         new_terms = terms + " " + keyword
         new_results = search_by_keywords(terms + " " + keyword)
-        results.append({'keywords': new_terms.split(), 'tweets': new_results})
+
+        collection_name = collection_mapping(terms.split())
+
+        demographics = get_demographics(collection_name)
+
+        results.append({'keywords': new_terms.split(), 'likes': demographics.likes, 'views': demographics.views, 'tweets': new_results})
 
     return jsonify(results)
 
 
-@app.route('/api/view/<tweet_id>', methods=['POST'])
+# NOTE: Other method currently used.
+# @app.route('/api/view/<tweet_id>', methods=['POST'])
+# @auth.login_required
+# def view(tweet_id):
+#     # update nr views for tweet id
+#     q = {"script": {"inline": "views=views?views+=1:1"}, "query": {"match": {"id": tweet_id}}}
+#     es.update_by_query(body=q, index="tweets")
+#
+#     # update views per age group for tweet id
+#     age_group = get_age_group(g.user.get_age())
+#     categ = "views_" + str(age_group)
+#     q = {"script": {"inline": "categ=categ?categ+=1:1"}, "query": {"match": {"id": tweet_id}}}
+#     es.update_by_query(body=q, index="tweets")
+#
+#
+# @app.route('/api/like/<tweet_id>', methods=['POST'])
+# @auth.login_required
+# def like(tweet_id):
+#     # update nr likes for tweet id
+#     q = {"script": {"inline": "age=age?age+=1:1"}, "query": {"match": {"id": tweet_id}}}
+#     es.update_by_query(body=q, index="tweets")
+#
+#     # update likes per age group for tweet id
+#     age_group = get_age_group(g.user.get_age())
+#     categ = "likes_" + str(age_group)
+#     q = {"script": {"inline": "categ=categ?categ+=1:1"}, "query": {"match": {"id": tweet_id}}}
+#     es.update_by_query(body=q, index="tweets")
+#
+#
+# # likes/views-total, group likes/views- count for max groups
+# @app.route('/api/demographics/<tweet_id>', methods=['GET'])
+# @auth.login_required
+# def demographics(tweet_id):
+#     # get tweet
+#     q = elasticsearch_dsl.Q("bool", tweet_id=tweet_id, minimum_should_match=1)
+#     s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
+#     res = s.execute()
+#     tweet = res[0]._d_
+#     # determine group w most likes/views
+#     group_likes = get_group(tweet, "likes")
+#     group_views = get_group(tweet, "views")
+#
+#     return jsonify(
+#         {'likes': tweet.likes, 'views': tweet.views, 'most_likes_group': group_likes[0], 'group_likes': group_likes[1],
+#          'most_views_group': group_views[0], 'group_views': group_views[1]})
+#
+#
+# # returns a tuple with (group name, value)
+# def get_group(tweet, field):
+#     if field is "views":
+#         views = [('age_26_24', tweet['views_age_16_24']), ('age_25_34', tweet['views_age_25_34']),
+#                  ('age_35_44', tweet['views_age_35_44']), ('age_55_64', tweet['views_age_55_64']),
+#                  ('age_65_plus', tweet['views_age_65_plus'])]
+#         return max(views, key=itemgetter(1))
+#     else:
+#         likes = [('age_26_24', tweet['likes_age_16_24']), ('age_25_34', tweet['likes_age_25_34']),
+#                  ('age_35_44', tweet['likes_age_35_44']), ('age_55_64', tweet['likes_age_55_64']),
+#                  ('age_65_plus', tweet['likes_age_65_plus'])]
+#         return max(likes, key=itemgetter(1))
+
+
+def collection_mapping(keywords: [str]) -> str:
+    keywords = list(map(lambda x: x.lower(), keywords))
+
+    keywords.sort()
+
+    return ''.join(keywords)
+
+
+def get_demographics(keywords: str) -> Demographics:
+    demographics = Demographics.query.filter_by(keywords=keywords).first()
+
+    if demographics is None:
+        demographics = Demographics()
+
+        demographics.keywords = keywords
+
+        demographics.views = 0
+
+        demographics.views_male = 0
+        demographics.views_female = 0
+
+        demographics.views_lower_15 = 0
+        demographics.views_16_24 = 0
+        demographics.views_25_34 = 0
+        demographics.views_35_44 = 0
+        demographics.views_45_54 = 0
+        demographics.views_55_64 = 0
+        demographics.views_65_higher = 0
+
+        demographics.likes = 0
+
+        demographics.likes_male = 0
+        demographics.likes_female = 0
+
+        demographics.likes_lower_15 = 0
+        demographics.likes_16_24 = 0
+        demographics.likes_25_34 = 0
+        demographics.likes_35_44 = 0
+        demographics.likes_45_54 = 0
+        demographics.likes_55_64 = 0
+        demographics.likes_65_higher = 0
+
+        db.session.add(demographics)
+        db.session.commit()
+
+    return demographics
+
+
+@app.route('/api/collections/<terms>/view', methods=['POST'])
 @auth.login_required
-def view(tweet_id):
-    # update nr views for tweet id
-    q = {"script": {"inline": "views=views?views+=1:1"}, "query": {"match": {"id": tweet_id}}}
-    es.update_by_query(body=q, index="tweets")
+def view_collection(terms: str):
+    user = g.user
 
-    # update views per age group for tweet id
-    age_group = get_age_group(g.user.get_age())
-    categ = "views_" + str(age_group)
-    q = {"script": {"inline": "categ=categ?categ+=1:1"}, "query": {"match": {"id": tweet_id}}}
-    es.update_by_query(body=q, index="tweets")
+    collection_name = collection_mapping(terms.split())
+
+    demographics = get_demographics(collection_name)
+
+    demographics.views = demographics.views + 1
+
+    if user.data_collection_consent is not None:
+        if user.gender == "m":
+            demographics.views_male = demographics.views_male + 1
+        else:
+            demographics.views_female = demographics.views_female + 1
+
+        age_group = get_age_group(user.get_age())
+
+        setattr(demographics, "views_" + age_group.name, getattr(demographics, "views_" + age_group.name) + 1)
+
+    db.session.commit()
+
+    return jsonify(description="success")
 
 
-@app.route('/api/like/<tweet_id>', methods=['POST'])
+@app.route('/api/collections/<terms>/like', methods=['POST'])
 @auth.login_required
-def like(tweet_id):
-    # update nr likes for tweet id
-    q = {"script": {"inline": "age=age?age+=1:1"}, "query": {"match": {"id": tweet_id}}}
-    es.update_by_query(body=q, index="tweets")
+def like_collection(terms: str):
+    user = g.user
 
-    # update likes per age group for tweet id
-    age_group = get_age_group(g.user.get_age())
-    categ = "likes_" + str(age_group)
-    q = {"script": {"inline": "categ=categ?categ+=1:1"}, "query": {"match": {"id": tweet_id}}}
-    es.update_by_query(body=q, index="tweets")
+    collection_name = collection_mapping(terms.split())
 
+    demographics = get_demographics(collection_name)
 
-# likes/views-total, group likes/views- count for max groups
-@app.route('/api/demographics/<tweet_id>', methods=['GET'])
-@auth.login_required
-def demographics(tweet_id):
-    # get tweet
-    q = elasticsearch_dsl.Q("bool", tweet_id=tweet_id, minimum_should_match=1)
-    s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
-    res = s.execute()
-    tweet = res[0]._d_
-    # determine group w most likes/views
-    group_likes = get_group(tweet, "likes")
-    group_views = get_group(tweet, "views")
+    demographics.likes = demographics.likes + 1
 
-    return jsonify(
-        {'likes': tweet.likes, 'views': tweet.views, 'most_likes_group': group_likes[0], 'group_likes': group_likes[1],
-         'most_views_group': group_views[0], 'group_views': group_views[1]})
+    if user.data_collection_consent is not None:
+        if user.gender == "m":
+            demographics.likes_male = demographics.likes_male + 1
+        else:
+            demographics.likes_female = demographics.likes_female + 1
+
+        age_group = get_age_group(user.get_age())
+
+        setattr(demographics, "likes_" + age_group.name, getattr(demographics, "likes_" + age_group.name) + 1)
+
+    db.session.commit()
+
+    return jsonify(description="success")
 
 
-# returns a tuple with (group name, value)
-def get_group(tweet, field):
-    if field is "views":
-        views = [('age_26_24', tweet['views_age_16_24']), ('age_25_34', tweet['views_age_25_34']),
-                 ('age_35_44', tweet['views_age_35_44']), ('age_55_64', tweet['views_age_55_64']),
-                 ('age_65_plus', tweet['views_age_65_plus'])]
-        return max(views, key=itemgetter(1))
-    else:
-        likes = [('age_26_24', tweet['likes_age_16_24']), ('age_25_34', tweet['likes_age_25_34']),
-                 ('age_35_44', tweet['likes_age_35_44']), ('age_55_64', tweet['likes_age_55_64']),
-                 ('age_65_plus', tweet['likes_age_65_plus'])]
-        return max(likes, key=itemgetter(1))
-
-
-def check_valid_email(email) -> Optional[str]:
+def check_valid_email(email: str) -> Optional[str]:
     try:
         validate_email(email)["email"]
     except EmailNotValidError as ex:
@@ -170,6 +281,7 @@ def check_password(email: str, password: str, first_name: str, last_name: str) -
     return None
 
 
+# TODO: use external API to resolve IP location, return ISO 3166-1 (preferably alpha-3) code.
 def get_location(ip_address: str) -> str:
     pass
 
@@ -214,10 +326,11 @@ def register():
     user.last_name = last_name
     user.gender = gender
 
+    # It's possible to select non-existing dates in date selector, thus, we need to filter those out.
     if birthday is not None:
         try:
             user.birthday = dateutil.parser.parse(birthday)
-        except ValueError as ex:
+        except ValueError:
             return jsonify(description="INVALID_DATE", message="The given date is invalid."), 400
 
     # We need to save the date at which the user gave consent, GDPR.
@@ -272,14 +385,17 @@ def get_auth_token():
 @auth.login_required
 def account():
     user = g.user
+
     if user.data_collection_consent is None:
-        data_consent=False
+        data_consent = False
     else:
-        data_consent=True
+        data_consent = True
+
     if user.marketing_consent is None:
-        marketing=False
+        marketing = False
     else:
-        marketing=True
+        marketing = True
+
     return jsonify({'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name,
                     'gender': user.gender, 'data_collection_consent': data_consent,
                     'marketing_consent': marketing})

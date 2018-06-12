@@ -13,7 +13,7 @@ import Account from './templates/Account.vue';
 
 export const routes = [
     {path: '/', component: Home},
-    {path: '/app', component: Explore},
+    {path: '/app', redirect: '/app/search'},
     {path: '/app/explore', component: Explore},
     {path: '/app/search', component: Search},
     {path: '/app/collection:id', name: 'TL', component: Search},

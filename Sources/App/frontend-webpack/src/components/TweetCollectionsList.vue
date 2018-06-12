@@ -1,7 +1,7 @@
 <template lang="html">
     <section class="py-5">
         <div class="container text-center">
-            <tweetCollection v-for="(c, i) in categoryList" v-if="c.tweets.length > 0" :tweetData="c.tweets[0].content"
+            <tweetCollection v-for="(c, i) in categoryList" v-if="c.tweets.length > 0" :tweetData="c.tweets[0]" :likes="c.likes" :views="c.views"
                              :searchTerms="getKeywords(c.keywords)" :categoryNum="i"></tweetCollection>
         </div>
     </section>
