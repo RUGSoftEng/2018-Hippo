@@ -1,5 +1,8 @@
-# Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 from datetime import datetime
+from typing import Optional
+
+import dateutil
+from flask_cors import CORS
 
 from email_validator import validate_email, EmailNotValidError
 from zxcvbn import zxcvbn
@@ -9,9 +12,11 @@ import elasticsearch_dsl
 
 from collections import defaultdict
 from operator import itemgetter
-from hippo_web.models import User
+from hippo_web.models import User, get_age_group
 from hippo_web import app, auth, db, es
 
+# Easier during development, remove and add cross-origin resource sharing in deployment.
+CORS(app)
 
 # hardcoded keywords that need to be excluded.
 excluded_keywords = {"https", "i"}
@@ -62,7 +67,7 @@ def search_category(terms):
         for keyword in keywords:
             # make the keyword lowercase, to remove duplicates that differ in case
             keyword = keyword.lower()
-            
+
             # exclude searched terms and hardcoded exclusions
             if keyword not in excluded_keywords and keyword not in terms:
                 keyword_frequencies[keyword] += 1
@@ -84,161 +89,172 @@ def search_category(terms):
 @app.route('/api/view/<tweet_id>', methods=['POST'])
 @auth.login_required
 def view(tweet_id):
-    #update nr views for tweet id
-    q={"script":{ "inline": "views=views?views+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    # update nr views for tweet id
+    q = {"script": {"inline": "views=views?views+=1:1"}, "query": {"match": {"id": tweet_id}}}
     es.update_by_query(body=q, index="tweets")
 
-    #update views per age group for tweet id
-    age_group=get_age_group(get_age(g.user))
-    categ="views_"
-    categ=categ+str(age_group)
-    q={"script":{ "inline": "categ=categ?categ+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    # update views per age group for tweet id
+    age_group = get_age_group(g.user.get_age())
+    categ = "views_" + str(age_group)
+    q = {"script": {"inline": "categ=categ?categ+=1:1"}, "query": {"match": {"id": tweet_id}}}
     es.update_by_query(body=q, index="tweets")
-    
+
+
 @app.route('/api/like/<tweet_id>', methods=['POST'])
 @auth.login_required
 def like(tweet_id):
-    #update nr likes for tweet id
-    q={"script":{ "inline": "age=age?age+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    # update nr likes for tweet id
+    q = {"script": {"inline": "age=age?age+=1:1"}, "query": {"match": {"id": tweet_id}}}
     es.update_by_query(body=q, index="tweets")
 
-    #update likes per age group for tweet id
-    age_group=get_age_group(get_age(g.user))
-    categ="likes_"
-    categ=categ+str(age_group)
-    q={"script":{ "inline": "categ=categ?categ+=1:1"}, "query": { "match":{"id":tweet_id}}}
+    # update likes per age group for tweet id
+    age_group = get_age_group(g.user.get_age())
+    categ = "likes_" + str(age_group)
+    q = {"script": {"inline": "categ=categ?categ+=1:1"}, "query": {"match": {"id": tweet_id}}}
     es.update_by_query(body=q, index="tweets")
 
-#likes/views-total, group likes/views- count for max groups
-@app.route('/api/demographics/<tweet_id>',methods=['GET'])
+
+# likes/views-total, group likes/views- count for max groups
+@app.route('/api/demographics/<tweet_id>', methods=['GET'])
 @auth.login_required
 def demographics(tweet_id):
-    #get tweet
+    # get tweet
     q = elasticsearch_dsl.Q("bool", tweet_id=tweet_id, minimum_should_match=1)
     s = elasticsearch_dsl.Search(using=es, index="tweet").query(q)
-    res=s.execute()
-    tweet=res[0]._d_
-    #determine group w most likes/views
-    group_likes=get_group(tweet,"likes")
-    group_views=get_group(tweet,"views")
+    res = s.execute()
+    tweet = res[0]._d_
+    # determine group w most likes/views
+    group_likes = get_group(tweet, "likes")
+    group_views = get_group(tweet, "views")
 
-    return jsonify({'likes':tweet.likes , 'views':tweet.views ,'most_likes_group':group_likes[0] ,'group_likes':group_likes[1], 'most_views_group':group_views[0], 'group_views':group_views[1]})
+    return jsonify(
+        {'likes': tweet.likes, 'views': tweet.views, 'most_likes_group': group_likes[0], 'group_likes': group_likes[1],
+         'most_views_group': group_views[0], 'group_views': group_views[1]})
 
-#returns a tuple with (group name, value)
+
+# returns a tuple with (group name, value)
 def get_group(tweet, field):
-    if (field is "views"):
-        views=[('age_26_24',tweet['views_age_16_24']),('age_25_34', tweet['views_age_25_34']),('age_35_44', tweet['views_age_35_44']),('age_55_64', tweet['views_age_55_64']),('age_65_plus', tweet['views_age_65_plus'])]
-        return max(views,key=itemgetter(1))
+    if field is "views":
+        views = [('age_26_24', tweet['views_age_16_24']), ('age_25_34', tweet['views_age_25_34']),
+                 ('age_35_44', tweet['views_age_35_44']), ('age_55_64', tweet['views_age_55_64']),
+                 ('age_65_plus', tweet['views_age_65_plus'])]
+        return max(views, key=itemgetter(1))
     else:
-        likes=[('age_26_24',tweet['likes_age_16_24']),('age_25_34', tweet['likes_age_25_34']),('age_35_44', tweet['likes_age_35_44']),('age_55_64', tweet['likes_age_55_64']),('age_65_plus', tweet['likes_age_65_plus'])]
-        return max(likes,key=itemgetter(1))
+        likes = [('age_26_24', tweet['likes_age_16_24']), ('age_25_34', tweet['likes_age_25_34']),
+                 ('age_35_44', tweet['likes_age_35_44']), ('age_55_64', tweet['likes_age_55_64']),
+                 ('age_65_plus', tweet['likes_age_65_plus'])]
+        return max(likes, key=itemgetter(1))
 
 
-def check_valid_email(email):
+def check_valid_email(email) -> Optional[str]:
     try:
-        v = validate_email(email)
-        email = v["email"]
-    except EmailNotValidError as e:
-        return [ None, str(e) ]
-    
-    return [ email, None ]
-    
-    
-def check_password(email, password, first_name, last_name):
-    password_results = zxcvbn(password, user_inputs=[email, first_name, last_name])
-    
-    # score is between 0 (very bad password) and 4 (very good password)
-    if (password_results["score"] < 2):
-        return False
-    
-    return True
-
-        
-def get_user(user_email):
-    # no user database implies user doesn't exist. Also create the database
-    if not es.indices.exists(index="user"):
-        es.indices.create(index="user")
-        return None
-
-    # query for the user email
-    must = elasticsearch_dsl.Q('match', email=user_email)
-    q = elasticsearch_dsl.Q('bool', should=[must])
-    s = elasticsearch_dsl.Search(using=es, index="user").query(q)
-    results = s.execute()
-
-    # if there is an exact match: return the user
-    for hit in results:
-        if (hit._d_['email'] == user_email):
-            return User.get(hit.meta.id)
+        validate_email(email)["email"]
+    except EmailNotValidError as ex:
+        return str(ex)
 
     return None
 
 
+def check_password(email: str, password: str, first_name: str, last_name: str) -> Optional[str]:
+    password_results = zxcvbn(password, user_inputs=[email, first_name, last_name])
+
+    # NOTE: score is between 0 (very weak password) and 4 (very strong password).
+    if password_results["score"] < 2:
+        # Ensure that the user gets feedback, since there are no clear password requirements.
+        suggestions = ""
+        for suggestion in password_results["feedback"]["suggestions"]:
+            suggestions += suggestion + "\n"
+
+        return suggestions
+
+    return None
+
+
+def get_location(ip_address: str) -> str:
+    pass
+
+
 @app.route('/api/users', methods=['POST'])
 def register():
-    # retrieve the fields from the POST request
-    email: str = request.json.get('email')
+    # Ensure that the database tables exist.
+    db.create_all()
+
+    # Ensure all strings that can be displayed are escaped, to protect against cross-site scripting (XSS).
+    email: str = escape(request.json.get('email'))
     password: str = request.json.get('password')
-    first_name: str = request.json.get('first_name')
-    last_name: str = request.json.get('last_name')
+    first_name: str = escape(request.json.get('first_name'))
+    last_name: str = escape(request.json.get('last_name'))
     birthday: str = request.json.get('birthday')
     gender: str = request.json.get('gender')
     data_collection_consent: bool = request.json.get('data_collection_consent')
     marketing_consent: bool = request.json.get('marketing_consent')
 
-    # check for valid info
-    if None in (email, password, first_name, last_name):
-        return jsonify({ "result": "fail", "reason": "Not enough valid information to finish the registration has been given." })
+    if None in (email, password, first_name, last_name, gender):
+        return jsonify(description="MISSING_INFO",
+                       message="Not enough valid information to finish the registration has been given."), 400
 
-    email, err = check_valid_email(email)
-    if err is not None:
-        return jsonify({ "result": "fail", "reason": "A user with that email has already been registered." })
-        
-    if get_user(email):
-        return jsonify({ "result": "fail", "reason": "Invalid email: " +  err + "." })
-    
-    if not check_password(email, password, first_name, last_name):
-        return jsonify({ "result": "fail", "reason": "An insecure password was given." })
-    
-    # create the user object
+    if check_valid_email(email) is not None:
+        return jsonify(description="INVALID_EMAIL", message="The given email is invalid."), 400
+
+    if User.query.filter_by(email=email).first():
+        return jsonify(description="USER_ALREADY_EXISTS",
+                       message="A user with that email has already been registered."), 400
+
+    result = check_password(email, password, first_name, last_name)
+
+    if result is not None:
+        return jsonify(description="WEAK_PASSWORD", message="The given password is insecure. \n" + result), 400
+
     user = User()
+
     user.email = email
     user.hash_password(password)
+
     user.first_name = first_name
     user.last_name = last_name
+    user.gender = gender
 
     if birthday is not None:
-        user.birthday = birthday
-    
-    if gender is not None:
-        user.gender = gender
+        user.birthday = dateutil.parser.parse(birthday)
 
     # We need to save the date at which the user gave consent, GDPR.
-    if data_collection_consent is not None:
+    if data_collection_consent is True:
         user.data_collection_consent = datetime.utcnow()
 
-    if marketing_consent is not None:
+        # user.location_country = get_location(request.remote_addr)
+
+    if marketing_consent is True:
         user.marketing_consent = datetime.utcnow()
 
-    # put the new user in the database
-    user.save()
+    db.session.add(user)
+    db.session.commit()
 
-    return jsonify({ "result": "ok" })
+    return jsonify(description="success")
 
 
+# Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 @auth.verify_password
-def verify_password(email_or_token, password):
-    print("verify", email_or_token, password)
-
+def verify_password(email_or_token: str, password: str) -> bool:
     # First try to authenticate by token, otherwise try with username/password.
+
+    # Migrate an issue in Axios, authentication headers not send correctly in POST requests.
+    if email_or_token == "":
+        email_or_token = request.json.get('auth')['username']
+
     user = User.verify_auth_token(email_or_token)
 
     if not user:
-        user = get_user(email_or_token)
-        if not user or not user.verify_password(password):
+        user = User.query.filter_by(email=email_or_token).first()
+
+        if not user:
+            return False
+
+        # Had an issue with an empty hash, only in development.
+        if not user.verify_password(password):
             return False
 
     g.user = user
+
     return True
 
 
@@ -246,32 +262,80 @@ def verify_password(email_or_token, password):
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
-    return jsonify({'token': token})
+    return jsonify(token=token)
 
 
-@app.route('/api/user/profile')
+@app.route('/api/user/account', methods=['GET'])
 @auth.login_required
-def user():
-    return jsonify({'data': 'Hello, %s!' % g.user.email})
+def account():
+    user = g.user
+    return jsonify({'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name,
+                    'gender': user.gender, 'data_collection_consent': user.data_collection_consent,
+                    'marketing_consent': user.marketing_consent})
 
 
-# Deletes a user (GDPR compliance)
-@app.route('/api/user', methods=['DELETE'])
+@app.route('/api/user/account', methods=['POST'])
+@auth.login_required
+def change_account():
+    # Ensure all strings that can be displayed are escaped, to protect against cross-site scripting (XSS).
+    email: str = escape(request.json.get('email'))
+    password: str = request.json.get('password')
+    first_name: str = escape(request.json.get('first_name'))
+    last_name: str = escape(request.json.get('last_name'))
+    gender: str = request.json.get('gender')
+    data_collection_consent: bool = request.json.get('data_collection_consent')
+    marketing_consent: bool = request.json.get('marketing_consent')
+
+    if None in (email, first_name, last_name, gender):
+        return jsonify(description="MISSING_INFO",
+                       message="Not enough valid information to finish the registration has been given."), 400
+
+    if check_valid_email(email) is not None:
+        return jsonify(description="INVALID_EMAIL", message="The given email is invalid."), 400
+
+    user = g.user
+
+    # Make sure only to run the tests when these values have changed.
+    if email != user.email and User.query.filter_by(email=email).first():
+        return jsonify(description="USER_ALREADY_EXISTS",
+                       message="A user with that email has already been registered."), 400
+
+    if password != "":
+        result = check_password(email, password, first_name, last_name)
+        if result is not None:
+            return jsonify(description="WEAK_PASSWORD", message="The given password is insecure. \n" + result), 400
+
+        user.hash_password(password)
+
+    user.email = email
+
+    user.first_name = first_name
+    user.last_name = last_name
+    user.gender = gender
+
+    # We need to save the date at which the user gave consent, GDPR.
+    if data_collection_consent is True and user.data_collection_consent is not True:
+        user.data_collection_consent = datetime.utcnow()
+
+    if marketing_consent is True and user.marketing_consent is not True:
+        user.marketing_consent = datetime.utcnow()
+
+    db.session.commit()
+
+    return jsonify(description="success")
+
+
+@app.route('/api/user/account', methods=['DELETE'])
 @auth.login_required
 def delete_user():
-    g.user.delete()
-    return jsonify({"result" : "ok"})
+    db.session.delete(g.user)
+    db.session.commit()
+
+    return jsonify(description="success")
 
 
+# TODO: Serialise User data model in json, zip it and send it to the user. (GDPR compliance)
 @app.route('/api/user/data', methods=['GET'])
 @auth.login_required
 def get_personal_data():
-    userdata = {}
-    
-    userdata["user"] = dict(g.user._d_)
-    
-    # we don't want to expose the password hash
-    del userdata["user"]["password_hash"]
-   
-    return jsonify(userdata)
-
+    pass

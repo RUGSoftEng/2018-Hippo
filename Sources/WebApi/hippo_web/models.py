@@ -1,3 +1,5 @@
+from typing import Optional
+
 from dateutil.relativedelta import relativedelta
 from itsdangerous import Serializer, SignatureExpired, BadSignature
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
@@ -9,7 +11,7 @@ from hippo_web import db, app
 
 from elasticsearch_dsl import *
 
-db.create_all()
+SECRET_KEY = app.config['SECRET_KEY']
 
 
 class AgeGroup:
@@ -38,16 +40,16 @@ def get_age_group(age: int):
     return age_groups[-1]
 
 
-class User_SQL(db.Model):
+class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(128), index=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
+    gender = db.Column(db.String(1))
 
-    # TODO: Check which format this should be and what size.
-    password_hash = db.Column(db.Binary(256))
+    password_hash = db.Column(db.String(256))
 
     # If null: opt-out for data collection, record datetime for opt-in.
     data_collection_consent = db.Column(db.DateTime())
@@ -65,15 +67,15 @@ class User_SQL(db.Model):
     def verify_password(self, password: str) -> bool:
         return pbkdf2_sha256.verify(password, self.password_hash)
 
-    # TODO: Check whether "serializer.dumps" returns a string or bytes.
-    def generate_auth_token(self) -> object:
-        serializer = Serializer(app.config['SECRET_KEY'])
+    # TODO: We need to know how long tokens remain valid, when do they expire?
+    def generate_auth_token(self) -> str:
+        serializer = Serializer(SECRET_KEY)
 
-        return serializer.dumps({'id': self.id})
+        return serializer.dumps({'id': self.id}).decode("utf-8")
 
     @staticmethod
-    def verify_auth_token(token: str) -> object:
-        serializer = Serializer(app.config['SECRET_KEY'])
+    def verify_auth_token(token: str) -> Optional[object]:
+        serializer = Serializer(SECRET_KEY)
 
         try:
             data = serializer.loads(token)
@@ -91,8 +93,14 @@ class User_SQL(db.Model):
         return user
 
 
-# ElasticSearch User model
-class User(DocType):
+# class Like(db.Model):
+#    __tablename__ = 'likes'
+
+#    id = db.Column(db.Integer, primary_key=True)
+#    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+
+class User_ES(DocType):
     email = Text()
     passhash = Text()
     first_name = Text()
@@ -103,23 +111,24 @@ class User(DocType):
     marketingConsent = Boolean()
 
     def get_age(self):
-        current=date.today()
-        age=current.year-self.birthdate.year-((current.month, current.day)<(self.birthdate.month, self.birthdate.day))
+        current = date.today()
+        age = current.year - self.birthdate.year - (
+                    (current.month, current.day) < (self.birthdate.month, self.birthdate.day))
         return age
 
     def hash_password(self, password: str):
-        self.password_hash = pbkdf2_sha256.hash(password)
+        self.passhash = pbkdf2_sha256.hash(password)
 
     def verify_password(self, password: str) -> bool:
         return pbkdf2_sha256.verify(password, self.password_hash)
 
     def generate_auth_token(self):
-        serializer = Serializer(app.config['SECRET_KEY'])
+        serializer = Serializer(SECRET_KEY)
         return serializer.dumps({'id': self.meta.id}).decode("utf-8")
 
     @staticmethod
     def verify_auth_token(token: str) -> object:
-        serializer = Serializer(app.config['SECRET_KEY'])
+        serializer = Serializer(SECRET_KEY)
 
         try:
             data = serializer.loads(token)
