@@ -45,7 +45,7 @@
                         <div class="form-group">
                             <label class="form-check form-check-inline">Birthday</label>
                             <!-- <span class="form-check-label"> Birthday </span> -->
-                            <select name="birthday-day" title="Day" v-model="birthday_day">
+                            <select name="birthday-day" title="Day" v-model="birthday_day" required>
                                 <option value="01">1</option>
                                 <option value="02">2</option>
                                 <option value="03">3</option>
@@ -78,7 +78,7 @@
                                 <option value="30">30</option>
                                 <option value="31">31</option>
                             </select>
-                            <select name="birthday-month" title="Month" v-model="birthday_month">
+                            <select name="birthday-month" title="Month" v-model="birthday_month" required>
                                 <option value="01">January</option>
                                 <option value="02">February</option>
                                 <option value="03">March</option>
@@ -92,7 +92,7 @@
                                 <option value="11">November</option>
                                 <option value="12">December</option>
                             </select>
-                            <select name="birthday-year" title="Year" v-model="birthday_year">
+                            <select name="birthday-year" title="Year" v-model="birthday_year" required>
                                 <option v-for="year in years" :value="year">{{ year }}</option>
                             </select>
                         </div> <!-- form-group end.// -->
@@ -100,15 +100,17 @@
                             <label>Create password</label>
                             <input v-model="password" class="form-control" type="password" required>
                         </div> <!-- form-group end.// -->
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" style="color: black !important;" v-model="consent_marketing"> I consent to marketing
-                            </label>
-                        </div>
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" style="color: black !important;" v-model="consent_data"> I consent to data collection
-                            </label>
+                        <div class="form-group">
+                            <div class="checkbox mb-3">
+                                <label>
+                                    <input type="checkbox" style="color: black !important;" v-model="marketing_consent"> I want to receive marketing emails from Hippo.
+                                </label>
+                            </div>
+                            <div class="checkbox mb-3">
+                                <label>
+                                    <input type="checkbox" style="color: black !important;" v-model="data_collection_consent"> I give consent to use my data to generate demographics.
+                                </label>
+                            </div>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block">Register</button>
@@ -155,28 +157,17 @@
                 birthday_year: '',
                 email: '',
                 password: '',
-                consent_marketing: false,
-                consent_data: false, //required!
+                marketing_consent: true,
+                data_collection_consent: true,
             }
         },
         methods: {
             register: function () {
-                const {first_name, last_name, gender, email, password, birthday_day, birthday_month, birthday_year} = this;
+                const {first_name, last_name, gender, email, password, birthday_day, birthday_month, birthday_year, data_collection_consent, marketing_consent} = this;
 
                 const self = this;
 
                 document.getElementById("error-window").style.display = "none";
-
-                if(self.consent_data == false){
-                  document.getElementById("error-window").style.display = "block";
-                  document.getElementById("error-window").innerHTML = "You must consent to data!";
-                  return;
-                }
-                if(self.birthday_day == '' || self.birthday_month == '' || self.birthday_year == ''){
-                  document.getElementById("error-window").style.display = "block";
-                  document.getElementById("error-window").innerHTML = "You must add an entire birthday!";
-                  return;
-                }
 
                 axios.post('http://localhost:5000/api/users', {
                     first_name: first_name,
@@ -185,8 +176,8 @@
                     email: email,
                     birthday: birthday_year + "-" + birthday_month +  "-" + birthday_day,
                     password: password,
-                    data_collection_consent: self.consent_data,
-                    marketing_consent: self.consent_marketing
+                    data_collection_consent: data_collection_consent,
+                    marketing_consent: marketing_consent
                 })
                     .then(function (response) {
                         console.log(response);
@@ -202,7 +193,7 @@
                             document.getElementById("error-window").innerHTML = error.response.data.message;
                         }
                         else {
-                            document.getElementById("error-window").innerHTML = "An unknown exception occurred, or the server is down";
+                            document.getElementById("error-window").innerHTML = "An unknown exception occurred, there could be a issue with connecting to the server.";
                         }
                     });
 

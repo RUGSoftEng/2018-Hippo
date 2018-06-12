@@ -6,7 +6,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
-import axios from 'axios';
 
 import {routes} from './routes';
 

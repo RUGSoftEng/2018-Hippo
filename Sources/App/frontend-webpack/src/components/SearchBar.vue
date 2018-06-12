@@ -1,5 +1,7 @@
 <template lang="html">
     <div class="container center">
+        <div id="error-window" class="alert alert-danger" role="alert" style="margin: 10px; display: none;">
+        </div>
         <div class="search-view form-inline">
             <input class="form-control mr-sm-3 search-box" type="text" v-model="searchText"
                    v-on:keyup.enter="search(searchText)" placeholder="Search for ideas..." aria-label="Search"
@@ -35,6 +37,8 @@
         },
         methods: {
             search: function () {
+                document.getElementById("error-window").style.display = "none";
+
                 this.categories = [];
                 this.$router.push('/app/search');
                 let cmp = this;
@@ -54,6 +58,15 @@
                     })
                     .catch(function (error) {
                         console.log(error);
+
+                        document.getElementById("error-window").style.display = "block";
+
+                        if (typeof error.response !== "undefined") {
+                            document.getElementById("error-window").innerHTML = error.response.data.message;
+                        }
+                        else {
+                            document.getElementById("error-window").innerHTML = "An unknown exception occurred, there could be a issue with connecting to the server.";
+                        }
                     });
             },
 
