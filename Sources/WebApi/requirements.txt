@@ -7,3 +7,4 @@ elasticsearch>=6.0.0,<7.0.0
 elasticsearch_dsl>=6.0.0,<7.0.0
 email_validator
 zxcvbn
+flask_cors

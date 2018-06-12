@@ -10,8 +10,8 @@
                             <h1 class="mb-5 home-header" style="color: white !important;">Welcome to Hippo</h1>
                             <h3 class="home-header" style="margin-bottom: 75px; color: white !important;">Develop and
                                 validate startup ideas.</h3>
-                            <a href="#signup" class="btn btn-outline btn-xl js-scroll-trigger signup-link">Sign up
-                                now</a>
+                            <router-link to="/register" class="btn btn-outline btn-xl js-scroll-trigger signup-link">Sign up
+                                now</router-link>
                         </div>
                     </div>
                     <div class="col-lg-5 my-auto">
@@ -76,60 +76,6 @@
                 </div>
             </div>
         </section>
-        <section class="download bg-primary text-center" id="signup">
-            <div class="container">
-                <div class="section-heading text-center">
-                    <h2 class="home-header" style="color: black !important;">Sign up now!</h2>
-                    <!-- <p class="text-muted">Check out what you can do with Hippo!</p> -->
-                    <hr>
-                </div>
-                <div class="signup-form">
-                    <div class="container-fluid">
-                        <div class="row" style="margin-bottom: 15px;">
-                            <div class="col-6">
-                                <label class="signup-form-label" style="color: black !important;" for="firstname">First
-                                    Name</label>
-                                <input class="signup-form-field" type="text" name="firstname" placeholder="First Name"
-                                       required/>
-                            </div>
-                            <div class="col-6">
-                                <label class="signup-form-label" style="color: black !important;" for="lastname">Last
-                                    Name</label>
-                                <input class="signup-form-field" type="text" name="lastname" placeholder="Last Name"
-                                       required/>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-bottom: 15px;">
-                            <div class="col-12">
-                                <label class="signup-form-label" style="color: black !important;" for="email">E-mail
-                                    address</label>
-                                <input class="signup-form-field" v-model="username" type="text" name="email"
-                                       placeholder="E-mail"/>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-bottom: 15px;">
-                            <div class="col-6">
-                                <label class="signup-form-label" style="color: black !important;"
-                                       for="email">Password</label>
-                                <input class="signup-form-field" v-model="password" type="password" name="password"
-                                       placeholder="Password"/>
-                            </div>
-                            <div class="col-6">
-                                <label class="signup-form-label" style="color: black !important;" for="email">Confirm
-                                    Password</label>
-                                <input class="signup-form-field" v-model="confirmedPassword" type="password"
-                                       name="password2" placeholder="Confirm password"/>
-                            </div>
-                        </div>
-                        <div>
-                            <input class="btn btn-lg btn-primary" style="width: 300px; margin-top: 25px;"
-                                   @click="register()" v-on:keyup.enter="register()" type="submit" name="signup_submit"
-                                   value="Sign up"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <footer>
             <div class="container">
@@ -166,9 +112,7 @@
             }
         },
 
-        methods: {
-
-        }
+        methods: {}
     }
 </script>
 

@@ -8,8 +8,9 @@ export default new Vuex.Store({
         isLoggedIn: !!localStorage.getItem("token")
     },
     actions: {
-        login(token) {
-            localStorage.setItem("token", token);
+        login(toke) {
+            console.log(toke);
+            localStorage.setItem("token", toke);
         },
         logout() {
             localStorage.removeItem("token");

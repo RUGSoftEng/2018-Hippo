@@ -1,12 +1,15 @@
 <template lang="html">
     <div>
         <nav-bar></nav-bar>
-
+        <div id="error-window" class="alert alert-danger" role="alert" style="margin: 10px; display: none;">
+            The given email/password is incorrect.
+        </div>
         <div class="text-center" style="color: black !important;">
             <form class="form-signin" @submit.prevent="login()">
                 <img style="height: 100px; margin-bottom: 20px;" src="../assets/Logo-black.svg">
                 <h1 class="h3 mb-3 font-weight-normal"
-                    style="color: black !important; font-family: Catamaran,Helvetica,Arial,sans-serif; margin-bottom: 30px !important;">Sign in</h1>
+                    style="color: black !important; font-family: Catamaran,Helvetica,Arial,sans-serif; margin-bottom: 30px !important;">
+                    Sign in</h1>
                 <label for="inputEmail" class="sr-only">Email address</label>
                 <input type="email" id="inputEmail" v-model="email" class="form-control" placeholder="Email address"
                        required autofocus name="email">
@@ -21,7 +24,9 @@
                 <button type="submit" class="btn btn-lg btn-primary btn-block">
                     Sign in
                 </button>
-                <div class="text-center" style="margin-top: 30px;">Don't have an account yet? <router-link to="/register">Register</router-link></div>
+                <div class="text-center" style="margin-top: 30px;">Don't have an account yet?
+                    <router-link to="/register">Register</router-link>
+                </div>
             </form>
         </div>
     </div>
@@ -48,9 +53,11 @@
         },
         methods: {
             login: function () {
-                const { email, password } = this;
+                const {email, password} = this;
 
                 const self = this;
+
+                document.getElementById("error-window").style.display = "none";
 
                 axios.get('http://localhost:5000/api/token', {
                     auth: {
@@ -61,23 +68,23 @@
                     .then(function (response) {
                         console.log(response);
 
-                        self.$store.dispatch('login', {
-                            token: response.data.token
-                        }).then(() => {
-                            self.redirect();
-                            location.reload();
-                        });
+                        localStorage.setItem("token", response.data.token.toString());
+
+                        self.redirect();
+                        location.reload();
                     })
                     .catch(function (error) {
                         console.log(error);
+
+                        document.getElementById("error-window").style.display = "block";
                     });
             },
             redirect: function () {
                 this.$router.push("/app");
             }
         },
-        beforeMount(){
-            if (this.isLoggedIn){
+        beforeMount() {
+            if (this.isLoggedIn) {
                 this.redirect();
             }
         },
@@ -95,7 +102,6 @@
         background-color: white;
         border-radius: 10px;
         border: rgba(0, 0, 0, 0.125) solid 1px;
-
 
     }
 

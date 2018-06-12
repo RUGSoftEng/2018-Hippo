@@ -2,7 +2,8 @@
     <div class="container center">
         <div class="search-view form-inline">
             <input class="form-control mr-sm-3 search-box" type="text" v-model="searchText"
-                   v-on:keyup.enter="search(searchText)" placeholder="Search for ideas..." aria-label="Search" autofocus>
+                   v-on:keyup.enter="search(searchText)" placeholder="Search for ideas..." aria-label="Search"
+                   autofocus>
         </div>
         <tweet-collections-list v-if="$route.path == '/app/search'" :categoryList="categories"
                                 :searchTerms="currentlySearchingFor"></tweet-collections-list>
@@ -14,8 +15,11 @@
     import axios from 'axios';
     import TweetCollectionsList from './TweetCollectionsList.vue';
     import TweetList from '../templates/TweetList.vue';
+    import store from '../store'
 
     export default {
+        store,
+
         data() {
             return {
                 searchText: '',
@@ -32,13 +36,18 @@
         methods: {
             search: function () {
                 this.categories = [];
-                this.$router.push('/app/searcg');
+                this.$router.push('/app/search');
                 let cmp = this;
                 cmp.currentlySearchingFor = cmp.searchText;
                 this.tweetList = [];
                 cmp.startIndex = 0;
                 cmp.endIndex = 10;
-                axios.get('http://localhost:5000/api/search_category/' + cmp.searchText, {'timeout': 5000})
+
+                axios.get('http://localhost:5000/api/search_category/' + cmp.searchText, {
+                    auth: {
+                        username: store.getters.token,
+                    },
+                })
                     .then(function (response) {
                         console.log(response.data);
 

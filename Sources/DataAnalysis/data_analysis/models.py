@@ -12,5 +12,5 @@ class Tweet(DocType):
     class Meta:
         index = 'tweet'
 
-    def save(self, ** kwargs):
-        return super(Tweet, self).save(** kwargs)
+    def save(self, **kwargs):
+        return super(Tweet, self).save(**kwargs)
