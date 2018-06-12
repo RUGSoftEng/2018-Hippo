@@ -41,6 +41,8 @@ def search_by_keywords(terms):
     for tweet in tweets:
         del tweet["raw"]
     
+    print("search for ", terms, " returned ", len(tweets), " result")
+    
     return tweets
 
 
@@ -215,7 +217,10 @@ def register():
     user.gender = gender
 
     if birthday is not None:
-        user.birthday = dateutil.parser.parse(birthday)
+        try:
+            user.birthday = dateutil.parser.parse(birthday)
+        except ValueError as ex:
+            return jsonify(description="INVALID_DATE", message="The given date is invalid."), 400
 
     # We need to save the date at which the user gave consent, GDPR.
     if data_collection_consent is True:
@@ -238,7 +243,7 @@ def verify_password(email_or_token: str, password: str) -> bool:
     # First try to authenticate by token, otherwise try with username/password.
 
     # Migrate an issue in Axios, authentication headers not send correctly in POST requests.
-    if email_or_token == "":
+    if email_or_token == "" and request.json is not None and "username" in request.json.get("auth"):
         email_or_token = request.json.get('auth')['username']
 
     user = User.verify_auth_token(email_or_token)

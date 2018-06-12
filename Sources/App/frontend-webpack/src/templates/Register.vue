@@ -100,6 +100,16 @@
                             <label>Create password</label>
                             <input v-model="password" class="form-control" type="password" required>
                         </div> <!-- form-group end.// -->
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" style="color: black !important;" v-model="consent_marketing"> I consent to marketing
+                            </label>
+                        </div>
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" style="color: black !important;" v-model="consent_data"> I consent to data collection
+                            </label>
+                        </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block">Register</button>
                         </div> <!-- form-group// -->
@@ -144,7 +154,9 @@
                 birthday_month: '',
                 birthday_year: '',
                 email: '',
-                password: ''
+                password: '',
+                consent_marketing: false,
+                consent_data: false, //required!
             }
         },
         methods: {
@@ -155,6 +167,17 @@
 
                 document.getElementById("error-window").style.display = "none";
 
+                if(self.consent_data == false){
+                  document.getElementById("error-window").style.display = "block";
+                  document.getElementById("error-window").innerHTML = "You must consent to data!";
+                  return;
+                }
+                if(self.birthday_day == '' || self.birthday_month == '' || self.birthday_year == ''){
+                  document.getElementById("error-window").style.display = "block";
+                  document.getElementById("error-window").innerHTML = "You must add an entire birthday!";
+                  return;
+                }
+
                 axios.post('http://localhost:5000/api/users', {
                     first_name: first_name,
                     last_name: last_name,
@@ -162,8 +185,8 @@
                     email: email,
                     birthday: birthday_year + "-" + birthday_month +  "-" + birthday_day,
                     password: password,
-                    data_collection_consent: true,
-                    marketing_consent: true
+                    data_collection_consent: self.consent_data,
+                    marketing_consent: self.consent_marketing
                 })
                     .then(function (response) {
                         console.log(response);
@@ -175,11 +198,11 @@
 
                         document.getElementById("error-window").style.display = "block";
 
-                        if (typeof error.response !== "undefined") {
+                        if (typeof error.response.data.message !== "undefined") {
                             document.getElementById("error-window").innerHTML = error.response.data.message;
                         }
                         else {
-                            document.getElementById("error-window").innerHTML = "An unknown exception occurred.";
+                            document.getElementById("error-window").innerHTML = "An unknown exception occurred, or the server is down";
                         }
                     });
 
