@@ -81,6 +81,14 @@ def search_category(terms):
     return jsonify(results)
 
 
+def collection_mapping(keywords: [str]) -> str:
+    keywords = list(map(lambda x: x.lower(), keywords))
+
+    keywords.sort()
+
+    return ''.join(keywords)
+
+
 @app.route('/api/view/<tweet_id>', methods=['POST'])
 @auth.login_required
 def view(tweet_id):
@@ -165,7 +173,8 @@ def check_password(email: str, password: str, first_name: str, last_name: str):
     return None
 
 
-def get_location(ip_address: str):
+# TODO: use external API to resolve IP location, return ISO 3166-1 (preferably alpha-3) code.
+def get_location(ip_address: str) -> str:
     pass
 
 
