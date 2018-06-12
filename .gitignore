@@ -258,5 +258,8 @@ fabric.properties
 .idea/httpRequests
 .gitignore
 .idea/
-Sources/.DS_Store
-Sources/Data-Analysis/.DS_Store
+
+Sources/DataAnalysis/docker/
+Sources/WebApi/docker/
+
+package-lock.json

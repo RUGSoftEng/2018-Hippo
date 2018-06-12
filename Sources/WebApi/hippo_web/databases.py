@@ -1,10 +1,10 @@
 from elasticsearch import Elasticsearch
-from sqlalchemy import create_engine
+from elasticsearch_dsl import connections
 
 
 def connect_elasticsearch():
     es = Elasticsearch()
+    connections.create_connection(hosts=['localhost'])
 
 
-def connect_postgresql():
-    engine = create_engine('postgresql://scott:tiger@localhost/mydatabase')
+connect_elasticsearch()
