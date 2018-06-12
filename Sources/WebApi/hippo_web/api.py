@@ -40,9 +40,7 @@ def search_by_keywords(terms):
     
     for tweet in tweets:
         del tweet["raw"]
-    
-    print("search for ", terms, " returned ", len(tweets), " result")
-    
+        
     return tweets
 
 
