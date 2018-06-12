@@ -45,7 +45,6 @@
                 axios.get('http://localhost:5000/api/search_category/' + cmp.searchText, {
                     auth: {
                         username: store.getters.token,
-                        password: ""
                     },
                 })
                     .then(function (response) {
@@ -55,10 +54,6 @@
                     })
                     .catch(function (error) {
                         console.log(error);
-                        if(error.type = "unauthorized"){
-                          alert("Not logged in");
-                        }
-
                     });
             },
 
