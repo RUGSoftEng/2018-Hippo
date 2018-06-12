@@ -27,7 +27,7 @@
             switchToTweets: function () {
                 console.log("Switching to tweets...");
                 window.scrollBy(0, -1000);
-                this.$router.push({path: '/app/collection', params: {id: this.categoryNum}});
+                this.$router.push({name: 'TL', params: {id: this.categoryNum}});
             }
         }
     }
