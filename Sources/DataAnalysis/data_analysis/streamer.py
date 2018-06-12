@@ -38,6 +38,8 @@ class _TwitterStreamListener(StreamListener):
         tweet.date = json_tweet["created_at"]
         tweet.raw = data
         tweet.id = json_tweet["id_str"]
+        tweet.user_name = json_tweet["user"]["screen_name"]
+        tweet.user_profile_image = json_tweet["user"]["profile_image_url"]
 
         keywords = analyse_tweet(json_tweet["text"])
 

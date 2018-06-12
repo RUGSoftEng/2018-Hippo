@@ -8,6 +8,8 @@ class Tweet(DocType):
     content = Text(analyzer='snowball')
     raw = Text()
     id = Text()
+    user_name = Text()
+    user_profile_image = Text()
 
     class Meta:
         index = 'tweet'
