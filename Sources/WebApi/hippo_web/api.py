@@ -36,8 +36,12 @@ def search_by_keywords(terms):
 
     # return the first 250 hits
     results = s[:250]
-
-    return [hit._d_ for hit in results]
+    tweets = [dict(hit._d_) for hit in results]
+    
+    for tweet in tweets:
+        del tweet["raw"]
+    
+    return tweets
 
 
 @app.route('/api/search/<terms>', methods=['GET'])
@@ -73,7 +77,7 @@ def search_category(terms):
     keyword_frequencies = sorted(keyword_frequencies.items(), key=itemgetter(1))
 
     # add the 4 most common keywords
-    for i in range(0, 5):
+    for i in range(min(len(keyword_frequencies), 5)):
         keyword = keyword_frequencies[-(i + 1)][0]
         new_terms = terms + " " + keyword
         new_results = search_by_keywords(terms + " " + keyword)
