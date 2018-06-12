@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 import dateutil
 from flask_cors import CORS
@@ -35,8 +36,12 @@ def search_by_keywords(terms):
 
     # return the first 250 hits
     results = s[:250]
+    tweets = [dict(hit._d_) for hit in results]
 
-    return [hit._d_ for hit in results]
+    for tweet in tweets:
+        del tweet["raw"]
+
+    return tweets
 
 
 @app.route('/api/search/<terms>', methods=['GET'])
@@ -72,7 +77,7 @@ def search_category(terms):
     keyword_frequencies = sorted(keyword_frequencies.items(), key=itemgetter(1))
 
     # add the 4 most common keywords
-    for i in range(0, 5):
+    for i in range(min(len(keyword_frequencies), 5)):
         keyword = keyword_frequencies[-(i + 1)][0]
         new_terms = terms + " " + keyword
         new_results = search_by_keywords(terms + " " + keyword)
@@ -149,7 +154,7 @@ def get_group(tweet, field):
         return max(likes, key=itemgetter(1))
 
 
-def check_valid_email(email):
+def check_valid_email(email) -> Optional[str]:
     try:
         validate_email(email)["email"]
     except EmailNotValidError as ex:
@@ -158,7 +163,7 @@ def check_valid_email(email):
     return None
 
 
-def check_password(email: str, password: str, first_name: str, last_name: str):
+def check_password(email: str, password: str, first_name: str, last_name: str) -> Optional[str]:
     password_results = zxcvbn(password, user_inputs=[email, first_name, last_name])
 
     # NOTE: score is between 0 (very weak password) and 4 (very strong password).
@@ -219,7 +224,10 @@ def register():
     user.gender = gender
 
     if birthday is not None:
-        user.birthday = dateutil.parser.parse(birthday)
+        try:
+            user.birthday = dateutil.parser.parse(birthday)
+        except ValueError as ex:
+            return jsonify(description="INVALID_DATE", message="The given date is invalid."), 400
 
     # We need to save the date at which the user gave consent, GDPR.
     if data_collection_consent is True:
@@ -238,11 +246,11 @@ def register():
 
 # Notes: Authentication implemented according to: https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 @auth.verify_password
-def verify_password(email_or_token, password):
+def verify_password(email_or_token: str, password: str) -> bool:
     # First try to authenticate by token, otherwise try with username/password.
 
     # Migrate an issue in Axios, authentication headers not send correctly in POST requests.
-    if email_or_token == "":
+    if email_or_token == "" and request.json is not None and "username" in request.json.get("auth"):
         email_or_token = request.json.get('auth')['username']
 
     user = User.verify_auth_token(email_or_token)
@@ -273,9 +281,17 @@ def get_auth_token():
 @auth.login_required
 def account():
     user = g.user
+    if user.data_collection_consent is None:
+        data_consent=False
+    else:
+        data_consent=True
+    if user.marketing_consent is None:
+        marketing=False
+    else:
+        marketing=True
     return jsonify({'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name,
-                    'gender': user.gender, 'data_collection_consent': user.data_collection_consent,
-                    'marketing_consent': user.marketing_consent})
+                    'gender': user.gender, 'data_collection_consent': data_consent,
+                    'marketing_consent': marketing})
 
 
 @app.route('/api/user/account', methods=['POST'])

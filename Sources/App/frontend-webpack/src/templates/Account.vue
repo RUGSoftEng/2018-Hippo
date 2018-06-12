@@ -51,6 +51,18 @@
                             <input v-model="password" class="form-control" type="password">
                         </div> <!-- form-group end.// -->
                         <div class="form-group">
+                            <div class="checkbox mb-3">
+                                <label>
+                                    <input type="checkbox" style="color: black !important;" v-model="marketing_consent"> I want to receive marketing emails from Hippo.
+                                </label>
+                            </div>
+                            <div class="checkbox mb-3">
+                                <label>
+                                    <input type="checkbox" style="color: black !important;" v-model="data_collection_consent"> I give consent to use my data to generate demographics for ideas.
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block">Save changes</button>
                         </div> <!-- form-group// -->
                         <div class="form-row" style="padding-top: 25px;">
@@ -92,11 +104,13 @@
                 gender: '',
                 email: '',
                 password: '',
+                data_collection_consent: '',
+                marketing_consent: '',
             }
         },
         methods: {
             update_account: function () {
-                const {first_name, last_name, gender, email, password} = this;
+                const {first_name, last_name, gender, email, password, data_collection_consent, marketing_consent} = this;
 
                 document.getElementById("success-window").style.display = "none";
                 document.getElementById("error-window").style.display = "none";
@@ -111,9 +125,8 @@
                     gender: gender,
                     email: email,
                     password: password,
-                    data_collection_consent: true,
-                    marketing_consent: true,
-
+                    data_collection_consent: data_collection_consent,
+                    marketing_consent: marketing_consent
                 })
                     .then(function (response) {
                         console.log(response);
@@ -129,7 +142,7 @@
                             document.getElementById("error-window").innerHTML = error.response.data.message;
                         }
                         else {
-                            document.getElementById("error-window").innerHTML = "An unknown exception occurred.";
+                            document.getElementById("error-window").innerHTML = "An unknown exception occurred, there could be a issue with connecting to the server.";
                         }
                     });
             },
