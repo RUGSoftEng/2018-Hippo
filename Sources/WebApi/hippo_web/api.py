@@ -31,7 +31,12 @@ def search_by_keywords(terms):
 
     # return the first 250 hits
     results = s[:250]
-    return [hit._d_ for hit in results]
+    tweets = [dict(hit._d_) for hit in results]
+    
+    for tweet in tweets:
+        del tweet["raw"]
+    
+    return tweets
 
 
 @app.route('/api/search/<terms>', methods=['GET'])
@@ -67,7 +72,7 @@ def search_category(terms):
     keyword_frequencies = sorted(keyword_frequencies.items(), key=itemgetter(1))
 
     # add the 4 most common keywords
-    for i in range(0, 5):
+    for i in range(min(len(keyword_frequencies), 5)):
         keyword = keyword_frequencies[-(i + 1)][0]
         new_terms = terms + " " + keyword
         new_results = search_by_keywords(terms + " " + keyword)
@@ -134,9 +139,9 @@ def check_valid_email(email):
         v = validate_email(email)
         email = v["email"]
     except EmailNotValidError as e:
-        abort(400, description="Invalid email: " + str(e))
+        return [ None, str(e) ]
     
-    return email
+    return [ email, None ]
     
     
 def check_password(email, password, first_name, last_name):
@@ -185,10 +190,12 @@ def register():
     if None in (email, password, first_name, last_name):
         return jsonify({ "result": "fail", "reason": "Not enough valid information to finish the registration has been given." })
 
-    email = check_valid_email(email)
+    email, err = check_valid_email(email)
+    if err is not None:
+        return jsonify({ "result": "fail", "reason": "A user with that email has already been registered." })
         
     if get_user(email):
-        return jsonify({ "result": "fail", "reason": "A user with that email has already been registered." })
+        return jsonify({ "result": "fail", "reason": "Invalid email: " +  err + "." })
     
     if not check_password(email, password, first_name, last_name):
         return jsonify({ "result": "fail", "reason": "An insecure password was given." })
