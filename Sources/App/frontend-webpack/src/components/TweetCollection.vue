@@ -5,11 +5,12 @@
             <div class="line"></div>
             <div style="padding-bottom: 1.5rem; padding-top: 1.5rem;">{{tweetData}}</div>
             <div>
-                <i style="color: #1dcaff; font-size: 30px; text-align: left; float: left;" class="fa fa-twitter"></i>
-                <h5 style="text-align: left; float: left">0</h5>
-                <i style="color: red; font-size: 30px; text-align: left; float: left; padding-left: 5px;"
-                   class="fa fa-heart"></i>
-                <h5 style="text-align: left; float: left; padding-left: 5px">0</h5>
+                <p style="text-align: left; float: left; margin-top: 10px; margin-bottom: 0;">{{views}} views</p>
+
+                <p style="text-align: left; float: left; padding-left: 25px; margin-top: 10px; margin-bottom: 0;">{{likes}} likes</p>
+
+                <img class="like-button" src="images/icons8-heart-outline-filled.svg" style="height: 18px; margin-top: 10px; margin-left: 10px;">
+
                 <button class="collection-button"
                         style="font-size: 14px; float: right; background: #1569C7; color: white; border: none; border-radius: 4px; padding: 5px 10px;"
                         v-on:click="switchToTweets()">More
@@ -22,7 +23,7 @@
 
 <script>
     export default {
-        props: ['tweetData', 'searchTerms', 'categoryNum'],
+        props: ['tweetData', 'views', 'likes', 'searchTerms', 'categoryNum'],
         methods: {
             switchToTweets: function () {
                 console.log("Switching to tweets...");
@@ -34,6 +35,17 @@
 </script>
 
 <style scoped lang="css">
+    .like-button {
+    }
+
+    .like-button:hover {
+        box-shadow: 0 0 0 5px rgba(253, 101, 89, 0.25) !important;
+    }
+
+    .like-button:active {
+        box-shadow: 0 0 0 5px rgba(253, 101, 89, 0.5) !important;
+    }
+
     .collection-button {
         border-color: #00BFFF !important;
         border-radius: 0.5rem
