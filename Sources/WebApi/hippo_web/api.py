@@ -272,9 +272,17 @@ def get_auth_token():
 @auth.login_required
 def account():
     user = g.user
+    if user.data_collection_consent is None:
+        data_consent=False
+    else:
+        data_consent=True
+    if user.marketing_consent is None:
+        marketing=False
+    else:
+        marketing=True
     return jsonify({'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name,
-                    'gender': user.gender, 'data_collection_consent': user.data_collection_consent,
-                    'marketing_consent': user.marketing_consent})
+                    'gender': user.gender, 'data_collection_consent': data_consent,
+                    'marketing_consent': marketing})
 
 
 @app.route('/api/user/account', methods=['POST'])
