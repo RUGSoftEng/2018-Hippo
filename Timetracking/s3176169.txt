@@ -145,3 +145,180 @@ Work on Ignite data streamer controls.
 Prepare everything for end sprint.
 Prepare everything for end sprint.
 Prepare everything for end sprint.
+
+Team meeting.
+Team meeting.
+Team meeting.
+Team meeting.
+
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+Rewrite data analysis.
+
+Design
+Design
+Design, user authentication, refactor.
+Design, user authentication, refactor.
+Design, user authentication, refactor.
+Design, user authentication, refactor.
+Design, user authentication, refactor.
+Design, user authentication, refactor.
+
+Design, user authentication, refactor.
+Design, user authentication, refactor.
+Design, user authentication, refactor.
+Design, user authentication, refactor.
+Design, user authentication, refactor.
+
+Design
+Docker.
+Docker.
+Docker.
+Docker.
+Docker.
+Docker.
+
+Docker, refactor.
+Docker, refactor.
+Docker, refactor.
+Docker, refactor.
+Docker, refactor.
+Design
+Design
+Design
+Design
+Design
+Design
+
+Integrate NLP and debugging Ajax requests.
+Integrate NLP and debugging Ajax requests.
+Integrate NLP and debugging Ajax requests.
+Integrate NLP and debugging Ajax requests.
+Integrate NLP and debugging Ajax requests.
+
+Design
+Design
+Design
+Design
+
+Work on authentication
+Work on authentication
+Work on authentication
+Work on authentication
+
+Team meeting
+Team meeting
+Team meeting
+Team meeting
+
+Team meeting
+
+Worked on filtering.
+Worked on filtering.
+Worked on filtering.
+Worked on filtering.
+Worked on filtering.
+Expanded API with user details and functions.
+Expanded API with user details and functions.
+Expanded API with user details and functions.
+
+Clean up, debugging, resolving conflicts.
+Clean up, debugging, resolving conflicts.
+Clean up, debugging, resolving conflicts.
+Clean up, debugging, resolving conflicts.
+Debugging, resolving conflicts.
+Debugging, resolving conflicts.
+
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+Joined fronend team, website redesign, fixing styling issues in routing.
+
+Fixing CSS, merging templates.
+Fixing CSS, merging templates.
+Fixing CSS, merging templates.
+Fixing CSS, merging templates.
+Fixing CSS, merging templates.
+Fixing CSS, merging templates.
+
+Refactoring, clean up, work on routing.
+Refactoring, clean up, work on routing.
+Refactoring, clean up, work on routing.
+Refactoring, clean up, work on routing.
+Refactoring, clean up, work on routing.
+Refactoring, clean up, work on routing.
+Refactoring, clean up, work on routing.
+Refactoring, clean up, work on routing.
+Work on routing, added login and registration pages.
+Work on routing, added login and registration pages.
+Work on routing, added login and registration pages.
+Work on routing, added login and registration pages.
+Work on routing, added login and registration pages.
+
+Login/registration, refactoring.
+Login/registration, refactoring.
+Login/registration, refactoring.
+Login/registration, refactoring.
+User account sessions.
+User account sessions.
+User account sessions.
+User account sessions, refactoring.
+User account sessions, refactoring.
+User account sessions, refactoring.
+User account sessions, refactoring.
+User account sessions, refactoring.
+User account sessions, refactoring.
+
+User account sessions, small bugfixes.
+User account sessions, small bugfixes.
+User account sessions, small bugfixes.
+User account sessions, small bugfixes.
+User account sessions, small bugfixes.
+
+User account management, sessions, authentication.
+User account management, sessions, authentication.
+User account management, sessions, authentication.
+User account management, sessions, authentication.
+User account management, sessions, authentication. Refactor, clean up.
+User account management, sessions, authentication. Refactor, clean up.
+User account management, sessions, authentication. Refactor, clean up.
+User account management, sessions, authentication. Refactor, clean up.
+User account management, sessions, authentication. Refactor, clean up.
+
+Adding birthday to registration process.
+Adding birthday to registration process.
+Fixing some issues with registration and inital work on demographics frontend.
+Fixing some issues with registration and inital work on demographics frontend.
+Fixing some issues with registration and inital work on demographics frontend.
+Fixing some issues with registration and inital work on demographics frontend.
+Refactoring frontend.
+Demographics, front end updates, debugging, refactoring, finalising end sprint.
+Demographics, front end updates, debugging, refactoring, finalising end sprint.
+Demographics, front end updates, debugging, refactoring, finalising end sprint.
+Demographics, front end updates, debugging, refactoring, finalising end sprint.
+Demographics, front end updates, debugging, refactoring, finalising end sprint.
+Demographics, front end updates, debugging, refactoring, finalising end sprint.
+Demographics, front end updates, debugging, refactoring, finalising end sprint.
+Demographics, front end updates, debugging, refactoring, finalising end sprint.
