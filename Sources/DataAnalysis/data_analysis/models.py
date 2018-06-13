@@ -1,7 +1,5 @@
 from elasticsearch_dsl import *
 
-import data_analysis.databases
-
 
 class Tweet(DocType):
     keywords = Text(analyzer='snowball', fields={'raw': Keyword()})
@@ -9,9 +7,12 @@ class Tweet(DocType):
     date = Date()
     content = Text(analyzer='snowball')
     raw = Text()
+    id = Text()
+    user_name = Text()
+    user_profile_image = Text()
 
     class Meta:
         index = 'tweet'
 
-    def save(self, ** kwargs):
-        return super(Tweet, self).save(** kwargs)
+    def save(self, **kwargs):
+        return super(Tweet, self).save(**kwargs)

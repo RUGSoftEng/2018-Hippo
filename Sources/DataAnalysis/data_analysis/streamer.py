@@ -3,7 +3,9 @@ import json
 from tweepy import *
 
 from data_analysis.models import Tweet
-from data_analysis.nlp import analyse_tweet, match_keywords_filter
+from data_analysis.nlp import analyse_tweet
+
+import data_analysis.databases
 
 consumer_key = "19zbXP0QH2etpYqk1oHwVFRrA"
 consumer_secret = "P4i0N3umEfmxCoseeL10X8EgxWLlc5v59pZRms1EYj5tKJk8Gi"
@@ -17,27 +19,41 @@ class _TwitterStreamListener(StreamListener):
     def on_data(self, data):
         json_tweet = json.loads(data)
 
-        if ("text" not in json_tweet):
+        # this checks whether the data is an actual tweet (and not
+        # another message like a deletion, etc)
+        if "text" not in json_tweet:
             return True
-        
-        if ("retweeted_status" in json_tweet):
+
+        # filter out retweets
+        if "retweeted_status" in json_tweet:
             return True
-        
+
+        # filter out tweets with fewer than 4 words
+        tweet_text = str(json_tweet["text"])
+        tweet_text = ''.join(e for e in tweet_text if e.isalnum() or e.isspace())
+        if len(tweet_text.split()) < 4:
+            return True
+            
         # TODO: Remove in production.
         print(json_tweet["text"])
+        
+        
 
-        if match_keywords_filter(json_tweet["text"]):
-            tweet = Tweet()
+        # create the tweet object, analyse it and save it in ElasticSearch
+        tweet = Tweet()
 
-            tweet.content = json_tweet["text"]
-            tweet.date = json_tweet["created_at"]
-            tweet.raw = data
+        tweet.content = json_tweet["text"]
+        tweet.date = json_tweet["created_at"]
+        tweet.raw = data
+        tweet.id = json_tweet["id_str"]
+        tweet.user_name = json_tweet["user"]["screen_name"]
+        tweet.user_profile_image = json_tweet["user"]["profile_image_url"]
 
-            keywords, synonyms = analyse_tweet(json_tweet["text"])
+        keywords = analyse_tweet(json_tweet["text"])
 
-            tweet.keywords = keywords;
-            
-            tweet.save()
+        tweet.keywords = keywords
+
+        tweet.save()
 
         return True
 

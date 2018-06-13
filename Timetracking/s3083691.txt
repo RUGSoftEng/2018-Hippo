@@ -13,3 +13,113 @@ Update requirements document
 Update architecture document
 Review and modify architecture document
 Review and modify architecture document
+Backend meeting
+Backend meeting
+Backend meeting
+Backend meeting
+Backend meeting
+Backend meeting
+Backend meeting
+Backend meeting
+Backend meeting
+Backend meeting
+Backend and frontend meeting
+Backend and frontend meeting
+Backend and frontend meeting
+Backend and frontend meeting
+Backend and frontend meeting
+Backend and frontend meeting
+Code elasticsearch search
+Code elasticsearch search
+Code elasticsearch search
+Add multiple keyword search
+Code sending to elasticsearch
+Code sending to elasticsearch
+ES testing/tryouts
+ES testing/tryouts
+ES testing/tryouts
+ES testing/tryouts
+Refactoring
+Refactoring
+Refactoring
+Switch code to es-dsl
+Switch code to es-dsl
+Switch code to es-dsl
+Switch code to es-dsl
+Group meeting
+Group meeting
+Test buckets/aggregation option
+Test buckets/aggregation option
+Test buckets/aggregation option
+Group meeting
+Code ES analyzer
+Code ES analyzer
+Group meeting
+Group meeting
+Demo meeting
+Demo meeting
+Group meeting
+Group meeting
+Customer meeting
+Code v1 collections
+Code v1 collections
+Code v1 collections
+Group meeting
+Code v1 collections
+Code v1 collections
+Code v1 collections
+Group meeting
+Group meeting
+Group meeting
+Group meeting
+Group meeting
+Group meeting
+Group meeting
+Group meeting
+Group meeting
+Group meeting
+Group meeting
+Group meeting
+Group meeting final
+Group meeting final
+Group meeting final
+Group meeting final
+Group meeting
+Meeting, reorg branches bugfixes
+Meeting, reorg branches bugfixes
+Meeting, reorg branches bugfixes
+Meeting, reorg branches bugfixes
+Meeting, reorg branches bugfixes
+Meeting, reorg branches bugfixes
+Group meeting
+Meeting, users + demographics
+Meeting, users + demographics
+Meeting, users + demographics
+Meeting, users + demographics
+Meeting, users + demographics
+Meeting, users + demographics
+Meeting, users + demographics
+Meeting, users + demographics
+Meeting, users + demographics
+Meeting, users + demographics
+Working on demographics
+Working on demographics
+Working on demographics
+Working on demographics
+Working on demographics
+Working on demographics
+Working on demographics
+Working on demographics
+Updating documents
+Updating documents
+Existential crisis
+Updating documents
+Testing timeseries for demographics
+Testing timeseries for demographics
+Testing timeseries for demographics
+Testing timeseries for demographics
+Testing timeseries for demographics
+Documents fixes
+Fix endpoints
+Fix endpoints
+Update timetracking

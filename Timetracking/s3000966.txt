@@ -115,3 +115,85 @@ Integrating Vue Webpack into the frontend
 Integrating Vue Webpack into the frontend
 Integrating Vue Webpack into the frontend
 Integrating Vue Webpack into the frontend
+
+--Rest of the course (didn't keep track of sprints anymore from here on out)
+
+implementing infinite tweet scroll 
+implementing infinite tweet scroll
+implementing infinite tweet scroll
+implementing infinite tweet scroll
+implementing infinite tweet scroll
+implementing infinite tweet scroll
+
+restyled the tweet object a little
+
+bugfixing the frontend
+bugfixing the frontend
+bugfixing the frontend
+bugfixing the frontend
+
+Dependency descriptions to readme
+
+bugfixing with the backend
+bugfixing with the backend
+bugfixing with the backend
+
+Setting up Routing 
+Setting up Routing 
+Setting up Routing 
+
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+Group meeting - working on frontend design, bug fixing frontend, and backend bugfixing
+
+Setting up frontend to use categories
+Setting up frontend to use categories
+
+Setting up dynamic routing to load tweets from each category
+Setting up dynamic routing to load tweets from each category
+Setting up dynamic routing to load tweets from each category
+Setting up dynamic routing to load tweets from each category
+
+Slight redesign of tweets + proper category display
+
+Including login + homepage
+Including login + homepage
+
+Fixing styling bugs
+Fixing styling bugs
+
+Modified routing names
+
+group meeting and implementing simple login system
+group meeting and implementing simple login system
+group meeting and implementing simple login system
+group meeting and implementing simple login system
+
+integrating all changes and bugfixing
+integrating all changes and bugfixing
+integrating all changes and bugfixing
+integrating all changes and bugfixing
+
+Group meeting, bugfixing, adding feedback to frontend registration and handling consent checkbox logic
+Group meeting, bugfixing, adding feedback to frontend registration and handling consent checkbox logic
+Group meeting, bugfixing, adding feedback to frontend registration and handling consent checkbox logic
+Group meeting, bugfixing, adding feedback to frontend registration and handling consent checkbox logic
+Group meeting, bugfixing, adding feedback to frontend registration and handling consent checkbox logic
+Group meeting, bugfixing, adding feedback to frontend registration and handling consent checkbox logic
+Group meeting, bugfixing, adding feedback to frontend registration and handling consent checkbox logic
+Group meeting, bugfixing, adding feedback to frontend registration and handling consent checkbox logic
+Group meeting, bugfixing, adding feedback to frontend registration and handling consent checkbox logic
+
+bugfixing routing issue
+bugfixing routing isse

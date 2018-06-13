@@ -1,9 +1,28 @@
 /*jshint esversion: 6 */
 
-import TweetList from './TweetList.vue';
-import TweetCollectionList from './TweetCollectionsList.vue';
+import Home from './templates/Home.vue';
+import Explore from './templates/Explore.vue';
+import Search from './templates/Search.vue';
+import TweetList from './templates/TweetList.vue';
+
+import Login from './templates/Login.vue';
+import Logout from './templates/Logout.vue';
+import Register from './templates/Register.vue';
+import Account from './templates/Account.vue';
+
 
 export const routes = [
-  { path: '/', name:'TCL', component: TweetCollectionList },
-  { path: '/tweetlist', name:'TL', component: TweetList }
+    {path: '/', component: Home},
+    {path: '/app', redirect: '/app/search'},
+    {path: '/app/explore', component: Explore},
+    {path: '/app/search', component: Search},
+    {path: '/app/collection:id', name: 'TL', component: Search},
+
+    {path: '/login', component: Login},
+    {path: '/logout', component: Logout},
+    {path: '/register', component: Register},
+    {path: '/account', component: Account},
+
+    {path: '*', redirect: '/'}
+
 ];
