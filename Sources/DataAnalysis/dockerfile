@@ -2,6 +2,12 @@ FROM ubuntu:18.04
 
 RUN apt-get update -y
 RUN apt-get install -y python3-pip
+RUN apt-get install -y wget
+
+ENV DOCKERIZE_VERSION v0.6.1
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 WORKDIR app
 
@@ -11,5 +17,4 @@ RUN pip3 install -r requirements.txt
 
 WORKDIR /app/
 
-ENTRYPOINT ["python3"]
-CMD ["runprogram.py"]
+ENTRYPOINT dockerize -wait http://elasticsearch:9200 -timeout 60s python3 runprogram.py

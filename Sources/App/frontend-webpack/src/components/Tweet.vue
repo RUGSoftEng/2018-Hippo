@@ -2,11 +2,11 @@
     <div class=tweet>
         <div class="row">
             <div class="col-1">
-                <img src="{{tweetData.user_profile_image}}" style="height: 40px; border-radius: 50%;">
+                <img :src="tweetData.user_profile_image" style="height: 40px; border-radius: 50%;">
             </div>
             <div class="col-11" style="padding-left: 20px;">
                 <div style="">
-                    <h4 style="margin-top: 5px;">{{tweetData.user_name}}<a href="https://twitter.com/statuses/{{tweetData.id}}"><img src="../assets/icons8-external-link.svg" style="width: 18px; margin-left: 20px;"></a></h4>
+                    <h4 style="margin-top: 5px;">{{tweetData.user_name}}<a :href="tweetData.id"><img src="../assets/icons8-external-link.svg" style="width: 18px; margin-left: 20px;"></a></h4>
                 </div>
                 <div style="">
                     {{tweetData.content}}

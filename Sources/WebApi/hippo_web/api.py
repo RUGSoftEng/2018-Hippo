@@ -40,6 +40,7 @@ def search_by_keywords(terms):
 
     for tweet in tweets:
         del tweet["raw"]
+        tweet["id"] = "https://twitter.com/statuses" + tweet["id"]
 
     return tweets
 

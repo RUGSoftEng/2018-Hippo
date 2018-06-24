@@ -33,10 +33,6 @@ class _TwitterStreamListener(StreamListener):
         tweet_text = ''.join(e for e in tweet_text if e.isalnum() or e.isspace())
         if len(tweet_text.split()) < 4:
             return True
-            
-        # TODO: Remove in production.
-        print(json_tweet["text"])
-        
         
 
         # create the tweet object, analyse it and save it in ElasticSearch
