@@ -3,13 +3,13 @@
         <blockquote class=tweet-collection>
             <h1 class="category">{{searchTerms}}</h1>
             <div class="line"></div>
-            <div style="padding-bottom: 1.5rem; padding-top: 1.5rem;">{{tweetData}}</div>
+            <div style="padding-bottom: 1.5rem; padding-top: 1.5rem;">{{tweetData.content}}</div>
             <div>
                 <p style="text-align: left; float: left; margin-top: 10px; margin-bottom: 0;">{{views}} views</p>
 
                 <p style="text-align: left; float: left; padding-left: 25px; margin-top: 10px; margin-bottom: 0;">{{likes}} likes</p>
 
-                <img class="like-button" src="images/icons8-heart-outline-filled.svg" style="height: 18px; margin-top: 10px; margin-left: 10px;">
+                <img class="like-button" src="../assets/icons8-heart-outline-filled.svg" style="height: 18px; margin-top: 10px; margin-left: 10px;">
 
                 <button class="collection-button"
                         style="font-size: 14px; float: right; background: #1569C7; color: white; border: none; border-radius: 4px; padding: 5px 10px;"

@@ -27,6 +27,33 @@ The project it's code is structured as described below. These directory contain 
 ### Web API
 `~/Sources/WebApi`
 
+## Frontend setup
+
+Install NodeJS and NPM first.
+
+In `~/Sources/App/frontend-webpack` run the following commands...
+
+...to setup the development environment:
+``` bash
+npm install
+```
+
+... to run the application server in (development mode):
+``` bash
+npm run dev
+```
+
+## Backend and data analysis setup
+
+Install Docker (and docker-compose, if not installed automatically) first.
+
+In `~/Sources` run the following commands...
+
+...to run the web API and data analysis application (containers will be build automatically):
+``` bash
+docker-compose up
+```
+
 ## Licensing 
 
 This project is licensed under an proprietary licence, usage, distribution or modification of the project is not allowed, unless explicit permission by the licensor is given.
